@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المحلل النفسي الذكي | NafsiAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0d1117;
+  --deep: #111827;
+  --card: #161d2b;
+  --glass: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --accent: #6366f1;
+  --accent2: #8b5cf6;
+  --accent3: #06b6d4;
+  --gold: #f59e0b;
+  --rose: #f43f5e;
+  --emerald: #10b981;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --soft: #64748b;
+  --radius: 20px;
+  --glow: 0 0 40px rgba(99,102,241,0.15);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  font-family: 'Tajawal', sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ——— BACKGROUND ——— */
+.bg-mesh {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99,102,241,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 80%, rgba(139,92,246,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(6,182,212,0.05) 0%, transparent 70%),
+    linear-gradient(180deg, #0d1117 0%, #111827 100%);
+}
+
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+
+/* ——— LAYOUT ——— */
+.wrapper {
+  position: relative; z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.2rem 4rem;
+}
+
+/* ——— HEADER ——— */
+.hero {
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+  position: relative;
+}
+
+.logo-badge {
+  display: inline-flex;
+  align-items: center; gap: 10px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+  border: 1px solid rgba(99,102,241,0.3);
+  border-radius: 50px;
+  padding: 6px 18px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #a5b4fc;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.logo-badge::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #6366f1;
+  box-shadow: 0 0 8px #6366f1;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.hero h1 {
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #e2e8f0 0%, #a5b4fc 50%, #67e8f9 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ——— TABS ——— */
+.tabs {
+  display: flex; gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 6px;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  flex: 1; min-width: 120px;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: var(--soft);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  box-shadow: 0 4px 15px rgba(99,102,241,0.35);
+}
+
+/* ——— SECTIONS ——— */
+.section { display: none; animation: fadeIn 0.4s ease; }
+.section.active { display: block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+
+/* ——— CARDS ——— */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.2rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover { border-color: rgba(99,102,241,0.3); box-shadow: var(--glow); }
+
+.card.answered { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.03); }
+
+.q-num {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+.q-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1.1rem;
+  line-height: 1.5;
+}
+
+.options { display: flex; flex-direction: column; gap: 8px; }
+
+.option-label {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+.option-label:hover { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.3); color: var(--text); }
+
+input[type="radio"] { display: none; }
+input[type="radio"]:checked + .option-label {
+  background: rgba(99,102,241,0.15);
+  border-color: rgba(99,102,241,0.5);
+  color: var(--text);
+}
+
+.radio-dot {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--soft);
+  transition: all 0.2s;
+  position: relative;
+}
+input[type="radio"]:checked + .option-label .radio-dot {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+}
+input[type="radio"]:checked + .option-label .radio-dot::after {
+  content:'';
+  position: absolute; inset: 3px;
+  border-radius: 50%;
+  background: white;
+}
+
+/* textarea input */
+.free-input {
+  width: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  color: var(--text);
+  font-family: 'Tajawal', sans-serif;
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.free-input:focus { border-color: rgba(99,102,241,0.5); box-shadow: 0 0 0 3px rgba(99,102,241,0.08); }
+.free-input::placeholder { color: var(--soft); }
+
+.input-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ——— PROGRESS ——— */
+.progress-bar-wrap {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  height: 6px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent3));
+  border-radius: 10px;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 10px rgba(99,102,241,0.5);
+}
+
+.progress-text {
+  font-size: 0.8rem;
+  color: var(--soft);
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+/* ——— BUTTONS ——— */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white; border: none;
+  padding: 14px 28px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 1.05rem; font-weight: 700;
+  border-radius: 14px; cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 8px 25px rgba(99,102,241,0.3);
+  width: 100%;
+}
+.btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(99,102,241,0.45); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: transparent;
+  color: var(--muted); border: 1px solid var(--border);
+  padding: 10px 20px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.9rem; font-weight: 600;
+  border-radius: 12px; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-outline:hover { border-color: rgba(99,102,241,0.4); color: var(--text); }
+
+/* ——— ERROR ——— */
+.error-msg {
+  background: rgba(244,63,94,0.1);
+  border: 1px solid rgba(244,63,94,0.3);
+  color: #fb7185;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  display: none;
+}
+.error-msg.show { display: flex; align-items: center; gap: 8px; }
+
+/* ——— EXPORT STEPS ——— */
+.export-step {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 12px;
+  transition: border-color .2s;
+}
+.export-step:hover { border-color: rgba(99,102,241,0.3); }
+.step-circle {
+  width: 36px; height: 36px; flex-shrink: 0;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 800; color: white;
+}
+.step-circle.done { background: var(--emerald); }
+.step-circle.active { background: linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow: 0 0 16px rgba(99,102,241,0.4); }
+.step-circle.pending { background: rgba(255,255,255,0.08); color: var(--soft); }
+.step-body { flex: 1; }
+.step-title { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.step-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+
+.download-card {
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.08));
+  border: 1px solid rgba(99,102,241,0.3);
+  border-radius: 20px;
+  padding: 1.8rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.download-icon { font-size: 3rem; margin-bottom: 0.8rem; }
+.download-title { font-family:'Cairo',sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); margin-bottom: 0.4rem; }
+.download-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.4rem; line-height: 1.6; }
+
+.btn-download {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white; border: none;
+  padding: 14px 32px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 1.05rem; font-weight: 700;
+  border-radius: 14px; cursor: pointer;
+  box-shadow: 0 8px 25px rgba(99,102,241,0.35);
+  transition: all .2s; width: 100%;
+  text-decoration: none;
+}
+.btn-download:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(99,102,241,0.5); }
+
+.claude-link-box {
+  background: rgba(6,182,212,0.06);
+  border: 1px solid rgba(6,182,212,0.25);
+  border-radius: 16px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1.2rem;
+  display: flex; gap: 12px; align-items: center;
+}
+.claude-link-box a {
+  color: #67e8f9; font-weight: 700; font-size: 0.95rem;
+  text-decoration: none; word-break: break-all;
+}
+.claude-link-box a:hover { text-decoration: underline; }
+
+.prompt-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.prompt-box pre {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.88rem;
+  color: var(--muted);
+  white-space: pre-wrap;
+  line-height: 1.7;
+  direction: rtl;
+  text-align: right;
+}
+.copy-btn {
+  position: absolute; top: 10px; left: 10px;
+  background: rgba(99,102,241,0.15);
+  border: 1px solid rgba(99,102,241,0.3);
+  color: #a5b4fc;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem; font-weight: 600;
+  cursor: pointer; font-family: 'Tajawal', sans-serif;
+  transition: all .15s;
+}
+.copy-btn:hover { background: rgba(99,102,241,0.3); }
+.copy-btn.copied { background: rgba(16,185,129,0.2); border-color: rgba(16,185,129,0.4); color: #6ee7b7; }
+
+.score-hero {
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 1.5rem;
+}
+.score-pill {
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.85rem; font-weight: 700;
+  border: 1px solid;
+}
+
+/* ——— RESULT ——— */
+.result-wrap { animation: fadeIn 0.6s ease; }
+
+.result-hero {
+  background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.1));
+  border: 1px solid rgba(99,102,241,0.25);
+  border-radius: 24px;
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.result-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99,102,241,0.1), transparent);
+}
+.result-hero-emoji { font-size: 3rem; margin-bottom: 0.5rem; }
+.result-hero-type {
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.6rem; font-weight: 900;
+  background: linear-gradient(135deg, #e2e8f0, #a5b4fc);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 0.5rem;
+}
+.result-hero-sub { color: var(--muted); font-size: 0.95rem; }
+
+/* Score bars */
+.score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+@media(max-width:480px){.score-grid{grid-template-columns:1fr;}}
+
+.score-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+.score-item-label { font-size: 0.85rem; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
+.score-item-bar-wrap { background: rgba(255,255,255,0.05); border-radius: 6px; height: 8px; overflow: hidden; }
+.score-item-bar { height: 100%; border-radius: 6px; transition: width 1s ease; }
+.score-item-val { font-size: 0.75rem; color: var(--soft); text-align: left; margin-top: 4px; }
+
+/* AI result */
+.ai-result {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.8rem;
+  margin-bottom: 1.2rem;
+}
+.ai-result-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+.ai-icon {
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+.ai-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+.ai-sub { font-size: 0.8rem; color: var(--soft); }
+
+.ai-content {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+.ai-content strong { color: var(--text); font-weight: 700; }
+.ai-content .highlight { color: #a5b4fc; font-weight: 600; }
+
+/* action plan */
+.plan-step {
+  display: flex; gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.plan-step:last-child { border: none; }
+.step-num {
+  width: 32px; height: 32px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: 800; color: white;
+}
+.step-text { font-size: 0.9rem; color: var(--muted); line-height: 1.6; padding-top: 5px; }
+.step-text strong { color: var(--text); }
+
+/* tags */
+.tag-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.tag {
+  background: rgba(99,102,241,0.12);
+  border: 1px solid rgba(99,102,241,0.25);
+  color: #a5b4fc;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* problem analysis cards */
+.problem-card-result {
+  background: rgba(244,63,94,0.06);
+  border: 1px solid rgba(244,63,94,0.2);
+  border-radius: 16px;
+  padding: 1.2rem;
+  margin-bottom: 10px;
+}
+.problem-card-result h4 { color: #fb7185; font-size: 0.95rem; margin-bottom: 6px; }
+.problem-card-result p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+
+/* ——— SECTION INTRO ——— */
+.section-intro {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.intro-icon {
+  font-size: 2rem; flex-shrink: 0;
+  width: 50px; height: 50px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+}
+.intro-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.intro-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+/* ——— FOOTER ——— */
+footer {
+  text-align: center;
+  color: var(--soft);
+  font-size: 0.78rem;
+  padding: 2rem 1rem;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+
+/* ——— RESPONSIVE ——— */
+@media(max-width:600px){
+  .hero h1 { font-size: 1.8rem; }
+  .tabs { gap: 4px; }
+  .tab-btn { min-width: 90px; font-size: 0.8rem; padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+<div class="bg-grid"></div>
+
+<!-- No loading overlay needed -->
+
+<div class="wrapper">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="logo-badge">NafsiAI • المحلل النفسي الذكي</div>
+    <h1>اكتشف نفسك بعمق</h1>
+    <p>تحليل نفسي شامل مدعوم بالذكاء الاصطناعي — شخصيتك، مشاكلك، نقاط قوتك، وخطة عملية للنمو</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs" id="mainTabs">
+    <button class="tab-btn active" onclick="switchTab('personality')">🧠 الشخصية</button>
+    <button class="tab-btn" onclick="switchTab('problems')">🔍 المشاكل</button>
+    <button class="tab-btn" onclick="switchTab('personal')">✨ التحليل الشخصي</button>
+    <button class="tab-btn" onclick="switchTab('results')" id="resultsTab" style="display:none">📊 النتائج</button>
+  </div>
+
+  <!-- ========== PERSONALITY SECTION ========== -->
+  <div class="section active" id="sec-personality">
+    <div class="section-intro">
+      <div class="intro-icon">🧠</div>
+      <div>
+        <div class="intro-title">تحليل نمط الشخصية</div>
+        <div class="intro-desc">أجب عن المواقف التالية بصدق — لا توجد إجابات صح أو خطأ، كل إجابة تكشف جانباً من شخصيتك الحقيقية.</div>
+      </div>
+    </div>
+
+    <div id="personalityQuestionsArea"></div>
+
+    <div class="error-msg" id="personalityError">⚠️ يرجى الإجابة عن جميع الأسئلة أولاً</div>
+
+    <button class="btn-primary" onclick="goToProblems()">التالي: تحليل المشاكل ←</button>
+  </div>
+
+  <!-- ========== PROBLEMS SECTION ========== -->
+  <div class="section" id="sec-problems">
+    <div class="section-intro">
+      <div class="intro-icon">🔍</div>
+      <div>
+        <div class="intro-title">تحليل المشاكل والتحديات</div>
+        <div class="intro-desc">شارك معنا التحديات التي تواجهها — سيساعدنا هذا في تقديم حلول ومقترحات مخصصة لك.</div>
+      </div>
+    </div>
+
+    <div id="problemsQuestionsArea"></div>
+
+    <div class="error-msg" id="problemsError">⚠️ يرجى ملء جميع الحقول المطلوبة</div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-outline" onclick="switchTab('personality')" style="flex:1">→ السابق</button>
+      <button class="btn-primary" onclick="goToPersonal()" style="flex:2">التالي: التحليل الشخصي ←</button>
+    </div>
+  </div>
+
+  <!-- ========== PERSONAL SECTION ========== -->
+  <div class="section" id="sec-personal">
+    <div class="section-intro">
+      <div class="intro-icon">✨</div>
+      <div>
+        <div class="intro-title">التحليل الشخصي والأهداف</div>
+        <div class="intro-desc">كلما كانت إجاباتك أكثر تفصيلاً، كان التحليل أعمق وأدق. خصص دقيقتين لهذه الأسئلة.</div>
+      </div>
+    </div>
+
+    <div id="personalQuestionsArea"></div>
+
+    <div class="error-msg" id="personalError">⚠️ يرجى الإجابة عن جميع الحقول</div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn-outline" onclick="switchTab('problems')" style="flex:1">→ السابق</button>
+      <button class="btn-primary" onclick="runFullAnalysis()" id="analyzeBtn" style="flex:2">📄 توليد ملف التحليل</button>
+    </div>
+  </div>
+
+  <!-- ========== RESULTS SECTION ========== -->
+  <div class="section" id="sec-results">
+    <div id="resultsContent"></div>
+    <button class="btn-outline" onclick="resetAll()" style="width:100%;margin-top:1rem">🔄 إجراء تحليل جديد</button>
+  </div>
+
+</div>
+
+<footer>NafsiAI • تحليل نفسي للتوعية الذاتية فقط • ليس بديلاً عن الاستشارة المتخصصة</footer>
+
+<script>
+// ============================================================
+//  DATA
+// ============================================================
+
+const personalityQuestions = [
+  {
+    text: "🌿 عند مواجهة مشكلة معقدة، أول شيء تفعله:",
+    key: "p0",
+    options: [
+      { text: "أناقشها مع الآخرين لأسمع آراء مختلفة", scores: { team:3, analyst:0, creative:1, leader:0 } },
+      { text: "أبحث وأحلل البيانات والمعلومات وحدي", scores: { team:0, analyst:3, creative:0, leader:1 } },
+      { text: "أفكر في حلول خارج الصندوق وأجرب", scores: { team:0, analyst:1, creative:3, leader:0 } },
+      { text: "أتولى المبادرة وأقسم المهام فوراً", scores: { team:1, analyst:0, creative:0, leader:3 } }
+    ]
+  },
+  {
+    text: "🎨 في أوقات فراغك تفضل:",
+    key: "p1",
+    options: [
+      { text: "الانضمام إلى نادٍ أو مجموعة", scores: { team:3, analyst:0, creative:0, leader:1 } },
+      { text: "حل ألغاز أو قراءة علمية", scores: { team:0, analyst:3, creative:1, leader:0 } },
+      { text: "الرسم، الكتابة، أو التصميم الإبداعي", scores: { team:0, analyst:0, creative:3, leader:1 } },
+      { text: "تنظيم حدث أو قيادة مشروع", scores: { team:1, analyst:0, creative:0, leader:3 } }
+    ]
+  },
+  {
+    text: "🗣️ في الاجتماعات الجماعية، أنت غالباً:",
+    key: "p2",
+    options: [
+      { text: "تستمع وتدمج وجهات النظر", scores: { team:3, analyst:0, creative:0, leader:1 } },
+      { text: "تسجل الملاحظات وتحلل قبل التعليق", scores: { team:0, analyst:3, creative:0, leader:0 } },
+      { text: "تطرح أفكاراً غير تقليدية ومبتكرة", scores: { team:0, analyst:1, creative:3, leader:0 } },
+      { text: "توجه النقاش وتأخذ زمام الكلام", scores: { team:0, analyst:0, creative:0, leader:3 } }
+    ]
+  },
+  {
+    text: "⚡ عند تغيّر الخطط فجأة:",
+    key: "p3",
+    options: [
+      { text: "أتشاور مع الفريق لنتكيف معاً", scores: { team:3, analyst:0, creative:1, leader:1 } },
+      { text: "أقيّم الأسباب وأُعد خطة بديلة", scores: { team:0, analyst:3, creative:0, leader:1 } },
+      { text: "أرى فيه فرصة وأغيّر مساراً إبداعياً", scores: { team:0, analyst:0, creative:3, leader:0 } },
+      { text: "أقرر بسرعة وأقنع الآخرين بالتحرك", scores: { team:0, analyst:1, creative:0, leader:3 } }
+    ]
+  },
+  {
+    text: "💡 أي جملة تعبّر عنك أكثر؟",
+    key: "p4",
+    options: [
+      { text: "العمل الجماعي يحقق الأحلام", scores: { team:3, analyst:0, creative:1, leader:0 } },
+      { text: "كل شيء قابل للتحليل والقياس", scores: { team:0, analyst:3, creative:0, leader:0 } },
+      { text: "الخيال أهم من المعرفة", scores: { team:0, analyst:0, creative:3, leader:0 } },
+      { text: "المبادرة تصنع الفارق", scores: { team:0, analyst:0, creative:0, leader:3 } }
+    ]
+  },
+  {
+    text: "🏆 عند العمل الروتيني الممل:",
+    key: "p5",
+    options: [
+      { text: "أقترح توزيعه بالتساوي على الجميع", scores: { team:3, analyst:0, creative:0, leader:1 } },
+      { text: "أجد الطريقة الأكثر كفاءة لإنجازه", scores: { team:0, analyst:3, creative:0, leader:1 } },
+      { text: "أحوله إلى لعبة أو نشاط ممتع", scores: { team:1, analyst:0, creative:3, leader:0 } },
+      { text: "أتطوع لأكون منسق المهمة وأحفز الآخرين", scores: { team:1, analyst:0, creative:0, leader:3 } }
+    ]
+  },
+  {
+    text: "🌍 دورك المفضل في المشاريع الجماعية:",
+    key: "p6",
+    options: [
+      { text: "الداعم والمنسق بين الأعضاء", scores: { team:3, analyst:0, creative:0, leader:1 } },
+      { text: "الباحث والمخطط الذي يجمع البيانات", scores: { team:0, analyst:3, creative:0, leader:0 } },
+      { text: "صاحب الأفكار الجديدة والرؤية الإبداعية", scores: { team:0, analyst:0, creative:3, leader:0 } },
+      { text: "القائد الذي يوزع الأدوار ويتخذ القرارات", scores: { team:0, analyst:0, creative:0, leader:3 } }
+    ]
+  },
+  {
+    text: "😟 عند الشعور بالضغط أو التوتر الشديد:",
+    key: "p7",
+    options: [
+      { text: "أتحدث عنه مع أشخاص أثق بهم", scores: { team:3, analyst:0, creative:0, leader:0 } },
+      { text: "أحلله وأحاول فهم مصدره منطقياً", scores: { team:0, analyst:3, creative:0, leader:0 } },
+      { text: "أعبر عنه بالكتابة أو الرسم أو الموسيقى", scores: { team:0, analyst:0, creative:3, leader:0 } },
+      { text: "أتجاهله وأتابع المهام لأثبت قدرتي", scores: { team:0, analyst:0, creative:0, leader:3 } }
+    ]
+  }
+];
+
+const problemsQuestions = [
+  {
+    type: "radio",
+    text: "🎯 ما المجال الذي تواجه فيه أكبر تحديات حالياً؟",
+    key: "mainChallenge",
+    options: [
+      { text: "العلاقات والتواصل الاجتماعي" },
+      { text: "العمل أو الدراسة والإنجاز" },
+      { text: "الصحة النفسية والعاطفية" },
+      { text: "إدارة الوقت والإنتاجية" },
+      { text: "القرارات الكبيرة والتغيير" },
+      { text: "الثقة بالنفس وتقدير الذات" }
+    ]
+  },
+  {
+    type: "radio",
+    text: "🔥 كم مرة تشعر بالإرهاق أو الانهاك العاطفي؟",
+    key: "burnoutLevel",
+    options: [
+      { text: "نادراً — أنا عموماً بحال جيد" },
+      { text: "أحياناً — في أوقات الضغط فقط" },
+      { text: "كثيراً — معظم الأسبوع أشعر بذلك" },
+      { text: "دائماً تقريباً — مستنزف باستمرار" }
+    ]
+  },
+  {
+    type: "textarea",
+    text: "📝 صِف تحدياً أو مشكلة تمر بها حالياً (اختياري لكن يُحسّن التحليل):",
+    key: "currentProblem",
+    placeholder: "مثال: أشعر بصعوبة في التركيز، أو لديّ مشكلة في علاقة معينة، أو قرار مهم أمامي...",
+    required: false
+  },
+  {
+    type: "radio",
+    text: "🌀 كيف تتعامل مع المشاكل الصعبة عادةً؟",
+    key: "copingStyle",
+    options: [
+      { text: "أتجنبها وأؤجل التفكير فيها" },
+      { text: "أواجهها مباشرة وأبحث عن حلول" },
+      { text: "أطلب مساعدة الآخرين" },
+      { text: "أقبلها وأتكيف معها" }
+    ]
+  },
+  {
+    type: "radio",
+    text: "💭 ما أسلوبك في اتخاذ القرارات المهمة؟",
+    key: "decisionStyle",
+    options: [
+      { text: "بالمنطق والتحليل والبيانات" },
+      { text: "بالمشاعر والحدس الداخلي" },
+      { text: "بمشاورة المقربين مني" },
+      { text: "أؤجل القرار حتى أضطر" }
+    ]
+  }
+];
+
+const personalQuestions = [
+  {
+    type: "textarea",
+    text: "🌟 ما أهم هدف تريد تحقيقه خلال السنة القادمة؟",
+    key: "mainGoal",
+    placeholder: "كن محدداً قدر الإمكان...",
+    required: true
+  },
+  {
+    type: "radio",
+    text: "💪 ما أبرز نقطة قوة تعتز بها في نفسك؟",
+    key: "strength",
+    options: [
+      { text: "الذكاء والتحليل" },
+      { text: "الإبداع والخيال" },
+      { text: "التعاطف والعلاقات" },
+      { text: "الإرادة والعزيمة" },
+      { text: "التنظيم والدقة" },
+      { text: "القيادة والتأثير" }
+    ]
+  },
+  {
+    type: "radio",
+    text: "😔 ما أبرز نقطة ضعف تسعى للعمل عليها؟",
+    key: "weakness",
+    options: [
+      { text: "المماطلة وتأجيل المهام" },
+      { text: "الحساسية الزائدة للنقد" },
+      { text: "صعوبة قول لا للآخرين" },
+      { text: "الكمالية المفرطة" },
+      { text: "الحاجة الزائدة للسيطرة" },
+      { text: "الخوف من الفشل" }
+    ]
+  },
+  {
+    type: "radio",
+    text: "🌱 ما الذي يمنعك من تحقيق أهدافك أكثر من غيره؟",
+    key: "obstacle",
+    options: [
+      { text: "قلة الوقت أو الطاقة" },
+      { text: "الخوف والشك الذاتي" },
+      { text: "غياب الدعم المحيطي" },
+      { text: "عدم وضوح الطريق والأولويات" }
+    ]
+  },
+  {
+    type: "textarea",
+    text: "💬 هل هناك شيء آخر تريد إضافته لتحليلك؟ (اختياري)",
+    key: "extraContext",
+    placeholder: "أي معلومة إضافية تساعد في فهمك أعمق...",
+    required: false
+  }
+];
+
+// ============================================================
+//  STATE
+// ============================================================
+const state = {
+  pAnswers: new Array(personalityQuestions.length).fill(null),
+  problemAnswers: {},
+  personalAnswers: {}
+};
+
+// ============================================================
+//  BUILD UI
+// ============================================================
+function buildMCQ(container, questions, answerStore, prefix) {
+  container.innerHTML = '';
+  questions.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = `${prefix}-card-${idx}`;
+
+    if (q.type === 'textarea') {
+      card.innerHTML = `
+        <div class="q-num">سؤال ${idx+1}</div>
+        <div class="q-text">${q.text}</div>
+        <textarea class="free-input" placeholder="${q.placeholder||''}"
+          id="${prefix}-txt-${idx}"
+          oninput="state.${answerStore}['${q.key}']=this.value"
+        >${state[answerStore][q.key]||''}</textarea>
+      `;
+    } else {
+      let optionsHTML = q.options.map((opt, oi) => `
+        <div>
+          <input type="radio" name="${prefix}-q${idx}" id="${prefix}-q${idx}-o${oi}" value="${oi}"
+            ${(answerStore==='pAnswers'?state.pAnswers[idx]:state[answerStore][q.key])===oi?'checked':''}>
+          <label class="option-label" for="${prefix}-q${idx}-o${oi}">
+            <span class="radio-dot"></span>
+            ${opt.text}
+          </label>
+        </div>
+      `).join('');
+
+      card.innerHTML = `
+        <div class="q-num">سؤال ${idx+1}</div>
+        <div class="q-text">${q.text}</div>
+        <div class="options">${optionsHTML}</div>
+      `;
+
+      card.querySelectorAll('input[type=radio]').forEach(r => {
+        r.addEventListener('change', () => {
+          if (answerStore === 'pAnswers') state.pAnswers[idx] = parseInt(r.value);
+          else state[answerStore][q.key] = parseInt(r.value);
+          card.classList.add('answered');
+        });
+      });
+      if (
+        (answerStore==='pAnswers' && state.pAnswers[idx]!==null) ||
+        (answerStore!=='pAnswers' && state[answerStore][q.key]!==undefined)
+      ) card.classList.add('answered');
+    }
+
+    container.appendChild(card);
+  });
+}
+
+// ============================================================
+//  TAB SWITCHING
+// ============================================================
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const tabMap = { personality:0, problems:1, personal:2, results:3 };
+  document.querySelectorAll('.tab-btn')[tabMap[tab]]?.classList.add('active');
+  document.getElementById(`sec-${tab}`).classList.add('active');
+}
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function goToProblems() {
+  const unanswered = state.pAnswers.indexOf(null);
+  if (unanswered !== -1) {
+    document.getElementById('personalityError').classList.add('show');
+    document.getElementById(`personality-card-${unanswered}`)?.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  document.getElementById('personalityError').classList.remove('show');
+  switchTab('problems');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function goToPersonal() {
+  let missing = false;
+  problemsQuestions.forEach((q, i) => {
+    if (q.required === false) return;
+    if (q.type === 'radio' && state.problemAnswers[q.key] === undefined) missing = true;
+  });
+  if (missing) {
+    document.getElementById('problemsError').classList.add('show');
+    return;
+  }
+  document.getElementById('problemsError').classList.remove('show');
+  switchTab('personal');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ============================================================
+//  COMPUTE PERSONALITY
+// ============================================================
+function computePersonality() {
+  let scores = { team:0, analyst:0, creative:0, leader:0 };
+  state.pAnswers.forEach((ans, i) => {
+    if (ans === null) return;
+    const s = personalityQuestions[i].options[ans].scores;
+    for (let d in scores) scores[d] += s[d]||0;
+  });
+  let topDim = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
+  return { type: topDim, scores };
+}
+
+const personalityProfiles = {
+  team: { emoji:'🫂', title:'الشخصية التعاونية', subtitle:'المنسّق الاجتماعي', color:'#10b981' },
+  analyst: { emoji:'📊', title:'الشخصية التحليلية', subtitle:'العقلاني المنهجي', color:'#6366f1' },
+  creative: { emoji:'🎨', title:'الشخصية الإبداعية', subtitle:'الحالم العملي', color:'#f59e0b' },
+  leader: { emoji:'⚡', title:'الشخصية القيادية', subtitle:'صاحب المبادرة', color:'#f43f5e' }
+};
+
+// ============================================================
+//  GENERATE MARKDOWN REPORT
+// ============================================================
+function generateMarkdown(personality, profile) {
+  const pScores  = personality.scores;
+  const scoreLabels = { team:'التعاون', analyst:'التحليل', creative:'الإبداع', leader:'القيادة' };
+  const scoreBar = (val, max) => {
+    const filled = Math.round((val / max) * 10);
+    return '█'.repeat(filled) + '░'.repeat(10 - filled) + ` ${val} نقطة`;
+  };
+  const maxScore = Math.max(...Object.values(pScores)) || 1;
+
+  // helpers to resolve answers
+  const pOpt  = (i)   => personalityQuestions[i].options[state.pAnswers[i]]?.text || '—';
+  const prOpt = (key) => {
+    const q = problemsQuestions.find(q => q.key === key);
+    const idx = state.problemAnswers[key];
+    return (q && idx !== undefined) ? q.options[idx]?.text : (state.problemAnswers[key] || '—');
+  };
+  const peOpt = (key) => {
+    const q = personalQuestions.find(q => q.key === key);
+    const idx = state.personalAnswers[key];
+    if (q?.type === 'textarea') return state.personalAnswers[key] || '—';
+    return (q && idx !== undefined) ? q.options[idx]?.text : '—';
+  };
+
+  const now = new Date().toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' });
+
+  return `# 🧠 تقرير التحليل النفسي الشامل — NafsiAI
+> تاريخ الاختبار: ${now}
+> هذا الملف مُولَّد تلقائياً — ارفعه على Claude للحصول على تحليلك الكامل
+
+---
+
+## 📊 نمط الشخصية المبدئي
+
+**النمط الأبرز: ${profile.emoji} ${profile.title} — ${profile.subtitle}**
+
+### توزيع الأبعاد
+| البُعد | النقاط | المؤشر |
+|--------|--------|--------|
+| ${scoreLabels.team} | ${pScores.team} | ${scoreBar(pScores.team, maxScore)} |
+| ${scoreLabels.analyst} | ${pScores.analyst} | ${scoreBar(pScores.analyst, maxScore)} |
+| ${scoreLabels.creative} | ${pScores.creative} | ${scoreBar(pScores.creative, maxScore)} |
+| ${scoreLabels.leader} | ${pScores.leader} | ${scoreBar(pScores.leader, maxScore)} |
+
+---
+
+## 🧩 القسم الأول: إجابات تحليل الشخصية
+
+${personalityQuestions.map((q, i) => `**س${i+1}: ${q.text.replace(/^[^\s]+\s/, '')}**
+✅ الإجابة: ${pOpt(i)}`).join('\n\n')}
+
+---
+
+## 🔍 القسم الثاني: تحليل المشاكل والتحديات
+
+**أكبر تحدٍّ حالياً:**
+${prOpt('mainChallenge')}
+
+**مستوى الإرهاق العاطفي:**
+${prOpt('burnoutLevel')}
+
+**مشكلة أو تحدٍّ محدد (بكلمات الشخص نفسه):**
+${prOpt('currentProblem') || 'لم يذكر'}
+
+**أسلوب التعامل مع المشاكل:**
+${prOpt('copingStyle')}
+
+**أسلوب اتخاذ القرارات:**
+${prOpt('decisionStyle')}
+
+---
+
+## ✨ القسم الثالث: التحليل الشخصي والأهداف
+
+**الهدف الرئيسي للسنة القادمة:**
+${peOpt('mainGoal')}
+
+**نقطة القوة الأبرز:**
+${peOpt('strength')}
+
+**نقطة الضعف التي يعمل عليها:**
+${peOpt('weakness')}
+
+**أكبر عائق أمام تحقيق الأهداف:**
+${peOpt('obstacle')}
+
+**معلومات إضافية:**
+${peOpt('extraContext') || 'لا يوجد'}
+
+---
+
+## 🤖 المطلوب من Claude
+
+أنت معالج نفسي متخصص ومدرب حياة محترف. بناءً على كامل البيانات أعلاه، قدّم تقريراً نفسياً شاملاً ومعمقاً باللغة العربية يشمل الأقسام التالية:
+
+1. **تحليل الشخصية** — تحليل عميق للنمط السائد وكيف يتجلى في الحياة اليومية والعلاقات والعمل
+2. **التحليل النفسي العميق** — أنماط التفكير، الدوافع الخفية، الاحتياجات العاطفية غير المُلباة، وآليات الدفاع
+3. **تحليل المشاكل والتحديات** — قراءة معمقة للتحديات المذكورة وجذورها النفسية المحتملة وتشابكاتها
+4. **نقاط القوة الكامنة** — نقاط قوة حقيقية مستنبطة من مجموع الإجابات (ليس فقط ما ذكره الشخص)
+5. **مجالات التطوير الأولى** — ما يستحق العمل عليه بأولوية وكيفية التعامل معه
+6. **الاقتراحات العملية المخصصة** — على الأقل 6 اقتراحات ملموسة مخصصة لهذه الشخصية تحديداً
+7. **خطة العمل — أول 90 يوماً** — خطة مفصلة: الأسبوع الأول، الشهر الأول، ثلاثة أشهر، مع مؤشرات قياس
+8. **رسالة ختامية** — رسالة صادقة ودافئة تلخص أبرز ما رأيته وتشجع على الخطوة التالية
+
+> كن صريحاً وعميقاً. تجنب العموميات. كل جملة يجب أن تكون ذات صلة مباشرة بالبيانات أعلاه.
+`;
+}
+
+// ============================================================
+//  MAIN FLOW: VALIDATE → GENERATE MD → SHOW RESULTS PAGE
+// ============================================================
+function runFullAnalysis() {
+  // validate — only required radio buttons
+  let missingIdx = -1;
+  personalQuestions.forEach((q, i) => {
+    if (q.type === 'radio' && q.required !== false && state.personalAnswers[q.key] === undefined) {
+      if (missingIdx === -1) missingIdx = i;
+    }
+  });
+  if (missingIdx !== -1) {
+    document.getElementById('personalError').classList.add('show');
+    document.getElementById('personal-card-' + missingIdx)?.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+  document.getElementById('personalError').classList.remove('show');
+
+  const personality = computePersonality();
+  const profile     = personalityProfiles[personality.type];
+  const mdContent   = generateMarkdown(personality, profile);
+
+  renderExportPage(personality, profile, mdContent);
+}
+
+// ============================================================
+//  RENDER EXPORT / INSTRUCTIONS PAGE
+// ============================================================
+function renderExportPage(personality, profile, mdContent) {
+  const scoreColors  = { team:'#10b981', analyst:'#6366f1', creative:'#f59e0b', leader:'#f43f5e' };
+  const scoreLabels  = { team:'التعاون 🤝', analyst:'التحليل 📊', creative:'الإبداع 🎨', leader:'القيادة ⚡' };
+  const maxScore     = Math.max(...Object.values(personality.scores)) || 1;
+
+  const pills = Object.entries(personality.scores)
+    .sort((a,b) => b[1]-a[1])
+    .map(([dim, val]) => {
+      const pct = Math.round((val/maxScore)*100);
+      return `<div class="score-pill" style="background:${scoreColors[dim]}22;border-color:${scoreColors[dim]}55;color:${scoreColors[dim]}">
+        ${scoreLabels[dim]} — ${val} نقطة
+      </div>`;
+    }).join('');
+
+  const claudePrompt = `لدي نتائج اختبار نفسي شامل في الملف المرفق.
+أرجو تحليلها وتقديم تقرير نفسي كامل مع خطة عمل مفصلة كما هو مطلوب في نهاية الملف.`;
+
+  const html = `
+  <div class="result-wrap">
+
+    <!-- Personality Quick Result -->
+    <div class="result-hero">
+      <div class="result-hero-emoji">${profile.emoji}</div>
+      <div class="result-hero-type">${profile.title}</div>
+      <div class="result-hero-sub">${profile.subtitle} • اكتمل الاختبار بنجاح ✓</div>
+    </div>
+
+    <div class="score-hero">${pills}</div>
+
+    <!-- Download Card -->
+    <div class="download-card">
+      <div class="download-icon">📄</div>
+      <div class="download-title">تقرير إجاباتك جاهز للتحميل</div>
+      <div class="download-sub">
+        تم تجميع كامل إجاباتك في ملف <strong style="color:var(--text)">Markdown منظّم</strong> يحتوي على كل بياناتك
+        وتعليمات دقيقة لـ Claude لتحليلها. حجم الملف صغير جداً ويُرفع في ثوانٍ.
+      </div>
+      <button class="btn-download" onclick="downloadMD()">
+        ⬇️ تحميل ملف التحليل (.md)
+      </button>
+    </div>
+
+    <!-- Steps -->
+    <div style="margin-bottom:1.5rem">
+      <div style="font-size:0.8rem;font-weight:700;color:var(--soft);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">خطوات الحصول على تحليلك الكامل</div>
+
+      <div class="export-step">
+        <div class="step-circle done">✓</div>
+        <div class="step-body">
+          <div class="step-title">أكملت الاختبار</div>
+          <div class="step-desc">تم تسجيل كامل إجاباتك على الأقسام الثلاثة بنجاح.</div>
+        </div>
+      </div>
+
+      <div class="export-step">
+        <div class="step-circle active">2</div>
+        <div class="step-body">
+          <div class="step-title">حمّل ملف التحليل أعلاه</div>
+          <div class="step-desc">ملف <code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;font-size:0.82rem">nafsi_report.md</code> يحتوي على كل إجاباتك منظّمة مع تعليمات التحليل.</div>
+        </div>
+      </div>
+
+      <div class="export-step">
+        <div class="step-circle pending">3</div>
+        <div class="step-body">
+          <div class="step-title">افتح Claude.ai في تبويب جديد</div>
+          <div class="step-desc">اذهب إلى <strong style="color:#67e8f9">claude.ai</strong> وابدأ محادثة جديدة.</div>
+        </div>
+      </div>
+
+      <div class="export-step">
+        <div class="step-circle pending">4</div>
+        <div class="step-body">
+          <div class="step-title">ارفع الملف وأرسل الرسالة</div>
+          <div class="step-desc">اضغط على أيقونة المرفق 📎، ارفع الملف، ثم انسخ الرسالة أدناه وأرسلها.</div>
+        </div>
+      </div>
+
+      <div class="export-step">
+        <div class="step-circle pending">5</div>
+        <div class="step-body">
+          <div class="step-title">استلم تقريرك الكامل 🎉</div>
+          <div class="step-desc">Claude سيقرأ ملفك ويُنتج تحليلاً نفسياً معمقاً مع خطة عمل 90 يوماً مخصصة لك.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Claude Link -->
+    <div class="claude-link-box">
+      <div style="font-size:1.4rem">🔗</div>
+      <div>
+        <div style="font-size:0.78rem;color:var(--soft);margin-bottom:3px;font-weight:600">رابط Claude</div>
+        <a href="https://claude.ai" target="_blank" rel="noopener">https://claude.ai</a>
+      </div>
+    </div>
+
+    <!-- Ready-to-paste message -->
+    <div style="margin-bottom:1.2rem">
+      <div style="font-size:0.85rem;font-weight:700;color:var(--muted);margin-bottom:8px">📋 الرسالة — انسخها وأرسلها مع الملف:</div>
+      <div class="prompt-box">
+        <button class="copy-btn" id="copyPromptBtn" onclick="copyPrompt()">نسخ</button>
+        <pre id="claudePromptText">${claudePrompt}</pre>
+      </div>
+    </div>
+
+    <!-- Tip -->
+    <div style="background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1.5rem">
+      <div style="font-size:0.85rem;color:#fbbf24;font-weight:700;margin-bottom:4px">💡 نصيحة للحصول على أفضل تحليل</div>
+      <div style="font-size:0.82rem;color:var(--muted);line-height:1.6">
+        بعد استلام التحليل يمكنك الاستمرار في نفس المحادثة وتعمّق في أي نقطة — اسأل Claude مثلاً:
+        <em style="color:var(--text)">"وضّح لي أكثر عن خطة الأسبوع الأول"</em> أو
+        <em style="color:var(--text)">"كيف أتعامل مع نقطة الضعف التي ذكرتها؟"</em>
+      </div>
+    </div>
+
+  </div>
+  `;
+
+  // store md for download
+  window._mdContent = mdContent;
+
+  document.getElementById('resultsContent').innerHTML = html;
+  document.getElementById('resultsTab').style.display = '';
+  switchTab('results');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ============================================================
+//  DOWNLOAD MD
+// ============================================================
+function downloadMD() {
+  const blob = new Blob([window._mdContent], { type: 'text/markdown;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = 'nafsi_report.md';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ============================================================
+//  COPY PROMPT
+// ============================================================
+function copyPrompt() {
+  const txt = document.getElementById('claudePromptText')?.innerText || '';
+  navigator.clipboard.writeText(txt).then(() => {
+    const btn = document.getElementById('copyPromptBtn');
+    btn.textContent = '✓ تم النسخ';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'نسخ'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ============================================================
+//  RESET
+// ============================================================
+function resetAll() {
+  state.pAnswers.fill(null);
+  state.problemAnswers = {};
+  state.personalAnswers = {};
+  document.getElementById('resultsTab').style.display = 'none';
+  document.getElementById('resultsContent').innerHTML = '';
+  init();
+  switchTab('personality');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+function init() {
+  buildMCQ(
+    document.getElementById('personalityQuestionsArea'),
+    personalityQuestions, 'pAnswers', 'personality'
+  );
+  buildMCQ(
+    document.getElementById('problemsQuestionsArea'),
+    problemsQuestions, 'problemAnswers', 'problems'
+  );
+  buildMCQ(
+    document.getElementById('personalQuestionsArea'),
+    personalQuestions, 'personalAnswers', 'personal'
+  );
+}
+
+init();
+</script>
+</body>
+</html>
