@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>NafsiLog • يوميات النفس</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090f;--s1:#0d1117;--s2:#111827;--s3:#1a2235;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --teal:#2dd4bf;--teal2:#0d9488;
+  --blue:#3b82f6;--indigo:#6366f1;--violet:#7c3aed;
+  --amber:#f59e0b;--rose:#f43f5e;--emerald:#10b981;
+  --slate:#94a3b8;--soft:#4b5563;
+  --text:#dde3f0;--text2:#a8b3c7;
+  --r:14px;--nav-h:62px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;padding-bottom:calc(var(--nav-h) + 3.5rem)}
+.atmo{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 60% 40% at 20% 10%,rgba(45,212,191,.08) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 80% 85%,rgba(99,102,241,.07) 0%,transparent 60%)}
+
+/* ── LOCK ── */
+#lockScreen{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;gap:1.2rem}
+.lock-icon{font-size:3rem}.lock-title{font-family:'Cairo',sans-serif;font-size:1.6rem;font-weight:900;text-align:center}.lock-sub{font-size:.88rem;color:var(--text2);text-align:center}
+.pin-row{display:flex;gap:12px}
+.pin-dot{width:14px;height:14px;border-radius:50%;background:var(--s3);border:2px solid var(--border2);transition:all .2s}
+.pin-dot.filled{background:var(--teal);border-color:var(--teal);box-shadow:0 0 10px rgba(45,212,191,.4)}
+.pin-dot.error{background:var(--rose);border-color:var(--rose)}
+.numpad{display:grid;grid-template-columns:repeat(3,70px);gap:10px}
+.numpad-btn{width:70px;height:70px;border-radius:50%;background:var(--s2);border:1px solid var(--border);color:var(--text);font-family:'Cairo',sans-serif;font-size:1.4rem;font-weight:700;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.numpad-btn:hover{background:var(--s3);border-color:var(--border2)}.numpad-btn:active{transform:scale(.93)}
+.lock-err{color:var(--rose);font-size:.82rem;font-weight:600;min-height:1.2em;text-align:center}
+
+/* ── NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;height:var(--nav-h);background:rgba(13,17,23,.96);backdrop-filter:blur(16px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding:0 .3rem}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;background:transparent;border:none;color:var(--soft);cursor:pointer;font-family:'Tajawal',sans-serif;font-size:.62rem;font-weight:600;transition:color .2s;border-radius:10px}
+.nav-btn .nav-ico{font-size:1.25rem;transition:transform .2s}
+.nav-btn:hover{color:var(--text2)}.nav-btn.active{color:var(--teal)}.nav-btn.active .nav-ico{transform:scale(1.15)}
+
+/* ── PAGES ── */
+.page{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:1.4rem 1rem;display:none;animation:fadeUp .3s ease}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── COMMON ── */
+.pg-head{display:flex;align-items:center;gap:10px;margin-bottom:1.4rem}
+.pg-icon{width:40px;height:40px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.pg-title{font-family:'Cairo',sans-serif;font-size:1.2rem;font-weight:800}
+.pg-sub{font-size:.76rem;color:var(--text2);margin-top:1px}
+.card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;margin-bottom:.9rem;transition:border-color .2s}
+.card:hover{border-color:var(--border2)}
+.card-title{font-size:.78rem;font-weight:700;color:var(--text2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:.9rem;display:flex;align-items:center;gap:7px}
+.field{margin-bottom:.9rem}
+.field label{display:block;font-size:.8rem;font-weight:600;color:var(--text2);margin-bottom:5px}
+.inp{width:100%;background:var(--s3);border:1px solid var(--border);border-radius:10px;padding:9px 12px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.93rem;outline:none;transition:border-color .2s}
+.inp:focus{border-color:rgba(45,212,191,.4);box-shadow:0 0 0 3px rgba(45,212,191,.07)}
+.inp::placeholder{color:var(--soft)}
+textarea.inp{resize:vertical;min-height:75px}
+select.inp{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%234b5563'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 10px center;background-size:16px;padding-left:34px}
+.slider-wrap{padding:.2rem 0}
+.slider-row{display:flex;align-items:center;gap:10px}
+.slider-val{min-width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--teal2),var(--teal));display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;color:#fff;flex-shrink:0}
+input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:5px;background:var(--s3);border-radius:6px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;background:linear-gradient(135deg,var(--teal2),var(--teal));border:2px solid rgba(255,255,255,.2);box-shadow:0 2px 8px rgba(45,212,191,.4);cursor:pointer}
+.slider-labels{display:flex;justify-content:space-between;font-size:.7rem;color:var(--soft);margin-top:3px;direction:ltr}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:6px}
+.tag-toggle{padding:5px 12px;border-radius:50px;background:var(--s3);border:1px solid var(--border);color:var(--text2);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .18s;user-select:none}
+.tag-toggle.on{background:rgba(45,212,191,.12);border-color:rgba(45,212,191,.35);color:var(--teal)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 20px;border-radius:11px;font-family:'Tajawal',sans-serif;font-size:.93rem;font-weight:700;cursor:pointer;transition:all .2s;border:none}
+.btn-primary{background:linear-gradient(135deg,var(--teal2),var(--teal));color:#fff;box-shadow:0 6px 20px rgba(13,148,136,.3)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(13,148,136,.45)}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--border2);color:var(--text)}
+.btn-danger{background:rgba(244,63,94,.1);color:var(--rose);border:1px solid rgba(244,63,94,.2)}
+.btn-full{width:100%}.btn-sm{padding:7px 14px;font-size:.82rem}
+.divider{height:1px;background:var(--border);margin:1rem 0}
+.scale-q{display:flex;justify-content:space-between;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--border);gap:8px}
+.scale-q:last-child{border:none}
+.scale-q-text{font-size:.86rem;color:var(--text);line-height:1.4;flex:1}
+.scale-opts{display:flex;gap:4px;flex-shrink:0}
+.scale-opt{width:30px;height:30px;border-radius:7px;background:var(--s3);border:1px solid var(--border);color:var(--text2);font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.scale-opt.sel{background:var(--teal2);border-color:var(--teal);color:#fff}
+.empty-state{text-align:center;padding:2rem 1rem;color:var(--text2);font-size:.88rem;line-height:1.7}
+.empty-ico{font-size:2.2rem;margin-bottom:.5rem}
+#toast{position:fixed;bottom:calc(var(--nav-h)+12px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--s2);border:1px solid var(--border2);color:var(--text);padding:9px 18px;border-radius:30px;font-size:.83rem;font-weight:600;pointer-events:none;opacity:0;transition:all .3s;z-index:200;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ════════════════════════════════════════
+   REPORT PAGE STYLES
+════════════════════════════════════════ */
+.report-hero{
+  background:linear-gradient(135deg,rgba(45,212,191,.1),rgba(99,102,241,.08));
+  border:1px solid rgba(45,212,191,.2);
+  border-radius:20px;padding:1.6rem;text-align:center;margin-bottom:1.2rem;
+  position:relative;overflow:hidden;
+}
+.report-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(45,212,191,.07),transparent)}
+.report-emoji{font-size:2.6rem;margin-bottom:.4rem;position:relative}
+.report-title{font-family:'Cairo',sans-serif;font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#dde3f0,#5eead4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative}
+.report-sub{font-size:.82rem;color:var(--text2);position:relative;margin-top:.3rem}
+.report-date{font-size:.72rem;color:var(--soft);margin-top:.2rem;position:relative}
+
+/* gauge row */
+.gauge-row{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:1rem}
+@media(max-width:400px){.gauge-row{grid-template-columns:1fr}}
+.gauge-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:.9rem 1rem}
+.gauge-label{font-size:.72rem;color:var(--text2);font-weight:700;margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center}
+.gauge-bar-track{background:rgba(255,255,255,.05);border-radius:6px;height:8px;overflow:hidden}
+.gauge-bar-fill{height:100%;border-radius:6px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.gauge-val{font-size:.7rem;color:var(--soft);margin-top:4px;text-align:left}
+
+/* section block */
+.rep-block{background:var(--s2);border:1px solid var(--border);border-radius:16px;padding:1.2rem;margin-bottom:.9rem}
+.rep-block-head{display:flex;align-items:center;gap:9px;margin-bottom:.9rem;padding-bottom:.7rem;border-bottom:1px solid var(--border)}
+.rep-block-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.rep-block-title{font-size:.92rem;font-weight:700;color:var(--text)}
+.rep-block-sub{font-size:.72rem;color:var(--soft)}
+.rep-text{font-size:.86rem;color:var(--text2);line-height:1.75}
+.rep-text strong{color:var(--text)}
+
+/* score badge */
+.score-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 14px;border-radius:50px;
+  font-size:.8rem;font-weight:700;border:1px solid;
+  margin-bottom:.7rem;
+}
+
+/* insight bullets */
+.insight-list{display:flex;flex-direction:column;gap:7px;margin-top:.3rem}
+.insight-item{display:flex;gap:9px;align-items:flex-start;padding:.6rem .8rem;border-radius:9px;border:1px solid var(--border);background:rgba(255,255,255,.02);font-size:.84rem;color:var(--text2);line-height:1.5}
+.insight-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+
+/* strength / warning pills */
+.pill-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:.3rem}
+.pill{padding:5px 13px;border-radius:50px;font-size:.78rem;font-weight:700;border:1px solid}
+
+/* plan steps */
+.plan-step{display:flex;gap:12px;align-items:flex-start;padding:.65rem 0;border-bottom:1px solid var(--border)}
+.plan-step:last-child{border:none}
+.plan-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:#fff;flex-shrink:0;margin-top:1px}
+.plan-text{font-size:.84rem;color:var(--text2);line-height:1.55}
+.plan-text strong{color:var(--text)}
+
+/* closing card */
+.closing-card{background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(124,58,237,.07));border:1px solid rgba(99,102,241,.2);border-radius:16px;padding:1.2rem;margin-bottom:.9rem;font-size:.88rem;color:var(--text2);line-height:1.8;font-style:italic}
+
+/* MD export button in report */
+.export-cta{background:linear-gradient(135deg,rgba(45,212,191,.08),rgba(99,102,241,.06));border:1px solid rgba(45,212,191,.2);border-radius:14px;padding:1rem 1.2rem;margin-bottom:.9rem;display:flex;align-items:center;gap:12px}
+.export-cta-text{flex:1;font-size:.82rem;color:var(--text2);line-height:1.5}
+.export-cta-text strong{color:var(--text);display:block;margin-bottom:2px}
+
+/* ── misc ── */
+.streak-row{display:flex;gap:7px;margin-bottom:.9rem}
+.streak-card{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:.8rem;text-align:center}
+.streak-num{font-family:'Cairo',sans-serif;font-size:1.4rem;font-weight:900}
+.streak-lbl{font-size:.7rem;color:var(--text2);margin-top:1px}
+.log-item{display:flex;align-items:center;gap:10px;background:var(--s2);border:1px solid var(--border);border-radius:11px;padding:.7rem .9rem;margin-bottom:6px;cursor:pointer;transition:all .18s}
+.log-item:hover{border-color:var(--border2);background:var(--s3)}
+.log-mood-badge{width:30px;height:30px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;color:#fff}
+.log-tag-sm{padding:2px 7px;border-radius:10px;font-size:.66rem;font-weight:600;background:rgba(99,102,241,.12);color:#a5b4fc;border:1px solid rgba(99,102,241,.2)}
+.today-card{background:linear-gradient(135deg,rgba(13,148,136,.14),rgba(45,212,191,.06));border:1px solid rgba(45,212,191,.18);border-radius:16px;padding:1.2rem;margin-bottom:.9rem;display:flex;align-items:center;gap:12px}
+.cbt-saved{background:var(--s3);border:1px solid var(--border);border-radius:10px;padding:.85rem;margin-bottom:7px;font-size:.82rem;line-height:1.6;color:var(--text2)}
+.cbt-saved strong{color:var(--text);display:block;margin-bottom:1px;font-size:.78rem}
+.breath-circle{width:150px;height:150px;border-radius:50%;border:3px solid rgba(45,212,191,.2);margin:1.2rem auto;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:var(--teal);transition:transform 4s ease-in-out,box-shadow 4s ease-in-out;background:radial-gradient(circle,rgba(45,212,191,.05),transparent);cursor:pointer;user-select:none;position:relative}
+.breath-circle.inhale{transform:scale(1.4);box-shadow:0 0 40px rgba(45,212,191,.25)}
+.breath-circle.exhale{transform:scale(1);box-shadow:none}
+
+/* ══════════════════════════════════
+   CHARTS PAGE
+══════════════════════════════════ */
+.chart-tabs{display:flex;gap:6px;margin-bottom:1rem;overflow-x:auto;padding-bottom:3px;scrollbar-width:none}
+.chart-tabs::-webkit-scrollbar{display:none}
+.chart-tab{padding:7px 14px;border-radius:10px;background:var(--s2);border:1px solid var(--border);color:var(--text2);font-family:'Tajawal',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.chart-tab.active{background:linear-gradient(135deg,var(--teal2),var(--teal));color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(13,148,136,.3)}
+
+.chart-wrap{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;margin-bottom:.9rem}
+.chart-title{font-size:.82rem;font-weight:700;color:var(--text2);margin-bottom:.7rem;display:flex;justify-content:space-between;align-items:center}
+.chart-subtitle{font-size:.72rem;color:var(--soft)}
+canvas.nafsi-chart{width:100%!important;max-height:200px}
+
+.corr-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:.5rem}
+@media(max-width:420px){.corr-grid{grid-template-columns:1fr}}
+.corr-card{background:var(--s3);border:1px solid var(--border);border-radius:10px;padding:.75rem}
+.corr-label{font-size:.72rem;color:var(--text2);margin-bottom:.3rem}
+.corr-value{font-family:'Cairo',sans-serif;font-size:1.3rem;font-weight:900}
+.corr-desc{font-size:.68rem;color:var(--soft);margin-top:.2rem}
+
+.insight-bar{display:flex;align-items:center;gap:10px;padding:.55rem 0;border-bottom:1px solid var(--border)}
+.insight-bar:last-child{border:none}
+.ibar-label{font-size:.78rem;color:var(--text2);min-width:90px;text-align:right}
+.ibar-track{flex:1;background:rgba(255,255,255,.05);border-radius:4px;height:8px;overflow:hidden}
+.ibar-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.ibar-val{font-size:.75rem;font-weight:700;min-width:30px}
+
+.pattern-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.82rem}
+.pattern-row:last-child{border:none}
+.pattern-day{color:var(--text2)}
+.pattern-mood{font-weight:700}
+.pattern-badge{padding:2px 8px;border-radius:8px;font-size:.7rem;font-weight:700}
+
+@media(max-width:500px){
+  .page{padding-bottom:calc(var(--nav-h) + 4.5rem) !important}
+  .btn-full{position:relative;z-index:2}
+}
+
+
+/* ══════════════════════════════════════
+   SESSION UI — v2 clean rebuild
+══════════════════════════════════════ */
+.ssource{font-size:.68rem;color:var(--soft);font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:.6rem}
+.sq{font-size:1rem;font-weight:700;color:var(--text);line-height:1.45;margin-bottom:.7rem}
+.sdesc{font-size:.85rem;color:var(--text2);line-height:1.7;margin-bottom:.7rem}
+.shint{font-size:.78rem;color:var(--text2);line-height:1.6;background:rgba(45,212,191,.05);border:1px solid rgba(45,212,191,.12);border-radius:9px;padding:.6rem .8rem;margin-bottom:.7rem}
+.mt8{margin-top:.5rem}
+.sp-bar{height:4px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin-bottom:.3rem}
+.sp-fill{height:100%;background:linear-gradient(90deg,var(--teal2),var(--teal));border-radius:4px;transition:width .4s ease}
+.sp-label{font-size:.7rem;font-weight:700;color:var(--soft);letter-spacing:.5px;text-transform:uppercase;margin-bottom:.6rem}
+.snav{display:flex;gap:8px;margin-top:1rem;position:sticky;bottom:calc(var(--nav-h) + .4rem);z-index:10;background:var(--bg);padding:.4rem 0;border-top:1px solid var(--border)}
+.snav .btn{flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.3rem}
+.chip{padding:6px 13px;border-radius:50px;background:var(--s3);border:1px solid var(--border);color:var(--text2);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .18s;user-select:none}
+.chip.sel{background:rgba(45,212,191,.14);border-color:rgba(45,212,191,.4);color:var(--teal)}
+.srecall{background:rgba(99,102,241,.05);border:1px solid rgba(99,102,241,.12);border-radius:9px;padding:.6rem .8rem;font-size:.82rem;color:var(--text2);margin-bottom:.7rem}
+.srecall span{color:var(--soft);font-size:.72rem;font-weight:600;display:block;margin-bottom:2px}
+.srecall strong{color:var(--text)}
+.sslider-wrap{background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:.9rem;margin-bottom:.5rem}
+.sslider-label{font-size:.8rem;color:var(--text2);font-weight:600;margin-bottom:.5rem}
+.sslider-row{display:flex;align-items:center;gap:10px}
+.sslider-val{min-width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--teal2),var(--teal));display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;color:#fff;flex-shrink:0}
+.sslider-lbls{display:flex;justify-content:space-between;font-size:.7rem;color:var(--soft);margin-top:4px;direction:ltr}
+.sdiff{text-align:center;font-family:'Cairo',sans-serif;font-size:1.1rem;font-weight:900;padding:.4rem;border-radius:10px;margin:.4rem 0}
+.sdiff.pos{background:rgba(16,185,129,.08);color:var(--emerald)}
+.sdiff.neg{background:rgba(244,63,94,.08);color:var(--rose)}
+.sinsight{background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.15);border-radius:10px;padding:.8rem;font-size:.8rem;color:var(--text2);line-height:1.6;margin-top:.5rem}
+.sinfo-box{background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:.9rem;display:flex;flex-direction:column;gap:.6rem;margin-bottom:.9rem}
+.sinfo-row{display:flex;align-items:flex-start;gap:10px;font-size:.82rem;color:var(--text2);line-height:1.5}
+.sinfo-ico{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,var(--teal2),var(--teal));color:#fff;font-size:.7rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sinfo-ico2{font-size:1rem;flex-shrink:0;width:24px;text-align:center}
+.ssteps-list{display:flex;flex-direction:column;gap:5px;margin-bottom:.9rem}
+.sstep-item{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--soft)}
+.ssi-num{width:20px;height:20px;border-radius:50%;background:var(--s3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;flex-shrink:0}
+.sevidence-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.7rem}
+@media(max-width:400px){.sevidence-grid{grid-template-columns:1fr}}
+.sev-box{border-radius:9px;padding:.6rem;font-size:.78rem;line-height:1.5}
+.sev-box.bad{background:rgba(244,63,94,.05);border:1px solid rgba(244,63,94,.12)}
+.sev-box.good{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.12)}
+.sev-title{font-size:.7rem;font-weight:700;margin-bottom:3px}
+.sev-box.bad .sev-title{color:var(--rose)}
+.sev-box.good .sev-title{color:var(--emerald)}
+.sev-text{color:var(--text2);white-space:pre-wrap}
+.sexamples{margin-bottom:.6rem}
+.sex-title{font-size:.72rem;color:var(--soft);margin-bottom:.4rem;font-weight:600}
+.sex-item{background:var(--s3);border:1px solid var(--border);border-radius:9px;padding:.5rem .8rem;font-size:.8rem;color:var(--text2);cursor:pointer;margin-bottom:5px;transition:all .18s}
+.sex-item:hover{border-color:rgba(45,212,191,.3);color:var(--text)}
+.sladder-list{display:flex;flex-direction:column;gap:6px;margin-bottom:.7rem}
+.sladder-item{display:flex;align-items:center;gap:9px;padding:.5rem .7rem;background:var(--s3);border:1px solid var(--border);border-radius:10px;transition:all .18s}
+.sladder-item.sel-able{cursor:pointer}
+.sladder-item.sel-able:hover{border-color:rgba(45,212,191,.3)}
+.sladder-item.selected{border-color:var(--teal);background:rgba(45,212,191,.06)}
+.sladder-score{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:800;color:#fff;flex-shrink:0}
+.sladder-text{flex:1;font-size:.82rem;color:var(--text2);line-height:1.4}
+.sladder-del{color:var(--soft);cursor:pointer;padding:4px 7px;border-radius:6px;transition:color .15s;font-size:.8rem}
+.sladder-del:hover{color:var(--rose)}
+.sladder-add{display:flex;gap:7px;align-items:center;margin-top:.5rem}
+.sideal{display:inline-block;font-size:.68rem;color:var(--teal);font-weight:700;margin-right:6px}
+.sedb-table{display:flex;flex-direction:column;gap:0;margin-bottom:.7rem}
+.sedb-row{display:flex;align-items:center;gap:7px;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.79rem}
+.sedb-row:last-child{border:none}
+.sedb-from{flex:1;color:var(--text2)}
+.sedb-arr{color:var(--soft);flex-shrink:0}
+.sedb-to{flex:1;color:var(--teal);font-weight:600}
+.scomplete{text-align:center;padding:1.5rem 0;display:flex;flex-direction:column;align-items:center;gap:.7rem}
+.scomplete-ico{font-size:3rem}
+.scomplete-title{font-family:'Cairo',sans-serif;font-size:1.3rem;font-weight:900;color:var(--text)}
+.scomplete-sub{font-size:.85rem;color:var(--text2)}
+.ssummary{background:var(--s3);border:1px solid var(--border);border-radius:12px;padding:.9rem;width:100%;text-align:right}
+.ssumm-row{display:flex;flex-direction:column;gap:2px;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:.82rem}
+.ssumm-row:last-child{border:none}
+.ssumm-row span{color:var(--soft);font-size:.7rem;font-weight:600;text-transform:uppercase}
+.ssumm-row strong{color:var(--text)}
+/* ══════════════════════════════════
+   EXERCISE TAB GRID
+══════════════════════════════════ */
+.ex-grid-tabs{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin-bottom:1.1rem;
+}
+@media(max-width:380px){.ex-grid-tabs{grid-template-columns:repeat(3,1fr);}}
+.ex-tab-card{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:.6rem .3rem;
+  background:var(--s2);border:1px solid var(--border);border-radius:12px;
+  color:var(--text2);font-family:'Tajawal',sans-serif;font-size:.68rem;font-weight:700;
+  cursor:pointer;transition:all .2s;
+}
+.ex-tab-card:hover{border-color:var(--border2);color:var(--text);}
+.ex-tab-card.active{
+  background:linear-gradient(135deg,rgba(45,212,191,.15),rgba(13,148,136,.08));
+  border-color:rgba(45,212,191,.4);color:var(--teal);
+  box-shadow:0 4px 14px rgba(13,148,136,.15);
+}
+.ex-tab-ico{font-size:1.4rem;line-height:1;}
+.ex-tab-lbl{font-size:.65rem;text-align:center;line-height:1.2;}
+
+</style>
+<body>
+<div class="atmo"></div>
+<div id="toast"></div>
+
+<!-- LOCK -->
+<div id="lockScreen">
+  <div class="lock-icon" id="lkIco">🔒</div>
+  <div class="lock-title" id="lkTitle">NafsiLog</div>
+  <div class="lock-sub" id="lkSub">أدخل الرمز للدخول</div>
+  <div class="pin-row" id="pinDots">
+    <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+    <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+  </div>
+  <div class="lock-err" id="lkErr"></div>
+  <div class="numpad">
+    <button class="numpad-btn" onclick="pk('1')">1</button><button class="numpad-btn" onclick="pk('2')">2</button><button class="numpad-btn" onclick="pk('3')">3</button>
+    <button class="numpad-btn" onclick="pk('4')">4</button><button class="numpad-btn" onclick="pk('5')">5</button><button class="numpad-btn" onclick="pk('6')">6</button>
+    <button class="numpad-btn" onclick="pk('7')">7</button><button class="numpad-btn" onclick="pk('8')">8</button><button class="numpad-btn" onclick="pk('9')">9</button>
+    <button class="numpad-btn" style="font-size:.8rem;color:var(--soft)">—</button>
+    <button class="numpad-btn" onclick="pk('0')">0</button>
+    <button class="numpad-btn" style="font-size:.95rem;color:var(--text2)" onclick="pk('del')">⌫</button>
+  </div>
+  <div id="skipWrap" style="font-size:.8rem;color:var(--text2);cursor:pointer;text-decoration:underline;opacity:.6" onclick="skipPin()">تخطي وإعداد الرمز لاحقاً</div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav0" onclick="go('home')"><span class="nav-ico">🏠</span>الرئيسية</button>
+  <button class="nav-btn" id="nav1" onclick="go('daily')"><span class="nav-ico">📝</span>يومي</button>
+  <button class="nav-btn" id="nav2" onclick="go('scales')"><span class="nav-ico">📊</span>مقاييس</button>
+  <button class="nav-btn" id="nav3" onclick="go('exercises')"><span class="nav-ico">🧘</span>تمارين</button>
+  <button class="nav-btn" id="nav4" onclick="go('report')"><span class="nav-ico">🧠</span>تقريري</button>
+  <button class="nav-btn" id="nav5" onclick="go('settings')"><span class="nav-ico">⚙️</span>إعدادات</button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="pg-head">
+    <div class="pg-icon" style="background:linear-gradient(135deg,rgba(45,212,191,.2),rgba(13,148,136,.1));border:1px solid rgba(45,212,191,.2)">🌿</div>
+    <div style="flex:1"><div class="pg-title">NafsiLog</div><div class="pg-sub" id="homeDate"></div></div>
+    <button class="btn btn-ghost btn-sm" onclick="go('report')" style="font-size:.72rem;padding:6px 10px" title="تقريري">🧠 تقرير</button>
+  </div>
+  <div id="todayCard"></div>
+  <div class="streak-row" id="streakRow"></div>
+  <div class="card"><div class="card-title">📋 آخر التسجيلات</div><div id="logList"></div></div>
+  <div id="homeQuickExercises" style="margin-bottom:.9rem"></div>
+</div>
+
+<!-- DAILY -->
+<div class="page" id="page-daily">
+  <div class="pg-head">
+    <div class="pg-icon" style="background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(124,58,237,.1));border:1px solid rgba(99,102,241,.2)">📝</div>
+    <div><div class="pg-title">تسجيل اليوم</div><div class="pg-sub" id="dailyDate"></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">😊 مزاج اليوم</div>
+    <div class="slider-wrap">
+      <div class="slider-row"><div class="slider-val" id="moodVal">5</div><input type="range" min="1" max="10" value="5" id="moodSlider" oninput="document.getElementById('moodVal').textContent=this.value"></div>
+      <div class="slider-labels"><span>😞 سيء جداً</span><span>😐 عادي</span><span>😄 ممتاز</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">🌙 النوم</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <input type="number" class="inp" id="sleepH" min="0" max="24" step=".5" placeholder="7" style="width:90px;text-align:center">
+      <span style="color:var(--text2);font-size:.88rem">ساعات نمت البارحة</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">📌 أهم 3 أحداث اليوم</div>
+    <div class="field"><input class="inp" id="ev1" placeholder="الحدث الأول..."></div>
+    <div class="field"><input class="inp" id="ev2" placeholder="الحدث الثاني..."></div>
+    <div class="field" style="margin-bottom:0"><input class="inp" id="ev3" placeholder="الحدث الثالث..."></div>
+  </div>
+  <div class="card">
+    <div class="card-title">⚡ موقف ضاغط</div>
+    <div class="field"><label>وصف الموقف</label><textarea class="inp" id="stressor" placeholder="ماذا حدث؟"></textarea></div>
+    <div class="field" style="margin-bottom:0">
+      <label>شدة الانزعاج</label>
+      <div class="slider-wrap">
+        <div class="slider-row"><div class="slider-val" id="stressVal">5</div><input type="range" min="1" max="10" value="5" id="stressSlider" oninput="document.getElementById('stressVal').textContent=this.value"></div>
+        <div class="slider-labels"><span style="direction:rtl">1 خفيف</span><span style="direction:rtl">5 متوسط</span><span style="direction:rtl">10 شديد</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">💭 فكرة مزعجة تكررت</div>
+    <textarea class="inp" id="intrusive" placeholder="مثال: أنا غير كفء، لن أنجح..."></textarea>
+  </div>
+  <div class="card">
+    <div class="card-title">🌟 شيء امتنيت له</div>
+    <input class="inp" id="gratitude" type="text" placeholder="ولو شيء صغير...">
+  </div>
+  <div class="card">
+    <div class="card-title">🏷️ تاجات سريعة</div>
+    <div class="tags-wrap" id="tagsWrap">
+      <div class="tag-toggle" onclick="tg(this,'#قلق')">#قلق</div>
+      <div class="tag-toggle" onclick="tg(this,'#حزن')">#حزن</div>
+      <div class="tag-toggle" onclick="tg(this,'#شغل')">#شغل</div>
+      <div class="tag-toggle" onclick="tg(this,'#عائلة')">#عائلة</div>
+      <div class="tag-toggle" onclick="tg(this,'#نوم_سيء')">#نوم_سيء</div>
+      <div class="tag-toggle" onclick="tg(this,'#إنجاز')">#إنجاز</div>
+      <div class="tag-toggle" onclick="tg(this,'#عزلة')">#عزلة</div>
+      <div class="tag-toggle" onclick="tg(this,'#امتنان')">#امتنان</div>
+      <div class="tag-toggle" onclick="tg(this,'#توتر')">#توتر</div>
+      <div class="tag-toggle" onclick="tg(this,'#وحدة')">#وحدة</div>
+    </div>
+  </div>
+  <button class="btn btn-primary btn-full" onclick="saveDaily()" style="margin-bottom:1rem">💾 حفظ تسجيل اليوم</button>
+</div>
+
+<!-- SCALES -->
+<div class="page" id="page-scales">
+  <div class="pg-head">
+    <div class="pg-icon" style="background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(217,119,6,.1));border:1px solid rgba(245,158,11,.2)">📊</div>
+    <div><div class="pg-title">المقاييس النفسية</div><div class="pg-sub">أكملها أسبوعياً لمتابعة تطورك</div></div>
+  </div>
+  <div style="display:flex;gap:6px;margin-bottom:1.1rem;overflow-x:auto;padding-bottom:3px">
+    <button class="btn btn-primary btn-sm" id="scT0" onclick="switchSc(0)">PHQ-9</button>
+    <button class="btn btn-ghost btn-sm" id="scT1" onclick="switchSc(1)">GAD-7</button>
+    <button class="btn btn-ghost btn-sm" id="scT2" onclick="switchSc(2)">مخصص</button>
+    <button class="btn btn-ghost btn-sm" id="scT3" onclick="switchSc(3)">السجل</button>
+  </div>
+  <div id="scContent"></div>
+</div>
+
+<!-- EXERCISES -->
+<div class="page" id="page-exercises">
+  <div class="pg-head">
+    <div class="pg-icon" style="background:linear-gradient(135deg,rgba(16,185,129,.2),rgba(5,150,105,.1));border:1px solid rgba(16,185,129,.2)">🧘</div>
+    <div><div class="pg-title">التمارين العلاجية</div><div class="pg-sub">CBT • تنفس • جدول نشاط</div></div>
+  </div>
+  <div class="ex-grid-tabs" id="exTabsGrid">
+    <button class="ex-tab-card active" id="exT0" onclick="switchEx(0)">
+      <span class="ex-tab-ico">🧠</span><span class="ex-tab-lbl">CBT</span>
+    </button>
+    <button class="ex-tab-card" id="exT1" onclick="switchEx(1)">
+      <span class="ex-tab-ico">⚡</span><span class="ex-tab-lbl">تنشيط</span>
+    </button>
+    <button class="ex-tab-card" id="exT2" onclick="switchEx(2)">
+      <span class="ex-tab-ico">😨</span><span class="ex-tab-lbl">سلم الخوف</span>
+    </button>
+    <button class="ex-tab-card" id="exT3" onclick="switchEx(3)">
+      <span class="ex-tab-ico">💚</span><span class="ex-tab-lbl">قبول المشاعر</span>
+    </button>
+    <button class="ex-tab-card" id="exT4" onclick="switchEx(4)">
+      <span class="ex-tab-ico">🫁</span><span class="ex-tab-lbl">تنفس</span>
+    </button>
+    <button class="ex-tab-card" id="exT5" onclick="switchEx(5)">
+      <span class="ex-tab-ico">📅</span><span class="ex-tab-lbl">نشاط</span>
+    </button>
+    <button class="ex-tab-card" id="exT6" onclick="switchEx(6)">
+      <span class="ex-tab-ico">📜</span><span class="ex-tab-lbl">السجل</span>
+    </button>
+  </div>
+  <div id="exContent"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     REPORT PAGE
+════════════════════════════════════════ -->
+<div class="page" id="page-report">
+  <div class="pg-head">
+    <div class="pg-icon" style="background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(45,212,191,.1));border:1px solid rgba(99,102,241,.25)">🧠</div>
+    <div><div class="pg-title">تقريري النفسي</div><div class="pg-sub">تقييم شامل مبني على بياناتك</div></div>
+  </div>
+  <div class="chart-tabs">
+    <button class="chart-tab active" id="rtab0" onclick="switchReportTab(0)">📋 التقرير</button>
+    <button class="chart-tab" id="rtab1" onclick="switchReportTab(1)">📈 المزاج والنوم</button>
+    <button class="chart-tab" id="rtab2" onclick="switchReportTab(2)">🔗 الارتباطات</button>
+    <button class="chart-tab" id="rtab3" onclick="switchReportTab(3)">🏷️ الأنماط</button>
+    <button class="chart-tab" id="rtab4" onclick="switchReportTab(4)">📊 المقاييس</button>
+  </div>
+  <div id="reportContent"></div>
+  <div id="chartsContent" style="display:none"></div>
+</div>
+
+<!-- SETTINGS -->
+<div class="page" id="page-settings">
+  <div class="pg-head">
+    <div class="pg-icon" style="background:var(--s2);border:1px solid var(--border)">⚙️</div>
+    <div><div class="pg-title">الإعدادات</div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">👤 البيانات الأساسية</div>
+    <div class="field"><label>العمر (اختياري)</label><input class="inp" type="number" id="pAge" placeholder="28"></div>
+    <div class="field"><label>الجنس (اختياري)</label>
+      <select class="inp" id="pGender"><option value="">— اختر —</option><option>ذكر</option><option>أنثى</option><option>أفضل عدم التحديد</option></select>
+    </div>
+    <div class="field"><label>الحالة الاجتماعية (اختياري)</label>
+      <select class="inp" id="pStatus"><option value="">— اختر —</option><option>أعزب/عزباء</option><option>متزوج/متزوجة</option><option>مطلق/مطلقة</option><option>أرمل/أرملة</option></select>
+    </div>
+    <div class="field"><label>أهداف العمل النفسي</label><input class="inp" id="pGoals" placeholder="مثال: القلق، النوم، الثقة بالنفس"></div>
+    <div class="field"><label>التاريخ الطبي / أدوية (اختياري)</label><textarea class="inp" id="pMed" placeholder="تشخيصات سابقة، أدوية حالية..."></textarea></div>
+    <div class="field"><label>PHQ-9 الافتتاحي (0-27)</label><input class="inp" type="number" id="pPHQ" placeholder="0" min="0" max="27"></div>
+    <div class="field" style="margin-bottom:0"><label>GAD-7 الافتتاحي (0-21)</label><input class="inp" type="number" id="pGAD" placeholder="0" min="0" max="21"></div>
+    <div class="divider"></div>
+    <button class="btn btn-primary btn-sm" onclick="saveProfile()">💾 حفظ</button>
+  </div>
+  <div class="card">
+    <div class="card-title">🔒 تغيير الرمز السري</div>
+    <div class="field"><label>الرمز الحالي</label><input class="inp" type="password" id="curPin" maxlength="4" inputmode="numeric" placeholder="••••"></div>
+    <div class="field"><label>الرمز الجديد</label><input class="inp" type="password" id="newPin" maxlength="4" inputmode="numeric" placeholder="4 أرقام"></div>
+    <div class="field" style="margin-bottom:0"><label>تأكيد الرمز</label><input class="inp" type="password" id="confPin" maxlength="4" inputmode="numeric" placeholder="أعد الإدخال"></div>
+    <div class="divider"></div>
+    <button class="btn btn-ghost btn-sm" onclick="changePin()">تغيير الرمز</button>
+  </div>
+  <div class="card">
+    <div class="card-title">🔔 تذكير يومي</div>
+    <div class="field"><label>وقت التذكير</label><input class="inp" type="time" id="remTime" value="21:00"></div>
+    <button class="btn btn-ghost btn-sm" onclick="setRem()">تفعيل التذكير</button>
+    <div style="font-size:.73rem;color:var(--soft);margin-top:.5rem">يتطلب السماح بالإشعارات من المتصفح</div>
+  </div>
+  <div style="background:rgba(244,63,94,.04);border:1px solid rgba(244,63,94,.15);border-radius:14px;padding:1.1rem;margin-bottom:.9rem">
+    <div style="color:var(--rose);font-size:.82rem;font-weight:700;margin-bottom:.6rem">⚠️ منطقة الخطر</div>
+    <button class="btn btn-danger btn-sm" onclick="clearAll()">🗑️ مسح كل البيانات نهائياً</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════
+   STORAGE
+═══════════════════════════════ */
+const S={
+  get:(k,d=null)=>{try{const v=localStorage.getItem('nl_'+k);return v!=null?JSON.parse(v):d}catch{return d}},
+  set:(k,v)=>{try{localStorage.setItem('nl_'+k,JSON.stringify(v))}catch{}},
+  del:(k)=>{try{localStorage.removeItem('nl_'+k)}catch{}}
+};
+
+/* ═══════════════════════════════
+   LOCK
+═══════════════════════════════ */
+let pinBuf='',lockMode='login',newPinTmp='';
+function initLock(){
+  const stored=S.get('pin');
+  if(!stored){lockMode='setup-new';document.getElementById('lkTitle').textContent='مرحباً 👋';document.getElementById('lkSub').textContent='أنشئ رمزاً سرياً (4 أرقام)';document.getElementById('lkIco').textContent='🛡️';document.getElementById('skipWrap').style.display='block';document.getElementById('lkErr').textContent='أدخل رمزاً جديداً';}
+  else{document.getElementById('skipWrap').style.display='none';}
+}
+function pk(k){
+  if(k==='del'){pinBuf=pinBuf.slice(0,-1);rdots();return;}
+  if(pinBuf.length>=4) return;
+  pinBuf+=k;rdots();
+  if(pinBuf.length===4) setTimeout(checkPin,100);
+}
+function rdots(st=''){
+  for(let i=0;i<4;i++){const d=document.getElementById('pd'+i);d.className='pin-dot'+(i<pinBuf.length?' filled':'')+(st==='err'?' error':'');}
+}
+function checkPin(){
+  const stored=S.get('pin');
+  if(lockMode==='setup-new'){newPinTmp=pinBuf;pinBuf='';rdots();document.getElementById('lkSub').textContent='أعد الإدخال للتأكيد';document.getElementById('lkErr').textContent='';lockMode='setup-confirm';return;}
+  if(lockMode==='setup-confirm'){
+    if(pinBuf===newPinTmp){S.set('pin',pinBuf);unlock();}
+    else{rdots('err');document.getElementById('lkErr').textContent='غير متطابق، حاول مجدداً';pinBuf='';setTimeout(()=>{rdots();lockMode='setup-new';newPinTmp='';document.getElementById('lkSub').textContent='أدخل رمزاً جديداً';},600);}
+    return;
+  }
+  if(pinBuf===stored){unlock();}
+  else{rdots('err');document.getElementById('lkErr').textContent='رمز خاطئ';pinBuf='';setTimeout(rdots,600);}
+}
+function skipPin(){S.set('pin','0000');unlock();}
+function unlock(){document.getElementById('lockScreen').style.display='none';pinBuf='';loadProfile();renderHome();}
+
+/* ═══════════════════════════════
+   NAV
+═══════════════════════════════ */
+function go(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p)?.classList.add('active');
+  const map={home:0,daily:1,scales:2,exercises:3,report:4,settings:5};
+  if(map[p]!==undefined) document.getElementById('nav'+map[p])?.classList.add('active');
+  if(p==='daily') initDaily();
+  if(p==='scales') renderSc(curScTab);
+  if(p==='exercises') renderEx(curExTab);
+  if(p==='home') renderHome();
+  if(p==='report'){ curReportTab=0; document.querySelectorAll('.chart-tab').forEach((b,i)=>b.classList.toggle('active',i===0)); document.getElementById('reportContent').style.display=''; const cc=document.getElementById('chartsContent'); if(cc) cc.style.display='none'; renderReport(); }
+  if(p==='settings') loadProfile();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ═══════════════════════════════
+   HOME
+═══════════════════════════════ */
+function renderHome(){
+  document.getElementById('homeDate').textContent=new Date().toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const logs=S.get('logs',[]);const today=ds();const tl=logs.find(l=>l.date===today);
+  const tc=document.getElementById('todayCard');
+  if(tl){tc.innerHTML=`<div class="today-card"><div style="font-size:2rem">${moodEmo(tl.mood)}</div><div><div style="font-size:.75rem;color:var(--text2)">مزاج اليوم</div><div style="font-family:Cairo,sans-serif;font-size:1.8rem;font-weight:900;color:var(--teal)">${tl.mood}/10</div><div style="font-size:.75rem;color:var(--text2)">نوم: ${tl.sleep||'—'} ساعة</div></div><button class="btn btn-ghost btn-sm" onclick="go('daily')" style="margin-right:auto">تعديل</button></div>`;}
+  else{tc.innerHTML=`<div class="today-card" style="cursor:pointer" onclick="go('daily')"><div style="font-size:2rem">🌤️</div><div><div style="font-size:.88rem;font-weight:700">سجّل يومك الآن</div><div style="font-size:.75rem;color:var(--text2)">لم تسجّل بعد اليوم</div></div><span style="margin-right:auto;font-size:1.2rem;color:var(--teal)">←</span></div>`;}
+  const streak=calcStreak(logs);
+  document.getElementById('streakRow').innerHTML=`
+    <div class="streak-card"><div class="streak-num">${streak}</div><div class="streak-lbl">🔥 متتالية</div></div>
+    <div class="streak-card"><div class="streak-num">${logs.length}</div><div class="streak-lbl">📝 إجمالي</div></div>
+    <div class="streak-card"><div class="streak-num">${avgMood(logs)}</div><div class="streak-lbl">😊 متوسط</div></div>`;
+  const ll=document.getElementById('logList');
+  const rec=logs.slice(-8).reverse();
+  if(!rec.length){ll.innerHTML=`<div class="empty-state"><div class="empty-ico">📋</div>لا توجد تسجيلات بعد</div>`;return;}
+  ll.innerHTML=rec.map(l=>`<div class="log-item"><span style="font-size:.75rem;color:var(--text2);min-width:75px">${fmtDate(l.date)}</span><div class="log-mood-badge" style="background:${moodColor(l.mood)}">${l.mood}</div><div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">${(l.tags||[]).map(t=>`<span class="log-tag-sm">${t}</span>`).join('')||'<span style="color:var(--soft);font-size:.72rem">—</span>'}</div></div>`).join('');
+  
+  // Quick exercise shortcuts
+  const qe = document.getElementById('homeQuickExercises');
+  if(qe) qe.innerHTML = `
+    <div class="card-title" style="margin-bottom:.6rem">⚡ تمارين سريعة</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button class="btn btn-ghost" style="flex-direction:column;gap:3px;padding:.8rem;font-size:.75rem" onclick="go('exercises');switchEx(0)"><span style="font-size:1.3rem">🧠</span>CBT</button>
+      <button class="btn btn-ghost" style="flex-direction:column;gap:3px;padding:.8rem;font-size:.75rem" onclick="go('exercises');switchEx(4)"><span style="font-size:1.3rem">🫁</span>تنفس 4-7-8</button>
+      <button class="btn btn-ghost" style="flex-direction:column;gap:3px;padding:.8rem;font-size:.75rem" onclick="go('exercises');switchEx(1)"><span style="font-size:1.3rem">⚡</span>تنشيط</button>
+      <button class="btn btn-ghost" style="flex-direction:column;gap:3px;padding:.8rem;font-size:.75rem" onclick="go('exercises');switchEx(2)"><span style="font-size:1.3rem">😨</span>سلم الخوف</button>
+    </div>`;
+}
+
+/* ═══════════════════════════════
+   DAILY
+═══════════════════════════════ */
+let selTags=[];
+function initDaily(){
+  document.getElementById('dailyDate').textContent=new Date().toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const logs=S.get('logs',[]);const ex=logs.find(l=>l.date===ds());
+  selTags=[];document.querySelectorAll('.tag-toggle').forEach(t=>t.classList.remove('on'));
+  if(ex){
+    document.getElementById('moodSlider').value=ex.mood||5;document.getElementById('moodVal').textContent=ex.mood||5;
+    document.getElementById('sleepH').value=ex.sleep||'';
+    document.getElementById('ev1').value=ex.ev1||'';document.getElementById('ev2').value=ex.ev2||'';document.getElementById('ev3').value=ex.ev3||'';
+    document.getElementById('stressor').value=ex.stressor||'';
+    document.getElementById('stressSlider').value=ex.stressLevel||5;document.getElementById('stressVal').textContent=ex.stressLevel||5;
+    document.getElementById('intrusive').value=ex.intrusive||'';document.getElementById('gratitude').value=ex.gratitude||'';
+    selTags=ex.tags||[];
+    selTags.forEach(tag=>document.querySelectorAll('.tag-toggle').forEach(el=>{if(el.textContent===tag)el.classList.add('on');}));
+  } else {
+    ['moodSlider','stressSlider'].forEach(id=>document.getElementById(id).value=5);
+    ['moodVal','stressVal'].forEach(id=>document.getElementById(id).textContent=5);
+    ['sleepH','ev1','ev2','ev3','stressor','intrusive','gratitude'].forEach(id=>document.getElementById(id).value='');
+  }
+}
+function tg(el,tag){el.classList.toggle('on');if(el.classList.contains('on')){if(!selTags.includes(tag))selTags.push(tag);}else selTags=selTags.filter(t=>t!==tag);}
+function saveDaily(){
+  const entry={date:ds(),mood:+document.getElementById('moodSlider').value,sleep:parseFloat(document.getElementById('sleepH').value)||null,ev1:document.getElementById('ev1').value.trim(),ev2:document.getElementById('ev2').value.trim(),ev3:document.getElementById('ev3').value.trim(),stressor:document.getElementById('stressor').value.trim(),stressLevel:+document.getElementById('stressSlider').value,intrusive:document.getElementById('intrusive').value.trim(),gratitude:document.getElementById('gratitude').value.trim(),tags:[...selTags],ts:Date.now()};
+  const logs=S.get('logs',[]);const i=logs.findIndex(l=>l.date===ds());
+  if(i>=0)logs[i]=entry;else logs.push(entry);
+  S.set('logs',logs);toast('✅ تم حفظ تسجيل اليوم');go('home');
+}
+
+/* ═══════════════════════════════
+   SCALES
+═══════════════════════════════ */
+let curScTab=0;
+const PHQ9=['قلة الاهتمام أو المتعة في الأشياء','الشعور بالإحباط أو الاكتئاب أو فقدان الأمل','صعوبة النوم أو كثرة النوم','الإجهاد أو قلة الطاقة','قلة الشهية أو الإفراط في الأكل','الشعور بالفشل أو تخذيل النفس أو العائلة','صعوبة التركيز','التحرك ببطء شديد أو توتر زائد','أفكار عن إيذاء النفس'];
+const GAD7=['الشعور بالتوتر أو الانزعاج أو التقلق','عدم القدرة على التوقف عن القلق','القلق الزائد من أشياء مختلفة','صعوبة الاسترخاء','الأرق الشديد لدرجة صعوبة الجلوس','سرعة الانفعال أو الغضب','الشعور بالخوف كأن شيئاً سيئاً سيحدث'];
+let scAns={phq:{},gad:{}};
+function switchSc(t){curScTab=t;for(let i=0;i<4;i++){const b=document.getElementById('scT'+i);if(b)b.className='btn btn-sm '+(i===t?'btn-primary':'btn-ghost');}renderSc(t);}
+function renderSc(t){
+  const el=document.getElementById('scContent');
+  if(t===0)el.innerHTML=buildScaleUI('phq',PHQ9,27,'PHQ-9 — اكتئاب','0-4: لا أعراض • 5-9: خفيف • 10-14: متوسط • 15+: شديد');
+  else if(t===1)el.innerHTML=buildScaleUI('gad',GAD7,21,'GAD-7 — قلق','0-4: لا أعراض • 5-9: خفيف • 10-14: متوسط • 15+: شديد');
+  else if(t===2)el.innerHTML=buildCustomSc();
+  else el.innerHTML=buildScHistory();
+}
+function buildScaleUI(type,qs,max,title,interp){
+  const rows=qs.map((q,i)=>`<div class="scale-q"><div class="scale-q-text">${i+1}. ${q}</div><div class="scale-opts">${[0,1,2,3].map(o=>`<div class="scale-opt ${scAns[type][i]===o?'sel':''}" onclick="setSc('${type}',${i},${o})">${o}</div>`).join('')}</div></div>`).join('');
+  const filled=Object.keys(scAns[type]).length;const score=Object.values(scAns[type]).reduce((a,b)=>a+b,0);
+  return `<div class="card"><div class="card-title">📋 ${title}</div><div style="font-size:.73rem;color:var(--soft);margin-bottom:.9rem">أبداً(0) عدة أيام(1) أكثر من نصف الأيام(2) تقريباً كل يوم(3)</div>${rows}${filled===qs.length?`<div style="text-align:center;padding:1rem;background:var(--s3);border-radius:12px;margin-top:.8rem"><div style="font-family:Cairo,sans-serif;font-size:2.4rem;font-weight:900;color:${scColor(score,max)}">${score}</div><div style="font-size:.75rem;color:var(--text2);margin-top:2px">من ${max} • ${interp}</div></div><div class="divider"></div><button class="btn btn-primary btn-sm" onclick="saveScResult('${type}',${score},${max})">💾 حفظ النتيجة</button>`:''}</div>`;
+}
+function buildCustomSc(){
+  const cs=S.get('customSc',[]);
+  return `<div class="card"><div class="card-title">➕ مقياس مخصص</div><div class="field"><label>اسم المقياس</label><input class="inp" id="csN" placeholder="مثال: الغضب، الثقة بالنفس"></div><div class="field"><label>الدرجة</label><div style="display:flex;align-items:center;gap:10px"><div class="slider-val" id="csV">5</div><input type="range" min="1" max="10" value="5" style="flex:1" oninput="document.getElementById('csV').textContent=this.value" id="csSl"></div></div><div class="field"><label>ملاحظات</label><textarea class="inp" id="csNt" placeholder="..."></textarea></div><button class="btn btn-primary btn-sm" onclick="saveCS()">💾 حفظ</button>${cs.length?`<div class="divider"></div>${cs.slice(-5).reverse().map(c=>`<div style="display:flex;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.82rem"><span>${c.name}</span><span style="color:var(--teal);font-weight:700">${c.score}/10</span><span style="color:var(--soft)">${fmtDate(c.date)}</span></div>`).join('')}`:''}</div>`;
+}
+function buildScHistory(){
+  const h=S.get('scHist',[]);
+  if(!h.length)return`<div class="empty-state"><div class="empty-ico">📊</div>لا توجد نتائج بعد</div>`;
+  return`<div class="card"><div class="card-title">📜 سجل المقاييس</div>${h.slice(-20).reverse().map(h=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.84rem"><div><span style="font-weight:700">${h.type.toUpperCase()}</span><span style="color:var(--soft);font-size:.72rem;margin-right:8px">${fmtDate(h.date)}</span></div><span style="color:${scColor(h.score,h.max)};font-weight:800">${h.score}/${h.max}</span></div>`).join('')}</div>`;
+}
+function setSc(type,q,v){scAns[type][q]=v;renderSc(curScTab);}
+function saveScResult(type,score,max){const h=S.get('scHist',[]);h.push({type,score,max,date:ds(),ts:Date.now()});S.set('scHist',h);scAns[type]={};toast(`✅ نتيجة ${type.toUpperCase()}: ${score}/${max}`);switchSc(3);}
+function saveCS(){const n=document.getElementById('csN').value.trim();if(!n){toast('⚠️ أدخل اسم المقياس');return;}const cs=S.get('customSc',[]);cs.push({name:n,score:+document.getElementById('csSl').value,notes:document.getElementById('csNt').value.trim(),date:ds(),ts:Date.now()});S.set('customSc',cs);toast('✅ تم الحفظ');switchSc(2);}
+
+/* ═══════════════════════════════
+   EXERCISES
+═══════════════════════════════ */
+const KB = {
+
+  // PHQ-9 عتبات دقيقة (Kroenke & Spitzer 2001, مدعومة من الكتاب ف.13)
+  phq: {
+    ranges: [
+      { max:4,  label:'لا أعراض تذكر',          color:'var(--emerald)', action:'حافظ على نمطك الإيجابي الحالي' },
+      { max:9,  label:'أعراض خفيفة',             color:'#84cc16',        action:'تمارين CBT وجدول الأنشطة يكفيان في الغالب' },
+      { max:14, label:'أعراض متوسطة',            color:'var(--amber)',   action:'ابدأ بروتوكول تنشيط السلوك فوراً، فكر في دعم متخصص' },
+      { max:19, label:'أعراض متوسطة-شديدة',      color:'#fb923c',       action:'استشارة متخصصة موصى بها بشدة' },
+      { max:27, label:'أعراض شديدة',             color:'var(--rose)',    action:'تواصل مع متخصص صحة نفسية في أقرب وقت' }
+    ],
+    classify(score){ return this.ranges.find(r=>score<=r.max)||this.ranges[4]; }
+  },
+
+  // GAD-7 عتبات دقيقة (Spitzer et al. 2006)
+  gad: {
+    ranges: [
+      { max:4,  label:'لا أعراض تذكر',   color:'var(--emerald)', action:'مستوى قلق طبيعي وصحي' },
+      { max:9,  label:'قلق خفيف',        color:'#84cc16',        action:'تقنيات الاسترخاء وسلم الخوف البسيط' },
+      { max:14, label:'قلق متوسط',       color:'var(--amber)',   action:'بروتوكول سلم الخوف + تحدي الأفكار الكارثية' },
+      { max:21, label:'قلق شديد',        color:'var(--rose)',    action:'استشارة متخصصة مع CBT للقلق' }
+    ],
+    classify(score){ return this.ranges.find(r=>score<=r.max)||this.ranges[3]; }
+  },
+
+  // أنماط التفكير السلبية من ف.7 (الأفكار التلقائية)
+  // الكتاب ص. 7: "أفكارنا حول حدث تؤثر في استجابتنا العاطفية والسلوكية والبدنية"
+  thoughtPatterns: [
+    { id:'all_or_nothing', name:'التفكير الكل أو لا شيء',    tags:['#كمالية','#فشل'],         desc:'رؤية الأمور بأبيض أو أسود دون رمادي' },
+    { id:'catastrophizing',name:'التهويل',                   tags:['#قلق','#توتر'],           desc:'المبالغة في تقدير الأخطار والنتائج السيئة' },
+    { id:'mind_reading',   name:'قراءة الأفكار',             tags:['#عائلة','#شغل','#عزلة'], desc:'افتراض ما يفكر به الآخرون بدون دليل' },
+    { id:'fortune_telling',name:'التنبؤ بالمستقبل',          tags:['#قلق','#حزن'],           desc:'توقع نتائج سلبية كأنها حقائق مؤكدة' },
+    { id:'emotional_reason',name:'الاستدلال العاطفي',        tags:['#حزن','#قلق'],           desc:'الاعتقاد بأن الشعور السيء يعني أن الواقع سيء' },
+    { id:'should_must',    name:'يجب / ينبغي',               tags:['#شغل','#كمالية'],        desc:'قواعد صارمة تولّد الذنب عند عدم تحقيقها' },
+    { id:'labeling',       name:'التسمية السلبية',           tags:['#حزن','#ثقة'],           desc:'وصف النفس أو الآخرين بتسميات شاملة سلبية' },
+    { id:'personalization',name:'التخصيص',                  tags:['#ذنب','#عائلة'],         desc:'تحمّل المسؤولية عن أمور خارج نطاق سيطرتك' },
+    { id:'filtering',      name:'التصفية السلبية',           tags:['#حزن','#إنجاز'],         desc:'التركيز على السلبيات وتجاهل الإيجابيات كلياً' },
+    { id:'overgeneralize', name:'التعميم المفرط',            tags:['#حزن','#وحدة'],          desc:'تعميم حادثة واحدة على كل المواقف المشابهة' }
+  ],
+
+  // بروتوكول تنشيط السلوك - ف.13 من الكتاب
+  // "تحديد مواعيد الأنشطة الممتعة أو التي تحقق شيئاً يقلل الاكتئاب"
+  behavioralActivation: {
+    principles: [
+      'القيام بعشرة أنشطة ممتعة أفضل من خمسة — الكمية تهم',
+      'التحفيز يتبع الفعل، لا يسبقه — لا تنتظر أن تشعر برغبة',
+      'قارن المتعة بالجلوس في المنزل، لا بأوقاتك المثالية',
+      'ابحث عن متعة صغيرة في التجارب الحسية: رائحة، صوت، لمس',
+      'إذا فاتك نشاط، استأنف التالي مباشرة — لا تنتقد نفسك'
+    ]
+  },
+
+  // بروتوكول سلم الخوف - ف.14 من الكتاب
+  // "تصنيف المواقف المخيفة من الأخف إلى الأشد"
+  fearLadder: {
+    principles: [
+      'رتّب المواقف المقلقة من 0 (لا قلق) إلى 100 (قلق أقصى)',
+      'ابدأ بالدرجة 20-30 وارتقِ تدريجياً',
+      'البقاء في الموقف حتى ينخفض القلق تلقائياً يكسر الدائرة',
+      'التجنب يُقوّي القلق؛ المواجهة التدريجية تضعفه'
+    ]
+  },
+
+  // سجل الأفكار - ف.8-9 من الكتاب (7 أعمدة)
+  thoughtRecord: {
+    columns: ['الموقف','الحالة المزاجية','الفكرة التلقائية','دليل مع','دليل ضد','فكرة بديلة','الحالة المزاجية بعد'],
+    hotThoughtTip: 'الفكرة الساخنة هي الأشد تأثيراً في مزاجك — اسألها أولاً: "ما الدليل؟"',
+    evidenceGuideline: 'الدليل يجب أن يكون حقائق موضوعية، لا تفسيرات أو مشاعر'
+  },
+
+  // النموذج الخماسي - ف.2 (الأساس النظري للكتاب)
+  fivePart: {
+    parts: ['البيئة (ما حدث)','أفكار (ما قلته لنفسك)','مشاعر (ما شعرت به)','سلوك (ما فعلته)','جسد (ما حسّه جسمك)'],
+    insight: 'تغيير أي عنصر من الخمسة يؤثر على بقية العناصر — هذا هو جوهر CBT'
+  },
+
+  // ══════════════════════════════════════════════════
+  // DSM-5 Desk Reference (APA, 2013) — معايير التشخيص
+  // ══════════════════════════════════════════════════
+
+  // معايير الاكتئاب الكبير — Major Depressive Disorder (296.xx / F32.x)
+  // المصدر: DSM-5 ص.94-96
+  mdd: {
+    icd10: 'F32.x / F33.x',
+    criteriaA_count: 5,           // 5 أعراض أو أكثر في نفس الأسبوعين
+    required_symptom: 'depressed_mood_or_anhedonia',  // معيار A لازم
+    duration_weeks: 2,
+    symptoms: [
+      { id:'depressed_mood',  ar:'مزاج حزين أو فارغ أو فاقد الأمل معظم اليوم' },
+      { id:'anhedonia',       ar:'فقدان الاهتمام أو المتعة بمعظم الأنشطة' },
+      { id:'weight_change',   ar:'تغير ملحوظ في الوزن أو الشهية' },
+      { id:'sleep',           ar:'أرق أو فرط النوم' },
+      { id:'psychomotor',     ar:'تهيج أو تباطؤ حركي ملحوظ من الآخرين' },
+      { id:'fatigue',         ar:'إرهاق أو فقدان الطاقة' },
+      { id:'worthlessness',   ar:'إحساس بعدم القيمة أو ذنب مفرط' },
+      { id:'concentration',   ar:'ضعف التركيز أو التردد في القرارات' },
+      { id:'death_thoughts',  ar:'أفكار متكررة عن الموت أو إيذاء النفس' }
+    ],
+    specifiers: ['مع ضيق قلق', 'مع سمات ذهانية', 'مع نمط موسمي', 'مع بداية ما بعد الولادة'],
+    // نقطة حرجة: ليس مجرد حزن طبيعي على خسارة — يتطلب حكماً سريرياً
+    grief_note: 'قد تشبه أعراض الحزن الطبيعي الاكتئاب — يتطلب حكماً سريرياً للتمييز'
+  },
+
+  // الاكتئاب المستمر (سابقاً: عسر المزاج) — Persistent Depressive Disorder (300.4 / F34.1)
+  // المصدر: DSM-5 ص.97-99
+  pdd: {
+    icd10: 'F34.1',
+    duration_years: 2,            // عامان على الأقل (سنة للأطفال)
+    criteriaB_count: 2,           // عرضان أو أكثر من B مع المزاج المكتئب
+    symptoms_A: ['مزاج مكتئب معظم اليوم، أغلب الأيام، لعامين'],
+    symptoms_B: [
+      'ضعف الشهية أو الإفراط في الأكل',
+      'أرق أو فرط النوم',
+      'انخفاض الطاقة أو الإرهاق',
+      'انخفاض تقدير الذات',
+      'ضعف التركيز أو صعوبة القرارات',
+      'مشاعر اليأس'
+    ],
+    // مهم: يمكن أن تتداخل مع MDD (double depression)
+    key_distinction: 'مزاج منخفض مستمر لسنوات بدلاً من نوبات متقطعة'
+  },
+
+  // اضطراب القلق العام — Generalized Anxiety Disorder (300.02 / F41.1)
+  // المصدر: DSM-5 ص.122-123
+  gad_criteria: {
+    icd10: 'F41.1',
+    duration_months: 6,
+    criteriaC_count: 3,           // 3 أعراض أو أكثر (1 للأطفال)
+    criteriaA: 'قلق ومخاوف مفرطة حول أحداث متعددة، أغلب الأيام لستة أشهر',
+    criteriaB: 'صعوبة ضبط القلق والتوقف عنه',
+    symptoms_C: [
+      'توتر أو شعور بالانفعال والحافة',
+      'التعب السريع',
+      'صعوبة التركيز أو الفراغ الذهني',
+      'سرعة الانفعال',
+      'توتر عضلي',
+      'اضطراب النوم (صعوبة بدء النوم أو الاستمرار فيه، أو نوم غير مريح)'
+    ]
+  },
+
+  // اضطراب الهلع — Panic Disorder (300.01 / F41.0)
+  // المصدر: DSM-5 ص.119
+  panic: {
+    icd10: 'F41.0',
+    attack_symptoms_needed: 4,    // 4 أعراض أو أكثر خلال الدقائق
+    attack_symptoms: [
+      'خفقان أو تسارع القلب',
+      'تعرق',
+      'رجفة أو ارتجاف',
+      'ضيق تنفس أو اختناق',
+      'ألم أو ضيق في الصدر',
+      'غثيان أو ألم بطني',
+      'دوار أو إغماء',
+      'قشعريرة أو هبات حرارة',
+      'تنميل أو وخز',
+      'فقدان الإحساس بالواقع',
+      'خوف من فقدان السيطرة أو "الجنون"',
+      'خوف من الموت'
+    ],
+    post_attack_criterion: 'قلق مستمر شهراً أو أكثر من نوبة أخرى'
+  },
+
+  // اضطراب القلق الاجتماعي — Social Anxiety Disorder (300.23 / F40.10)
+  // المصدر: DSM-5 ص.118
+  social_anxiety: {
+    icd10: 'F40.10',
+    duration_months: 6,
+    core: 'خوف أو قلق واضح من مواقف اجتماعية يتعرض فيها للتدقيق من الآخرين',
+    fear_content: 'يخشى أن يُحرج أو يُقيَّم سلبياً',
+    avoidance: true
+  },
+
+  // اضطراب ما بعد الصدمة — PTSD (309.81 / F43.10)
+  // المصدر: DSM-5 ص.143-147
+  ptsd: {
+    icd10: 'F43.10',
+    criteriaA: 'تعرض لوفاة فعلية أو تهديد بها، إصابة خطيرة، أو عنف جنسي',
+    clusters: [
+      { name:'B - التدخل', symptoms: ['ذكريات متطفلة','كوابيس','فلاشباك','ضيق نفسي عند التذكر','ردود فعل فيزيولوجية'] },
+      { name:'C - التجنب', symptoms: ['تجنب الأفكار المرتبطة','تجنب المذكرات الخارجية'] },
+      { name:'D - تغيرات معرفية ومزاجية', symptoms: ['عدم تذكر الحدث','معتقدات سلبية','لوم الذات','حالة سلبية مستمرة','فقدان الاهتمام','شعور بالغربة','عجز عن المشاعر الإيجابية'] },
+      { name:'E - تغيرات في الاستثارة', symptoms: ['انفجار غضب','سلوك متهور','فرط اليقظة','استجابة مبالغة للفزع','مشكلات تركيز','اضطراب النوم'] }
+    ],
+    duration_month: 1
+  },
+
+  // مؤشرات دواعي الإحالة (من DSM-5 الباب الأول)
+  referralIndicators: [
+    { trigger: 'PHQ9 >= 15',    urgency: 'high',   msg: 'درجة PHQ-9 تستدعي تقييماً نفسياً متخصصاً في أقرب وقت' },
+    { trigger: 'GAD7 >= 15',    urgency: 'high',   msg: 'مستوى قلق شديد — استشارة متخصص موصى بها بشدة' },
+    { trigger: 'death_thoughts',urgency: 'urgent', msg: 'أفكار عن الموت أو إيذاء النفس — تواصل مع متخصص فوراً' },
+    { trigger: 'PHQ9 >= 10',    urgency: 'medium', msg: 'اكتئاب متوسط — فكر في استشارة متخصص مع CBT ذاتي' },
+    { trigger: 'GAD7 >= 10',    urgency: 'medium', msg: 'قلق متوسط — الجمع بين التمارين الذاتية والدعم المتخصص مفيد' }
+  ],
+
+  // ══════════════════════════════════════════════════════════════
+  // Clinical Handbook of Psychological Disorders — Barlow (4th Ed, 2008)
+  // بروتوكولات علاجية step-by-step موثقة سريرياً
+  // ══════════════════════════════════════════════════════════════
+
+  // البروتوكول الموحد للاضطرابات العاطفية (Allen, McHugh & Barlow, Ch.5)
+  // 15 جلسة أسبوعية — يُطبَّق على الاكتئاب والقلق معاً
+  unifiedProtocol: {
+    sessions: 15,
+    components: [
+      {
+        num: 1, name: 'التثقيف النفسي حول المشاعر',
+        desc: 'فهم المشاعر كاستجابات طبيعية وظيفية — ليست عدواً بل معلومات. النموذج الثلاثي: أفكار × سلوك × جسد.',
+        homework: 'مراقبة المزاج اليومي (WRAD): متوسط القلق، أعلى قلق، متوسط الاكتئاب، متوسط البهجة'
+      },
+      {
+        num: 2, name: 'إعادة تقييم الأفكار المسبقة',
+        desc: 'تحديد التحيزات المعرفية قبل الدخول في المواقف العاطفية — إعادة التقييم تعمل قبل الموقف لا بعده.',
+        homework: 'سجّل موقفاً → الفكرة التلقائية → أعِد تقييمها بأسئلة الدليل'
+      },
+      {
+        num: 3, name: 'منع التجنب العاطفي',
+        desc: 'التجنب يُخفف الانزعاج قصيراً لكن يُعمّق الاضطراب. اعرف أنماط تجنبك (تشتيت، طمأنة ذات، قلق مزمن).',
+        homework: 'حدّد استراتيجية تجنب واحدة وجرّب مقاومتها هذا الأسبوع'
+      },
+      {
+        num: 4, name: 'تعديل السلوكيات المدفوعة بالمشاعر (EDBs)',
+        desc: 'بدلاً من التصرف بناءً على الانفعال مباشرة، جرّب السلوك المعاكس. مثال: الاكتئاب → عزلة → بدّل بالتواصل.',
+        homework: 'اختر EDB واحداً وطبّق سلوكه المعاكس مرة واحدة'
+      },
+      {
+        num: '5-12', name: 'التعرض للمشاعر (Emotion Exposure)',
+        desc: 'ابقَ في المواقف العاطفية بدلاً من الهروب. المشاعر تمر من تلقاء نفسها عند البقاء فيها.',
+        homework: 'جدول تعرّض متدرج — من الأخف للأشد'
+      },
+      {
+        num: '13-15', name: 'الحفاظ على المكتسبات ومنع الانتكاسة',
+        desc: 'مراجعة المهارات، التعرف على المحفزات المستقبلية، خطة الطوارئ.',
+        homework: 'كتابة خطة الاستمرار الشخصية'
+      }
+    ],
+    // أمثلة على السلوكيات المدفوعة بالمشاعر وأضدادها (Table 5.2)
+    edbExamples: [
+      { edb:'الانسحاب الاجتماعي',          disorder:'اكتئاب',       opposite:'تنشيط سلوكي — التواصل الفعّال' },
+      { edb:'مغادرة المواقف الاجتماعية',    disorder:'قلق اجتماعي',  opposite:'البقاء والاقتراب من الآخرين' },
+      { edb:'فرط اليقظة والتفقد',           disorder:'كل الاضطرابات',opposite:'التركيز على المهمة الحالية' },
+      { edb:'التأجيل والمماطلة',            disorder:'قلق عام',      opposite:'اتخاذ خطوة صغيرة فورية' },
+      { edb:'طلب الطمأنينة المفرط',         disorder:'قلق صحي/عام',  opposite:'تقبّل الغموض بدون طمأنة' }
+    ],
+    // أنماط التجنب العاطفي (Table 5.1)
+    avoidancePatterns: [
+      { pattern:'التشتيت', type:'معرفي', examples:['القراءة','التلفاز','الهاتف'] },
+      { pattern:'طمأنة الذات المفرطة', type:'معرفي', examples:['كل شيء سيكون بخير','لا خطر'] },
+      { pattern:'القلق المزمن', type:'معرفي', examples:['التفكير في "ماذا لو"'] },
+      { pattern:'الاجترار', type:'معرفي', examples:['التفكير المتكرر في مشكلة ماضية'] },
+      { pattern:'التجنب السلوكي الدقيق', type:'سلوكي', examples:['تجنب القهوة','التحكم بالتنفس','تجنب التمارين'] }
+    ]
+  },
+
+  // بروتوكول التنشيط السلوكي للاكتئاب (Dimidjian, Martell, Addis & Herman-Dunn, Ch.8)
+  // "الحل الأكثر إثارة في السنوات الأخيرة" — Barlow
+  behavioralActivationProtocol: {
+    // النقاط العشر الجوهرية (Table 8.1)
+    tenKeyPoints: [
+      'الأحداث في حياتك وكيف تستجيب لها تؤثر على مشاعرك',
+      'الاكتئاب يحدث عندما تقدم حياتك مكافآت قليلة ومشاكل كثيرة',
+      'أحياناً لا توجد ضغوط واضحة — لكن بيئتك لا تقدم مكافآت كافية',
+      'عندما تكون الحياة أقل مكافأة، ينسحب الناس من العالم وتتعطل الروتينات',
+      'الانسحاب طبيعي ومفهوم — لكنه يزيد الاكتئاب ويعيق حل المشاكل',
+      'سنعمل معاً لمساعدتك على الانخراط أكثر في حياتك',
+      'ليس مجرد "افعل أكثر" — التخصص في معرفة ما يناسبك هو الفارق',
+      'كل جلسة ستتضمن خطوات عملية قابلة للتنفيذ',
+      'المهام بين الجلسات ضرورية — تركز على إعادة الاتصال بمصادر المتعة والإنجاز',
+      'النشاط والانخراط في حل المشاكل يُقربك من أهدافك ويُحسّن مزاجك'
+    ],
+    // منهج ACTION
+    actionAcronym: {
+      A: 'Assess — هل هذا السلوك اقتراب أم تجنب؟ هل سيجعلني أفضل أم أسوأ؟',
+      C: 'Choose — اختر: استمر في السلوك أو جرّب سلوكاً مختلفاً',
+      T: 'Try — جرّب السلوك الذي اخترته',
+      I: 'Integrate — أعطِ أي سلوك جديد فرصة عادلة',
+      O: 'Observe — راقب النتائج',
+      N: 'Never give up — لا تستسلم، تعلّم من كل تجربة'
+    },
+    // مبادئ تحديد الأنشطة
+    activityPrinciples: [
+      '10 أنشطة ممتعة أفضل من 5 — الكمية تصنع فارقاً',
+      'التحفيز يتبع الفعل لا يسبقه — ابدأ بدون رغبة وستأتي الرغبة',
+      'قارن المتعة بالجلوس في المنزل، لا بأوقاتك المثالية',
+      'لو لم تستمتع — لاحظ ما يجول بذهنك من أفكار سلبية أثناء النشاط',
+      'كسر المهام الكبيرة لخطوات صغيرة تضمن النجاح المبكر',
+      'إذا فاتك نشاط: لا تنتقد نفسك — استأنف التالي مباشرة'
+    ]
+  },
+
+  // بروتوكول العلاج المعرفي للاكتئاب (Young, Rygh, Weinberger & Beck, Ch.6)
+  ctDepressionProtocol: {
+    // هيكل كل جلسة
+    sessionStructure: [
+      'بدء بجدول أعمال مشترك',
+      'مراجعة مزاج الأسبوع والمهام المنزلية',
+      'موضوع الجلسة الرئيسي',
+      'ملخص منتصف الجلسة',
+      'تحديد مهمة منزلية جديدة',
+      'ملخص ختامي وطلب تغذية راجعة'
+    ],
+    // المبادئ الأساسية
+    corePrinciples: [
+      'التعاون التجريبي: المعالج والمريض فريق تحقيق واحد',
+      'المهام المنزلية أهم من الجلسة نفسها',
+      'الأفكار التلقائية → المعتقدات الوسيطة → المعتقدات الجوهرية',
+      'قاعدة "ما الدليل؟" تُطبَّق على كل فكرة تلقائية'
+    ]
+  },
+
+  // مؤشرات الخطورة وبروتوكول الإحالة العاجلة (Barlow, عبر فصول متعددة)
+  safetyProtocol: {
+    immediateReferral: [
+      'أفكار إيذاء النفس أو الانتحار',
+      'PHQ-9 فقرة 9 ≥ 1 (أفكار موت)',
+      'PHQ-9 إجمالي ≥ 20',
+      'GAD-7 إجمالي ≥ 18',
+      'فقدان الاتصال بالواقع أو هلوسات'
+    ],
+    urgentConsultation: [
+      'PHQ-9 15-19 مع غياب دعم اجتماعي',
+      'GAD-7 15-17',
+      'نوم أقل من 4 ساعات لأسبوع أو أكثر',
+      'عجز تام عن أداء الوظائف اليومية'
+    ],
+    recommendedConsultation: [
+      'PHQ-9 10-14',
+      'GAD-7 10-14',
+      'أعراض لأكثر من شهرين بدون تحسن'
+    ]
+  }
+};
+
+/* ══════════════════════════════════════════════════════
+   EXERCISES & THERAPY SESSIONS
+   بسيط، موثوق، مختبر
+══════════════════════════════════════════════════════ */
+
+let curExTab = 0;
+let breathInt = null;
+let breathPhase = 'idle';
+let breathStart = null;
+let eaTimerInt = null;
+
+// حالة الجلسة
+let SS = { tab:0, step:0, ans:{}, started:0 };
+
+function switchEx(t) {
+  curExTab = t;
+  for (var i = 0; i < 7; i++) {
+    var b = document.getElementById('exT' + i);
+    if (b) b.className = 'ex-tab-card' + (i === t ? ' active' : '');
+  }
+  if (breathInt && t !== 4) { clearInterval(breathInt); breathInt = null; breathPhase = 'idle'; }
+  if (eaTimerInt && t !== 3) { clearInterval(eaTimerInt); eaTimerInt = null; }
+  SS = { tab: t, step: 0, ans: {}, started: Date.now() };
+  renderEx(t);
+}
+
+function renderEx(t) {
+  var el = document.getElementById('exContent');
+  if (!el) return;
+  if (t === 0) el.innerHTML = pageCBT();
+  else if (t === 1) el.innerHTML = pageBA();
+  else if (t === 2) el.innerHTML = pageFear();
+  else if (t === 3) el.innerHTML = pageEmotion();
+  else if (t === 4) el.innerHTML = pageBreath();
+  else if (t === 5) el.innerHTML = pageActivity();
+  else el.innerHTML = pageHistory();
+}
+
+/* ─── NAVIGATION ─── */
+function sessNext() {
+  collectInputs();
+  SS.step++;
+  renderEx(SS.tab);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function sessPrev() {
+  collectInputs();
+  if (SS.step > 0) { SS.step--; renderEx(SS.tab); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+}
+function sessGoto(n) {
+  collectInputs();
+  if (typeof n === 'number') { SS.step = n; renderEx(SS.tab); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  else { sessFinish(n); }
+}
+
+// جمع كل قيم الـ inputs قبل الانتقال
+function collectInputs() {
+  var inputs = document.querySelectorAll('[data-key]');
+  inputs.forEach(function(el) {
+    var key = el.getAttribute('data-key');
+    if (el.type === 'range') SS.ans[key] = +el.value;
+    else SS.ans[key] = el.value ? el.value.trim() : '';
+  });
+}
+
+/* ─── CHIP TOGGLE ─── */
+function chipToggle(el, key) {
+  el.classList.toggle('sel');
+  var val = el.getAttribute('data-val') || el.textContent;
+  if (!SS.ans[key]) SS.ans[key] = [];
+  if (el.classList.contains('sel')) {
+    if (SS.ans[key].indexOf(val) < 0) SS.ans[key].push(val);
+  } else {
+    SS.ans[key] = SS.ans[key].filter(function(v) { return v !== val; });
+  }
+}
+function chipSingle(el, key) {
+  el.closest('.chips').querySelectorAll('.chip').forEach(function(c) { c.classList.remove('sel'); });
+  el.classList.add('sel');
+  SS.ans[key] = el.getAttribute('data-val') || el.textContent;
+}
+
+/* ─── HELPERS ─── */
+function pct(step, total) { return Math.round((step / total) * 100); }
+function progBar(step, total) {
+  return '<div class="sp-bar"><div class="sp-fill" style="width:' + pct(step, total) + '%"></div></div>';
+}
+function stepLabel(cur, total) { return '<div class="sp-label">الخطوة ' + cur + ' من ' + total + '</div>'; }
+function navBtns(backFn, nextFn, nextLabel) {
+  var back = backFn ? '<button class="btn btn-ghost" onclick="' + backFn + '">→ السابق</button>' : '';
+  var fwd = '<button class="btn btn-primary" onclick="' + nextFn + '">' + (nextLabel || 'التالي ←') + '</button>';
+  return '<div class="snav">' + back + fwd + '</div>';
+}
+function card(title, body) { return '<div class="card"><div class="card-title">' + title + '</div>' + body + '</div>'; }
+function hint(txt) { return '<div class="shint">' + txt + '</div>'; }
+function recalled(label, val) {
+  if (!val) return '';
+  return '<div class="srecall"><span>' + label + '</span><strong>' + val + '</strong></div>';
+}
+function sliderUI(key, min, max, val, label, leftLbl, rightLbl) {
+  var v = SS.ans[key] !== undefined ? SS.ans[key] : val;
+  return '<div class="sslider-wrap"><div class="sslider-label">' + label + '</div>' +
+    '<div class="sslider-row"><div class="sslider-val" id="sv_' + key + '">' + v + '</div>' +
+    '<input type="range" min="' + min + '" max="' + max + '" value="' + v + '" data-key="' + key + '" ' +
+    'oninput="document.getElementById(\'sv_' + key + '\').textContent=this.value;SS.ans[\'' + key + '\']=+this.value"></div>' +
+    '<div class="sslider-lbls"><span>' + leftLbl + '</span><span>' + rightLbl + '</span></div></div>';
+}
+function chips(key, options, multi) {
+  var fn = multi ? 'chipToggle(this,\'' + key + '\')' : 'chipSingle(this,\'' + key + '\')';
+  var selected = SS.ans[key] || (multi ? [] : '');
+  return '<div class="chips">' + options.map(function(o) {
+    var isSel = multi ? (selected.indexOf(o) >= 0) : (selected === o);
+    return '<div class="chip' + (isSel ? ' sel' : '') + '" data-val="' + o + '" onclick="' + fn + '">' + o + '</div>';
+  }).join('') + '</div>';
+}
+function diff(before, after, unit, lowerBetter) {
+  if (before == null || after == null) return '';
+  var d = after - before;
+  var good = lowerBetter ? d <= 0 : d >= 0;
+  var sign = d > 0 ? '+' : '';
+  return '<div class="sdiff ' + (good ? 'pos' : 'neg') + '">' + sign + d + ' ' + (unit || '') + '</div>';
+}
+
+/* ══════════════════════
+   ١. جلسة CBT
+══════════════════════ */
+function pageCBT() {
+  var s = SS.step;
+  if (s === 0) return card('🧠 جلسة تحدي الأفكار — سجل الأفكار 7 خطوات',
+    '<div class="ssource">المصدر: العقل قبل المزاج — ف.8-9 (Greenberger & Padesky)</div>' +
+    '<p class="sdesc">سجل أفكارك التلقائية وتحدّها بالأدلة. خصص 15-20 دقيقة في مكان هادئ.</p>' +
+    '<div class="ssteps-list">' +
+    ['الموقف','المشاعر','الفكرة الساخنة','دليل مع','دليل ضد','الفكرة البديلة','إعادة التقييم'].map(function(s,i){
+      return '<div class="sstep-item"><span class="ssi-num">'+(i+1)+'</span><span>'+s+'</span></div>';
+    }).join('') + '</div>' +
+    '<button class="btn btn-primary btn-full" onclick="sessNext()">ابدأ الجلسة →</button>'
+  );
+
+  if (s === 1) return card('📍 الخطوة 1 من 7 — الموقف',
+    progBar(1,7) + stepLabel(1,7) +
+    '<p class="sq">ما الموقف أو الحدث الذي تريد العمل عليه؟</p>' +
+    hint('أجب بدقة: متى؟ أين؟ مع من؟ ماذا حدث؟') +
+    '<textarea class="inp" data-key="situation" placeholder="مثال: في اجتماع اليوم قال مديري أن التقرير يحتاج مراجعة أمام الكل...">' + (SS.ans.situation||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 2) return card('💭 الخطوة 2 من 7 — المشاعر',
+    progBar(2,7) + stepLabel(2,7) +
+    '<p class="sq">ما المشاعر التي شعرت بها؟ اختر وقيّم الشدة</p>' +
+    chips('emotions', ['حزن','قلق','غضب','خجل','إحباط','وحدة','خوف','ذنب'], true) +
+    '<textarea class="inp mt8" data-key="emotionsText" placeholder="قيّم شدة كل شعور: حزن 70%، قلق 80%...">' + (SS.ans.emotionsText||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 3) return card('🔥 الخطوة 3 من 7 — الفكرة الساخنة',
+    progBar(3,7) + stepLabel(3,7) +
+    '<p class="sq">ما الفكرة التلقائية الساخنة؟</p>' +
+    hint('الفكرة الأشد تأثيراً في مزاجك — اكتبها كما جاءت بالضبط، لا تصحّحها') +
+    '<textarea class="inp" data-key="hotThought" placeholder="مثال: أنا غير كفء وكل الناس يعرفون ذلك...">' + (SS.ans.hotThought||'') + '</textarea>' +
+    sliderUI('hotBeliefPre', 0, 100, 50, 'كم تؤمن بهذه الفكرة الآن؟ (0-100%)', '0%', '100%') +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 4) return card('⚖️ الخطوة 4 من 7 — دليل مع الفكرة',
+    progBar(4,7) + stepLabel(4,7) +
+    '<p class="sq">ما الدليل الموضوعي الذي يدعم هذه الفكرة؟</p>' +
+    hint('الدليل = حقائق يمكن لأي شخص ملاحظتها. ليس تفسيرات أو مشاعر.') +
+    recalled('الفكرة', SS.ans.hotThought) +
+    '<textarea class="inp" data-key="evidencePro" placeholder="اكتب كل دليل في سطر...">' + (SS.ans.evidencePro||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 5) return card('⚖️ الخطوة 5 من 7 — دليل ضد الفكرة',
+    progBar(5,7) + stepLabel(5,7) +
+    '<p class="sq">ما الدليل الذي يعارض هذه الفكرة؟</p>' +
+    hint('أسئلة مساعدة: هل مررت بمواقف مشابهة وكانت النتيجة مختلفة؟ ماذا سيقول صديق يعرفك؟ هل هناك أدلة على كفاءتك في مواقف أخرى؟') +
+    recalled('الفكرة', SS.ans.hotThought) +
+    '<textarea class="inp" data-key="evidenceCon" placeholder="اكتب كل دليل معارض في سطر...">' + (SS.ans.evidenceCon||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 6) return card('✨ الخطوة 6 من 7 — الفكرة البديلة',
+    progBar(6,7) + stepLabel(6,7) +
+    '<p class="sq">ما الفكرة البديلة الأكثر توازناً وواقعية؟</p>' +
+    hint('ليست إيجابية مبالغة — بل متوازنة تأخذ الأدلة الجانبين') +
+    '<div class="sevidence-grid">' +
+    '<div class="sev-box bad"><div class="sev-title">دليل مع</div><div class="sev-text">' + (SS.ans.evidencePro||'—') + '</div></div>' +
+    '<div class="sev-box good"><div class="sev-title">دليل ضد</div><div class="sev-text">' + (SS.ans.evidenceCon||'—') + '</div></div>' +
+    '</div>' +
+    '<textarea class="inp" data-key="alternative" placeholder="مثال: المدير لاحظ نقطة واحدة، لكن هذا لا يعني أنني غير كفء...">' + (SS.ans.alternative||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 7) return card('📊 الخطوة 7 من 7 — إعادة التقييم',
+    progBar(7,7) + stepLabel(7,7) +
+    '<p class="sq">أعِد تقييم مشاعرك الآن مقارنة بالبداية</p>' +
+    sliderUI('hotBeliefPost', 0, 100, SS.ans.hotBeliefPre||50, 'كم تؤمن بالفكرة الأصلية الآن؟', '0%', '100%') +
+    diff(SS.ans.hotBeliefPre, SS.ans.hotBeliefPost, '%', true) +
+    '<textarea class="inp mt8" data-key="reflection" placeholder="كيف تشعر الآن مقارنة ببداية الجلسة؟">' + (SS.ans.reflection||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessGoto(\'done-cbt\')', '💾 أنهِ الجلسة')
+  );
+
+  return card('✅ انتهت الجلسة', '<p>جلسة CBT مكتملة</p><button class="btn btn-primary btn-full" onclick="switchEx(0)">جلسة جديدة</button>');
+}
+
+/* ══════════════════════
+   ٢. تنشيط سلوكي
+══════════════════════ */
+function pageBA() {
+  var s = SS.step;
+  if (s === 0) return card('⚡ جلسة التنشيط السلوكي',
+    '<div class="ssource">المصدر: Barlow Clinical Handbook Ch.8 — Behavioral Activation</div>' +
+    '<p class="sdesc">الاكتئاب يجعلك تنسحب من الحياة والانسحاب يُعمّق الاكتئاب. هذه الجلسة تكسر الحلقة.</p>' +
+    '<div class="sinfo-box">' +
+    [['A','Assess — اقتراب أم تجنب؟'],['C','Choose — اختر سلوكاً مختلفاً'],['T','Try — جرّب فعلاً'],['I','Integrate — أعطه فرصة عادلة'],['O','Observe — راقب النتيجة'],['N','Never give up — لا تستسلم']].map(function(r){
+      return '<div class="sinfo-row"><span class="sinfo-ico">'+r[0]+'</span><span>'+r[1]+'</span></div>';
+    }).join('') + '</div>' +
+    '<button class="btn btn-primary btn-full" onclick="sessNext()">ابدأ الجلسة →</button>'
+  );
+
+  if (s === 1) return card('📊 الخطوة 1 من 6 — المزاج الآن',
+    progBar(1,6) + stepLabel(1,6) +
+    '<p class="sq">كيف مزاجك الآن قبل الجلسة؟</p>' +
+    sliderUI('moodPre', 1, 10, 5, 'المزاج الآن (1-10)', '1 سيء', '10 ممتاز') +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 2) return card('🔍 الخطوة 2 من 6 — رصد الانسحاب',
+    progBar(2,6) + stepLabel(2,6) +
+    '<p class="sq">ما الأنشطة التي توقفت عنها مؤخراً؟</p>' +
+    hint('الاكتئاب يسرق الأنشطة واحدة تلو الأخرى') +
+    chips('stopped', ['التواصل مع الأصدقاء','ممارسة الرياضة','هواية كنت تحبها','الخروج من المنزل','القراءة أو التعلم','الاعتناء بنفسك','تناول الطعام بانتظام'], true) +
+    '<textarea class="inp mt8" data-key="stoppedOther" placeholder="أضف أنشطة أخرى...">' + (SS.ans.stoppedOther||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 3) return card('🎯 الخطوة 3 من 6 — اختر نشاطاً',
+    progBar(3,6) + stepLabel(3,6) +
+    '<p class="sq">اختر نشاطاً واحداً صغيراً للأسبوع القادم</p>' +
+    hint('قاعدة Barlow: ابدأ بالأسهل ليس الأهم. النجاح المبكر يبني الزخم.') +
+    '<div class="sexamples"><div class="sex-title">أمثلة مناسبة:</div>' +
+    ['المشي 10 دقائق غداً الساعة 6م','الاتصال بصديق 5 دقائق','قراءة صفحة واحدة قبل النوم','تحضير كوب شاي والجلوس بهدوء'].map(function(e){
+      return '<div class="sex-item" onclick="document.querySelector(\'[data-key=chosenActivity]\').value=\''+e+'\';SS.ans.chosenActivity=\''+e+'\'">'+e+'</div>';
+    }).join('') + '</div>' +
+    '<input class="inp mt8" type="text" data-key="chosenActivity" placeholder="اكتب نشاطك المختار..." value="' + (SS.ans.chosenActivity||'') + '">' +
+    sliderUI('expectedPleasure', 0, 10, 5, 'المتعة المتوقعة (0-10)', '0', '10') +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 4) return card('🚧 الخطوة 4 من 6 — العوائق',
+    progBar(4,6) + stepLabel(4,6) +
+    '<p class="sq">ما العوائق المحتملة وكيف ستتعامل معها؟</p>' +
+    hint('التخطيط للعوائق مسبقاً يرفع نسبة الإنجاز بشكل كبير') +
+    recalled('النشاط', SS.ans.chosenActivity) +
+    '<textarea class="inp" data-key="obstacles" placeholder="العائق: لن أشعر برغبة&#10;الحل: سأبدأ فور انتهاء هذه الجلسة بدون انتظار&#10;&#10;العائق: قد أنسى&#10;الحل: سأضع تنبيهاً الآن">' + (SS.ans.obstacles||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 5) return card('✅ الخطوة 5 من 6 — ما بعد النشاط',
+    progBar(5,6) + stepLabel(5,6) +
+    '<p class="sq">هل قمت بالنشاط؟ كيف كانت التجربة؟</p>' +
+    recalled('النشاط المختار', SS.ans.chosenActivity) +
+    chips('didActivity', ['نعم أكملته','نعم جزئياً','لا لم أتمكن'], false) +
+    sliderUI('actualPleasure', 0, 10, 5, 'المتعة الفعلية (0-10)', '0', '10') +
+    diff(SS.ans.expectedPleasure, SS.ans.actualPleasure, 'نقطة', false) +
+    '<textarea class="inp mt8" data-key="activityReflection" placeholder="ماذا لاحظت؟">' + (SS.ans.activityReflection||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 6) return card('📊 الخطوة 6 من 6 — ختام',
+    progBar(6,6) + stepLabel(6,6) +
+    sliderUI('moodPost', 1, 10, 5, 'مزاجك الآن بعد الجلسة (1-10)', '1 سيء', '10 ممتاز') +
+    diff(SS.ans.moodPre, SS.ans.moodPost, 'نقطة', false) +
+    '<div class="sinsight">💡 Barlow: "التحفيز يتبع الفعل، لا يسبقه. الانتظار حتى تشعر برغبة هو الفخ الأكبر."</div>' +
+    navBtns('sessPrev()', 'sessGoto(\'done-ba\')', '💾 أنهِ الجلسة')
+  );
+
+  return card('✅ انتهت الجلسة', '<button class="btn btn-primary btn-full" onclick="switchEx(1)">جلسة جديدة</button>');
+}
+
+/* ══════════════════════
+   ٣. سلم الخوف
+══════════════════════ */
+function pageFear() {
+  var s = SS.step;
+  if (!SS.ans.ladder) SS.ans.ladder = [];
+
+  if (s === 0) return card('😨 جلسة سلم الخوف',
+    '<div class="ssource">المصدر: Barlow Clinical Handbook Ch.14 — Anxiety</div>' +
+    '<p class="sdesc">القلق يتغذى على التجنب. سلم الخوف يعلمك المواجهة التدريجية.</p>' +
+    '<div class="sinfo-box">' +
+    [['📐','صنّف المواقف من 0 إلى 100'],['🪜','ابدأ بدرجة 20-30، لا تقفز للأعلى'],['⏱️','ابقَ في الموقف حتى ينخفض القلق تلقائياً'],['🔄','كرر حتى يهدأ، ثم ارتقِ درجة']].map(function(r){
+      return '<div class="sinfo-row"><span class="sinfo-ico2">'+r[0]+'</span><span>'+r[1]+'</span></div>';
+    }).join('') + '</div>' +
+    '<button class="btn btn-primary btn-full" onclick="sessNext()">ابدأ الجلسة →</button>'
+  );
+
+  if (s === 1) return card('🎯 الخطوة 1 من 5 — مجال الخوف',
+    progBar(1,5) + stepLabel(1,5) +
+    '<p class="sq">ما المجال الذي تريد بناء سلم الخوف له؟</p>' +
+    chips('fearType', ['القلق الاجتماعي','الخوف من الفشل','الخوف من الرفض','قلق الأداء','القلق العام','قلق الصحة'], false) +
+    '<input class="inp mt8" type="text" data-key="fearTypeCustom" placeholder="أو اكتب مجالاً محدداً..." value="' + (SS.ans.fearTypeCustom||'') + '">' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 2) {
+    var ladderItems = SS.ans.ladder.map(function(item, i) {
+      var col = item.score <= 25 ? 'var(--emerald)' : item.score <= 50 ? 'var(--amber)' : item.score <= 75 ? '#fb923c' : 'var(--rose)';
+      return '<div class="sladder-item"><div class="sladder-score" style="background:' + col + '">' + item.score + '</div>' +
+        '<div class="sladder-text">' + item.situation + '</div>' +
+        '<div class="sladder-del" onclick="removeLadder(' + i + ')">✕</div></div>';
+    }).join('');
+    return card('🪜 الخطوة 2 من 5 — بناء السلم',
+      progBar(2,5) + stepLabel(2,5) +
+      '<p class="sq">أضف مواقف مثيرة للقلق وصنّف كل منها (0-100)</p>' +
+      hint('أضف على الأقل 3 مواقف من مستويات مختلفة') +
+      (ladderItems ? '<div class="sladder-list">' + ladderItems + '</div>' : '') +
+      '<div class="sladder-add">' +
+      '<input class="inp" id="lsit" placeholder="الموقف...">' +
+      '<input class="inp" id="lsc" type="number" min="0" max="100" placeholder="0-100" style="width:90px;text-align:center">' +
+      '<button class="btn btn-primary btn-sm" onclick="addLadder()">+</button></div>' +
+      navBtns('sessPrev()', 'sessNext()')
+    );
+  }
+
+  if (s === 3) {
+    var sorted = SS.ans.ladder.slice().sort(function(a,b){return a.score-b.score;});
+    var items = sorted.map(function(item) {
+      var col = item.score <= 25 ? 'var(--emerald)' : item.score <= 50 ? 'var(--amber)' : item.score <= 75 ? '#fb923c' : 'var(--rose)';
+      var ideal = item.score >= 20 && item.score <= 45 ? '<span class="sideal">✓ مثالي للبدء</span>' : '';
+      return '<div class="sladder-item sel-able ' + (SS.ans.firstStep === item.situation ? 'selected' : '') + '" onclick="selectStep(\'' + item.situation.replace(/'/g,"\\'") + '\')">' +
+        '<div class="sladder-score" style="background:' + col + '">' + item.score + '</div>' +
+        '<div class="sladder-text">' + item.situation + ideal + '</div></div>';
+    }).join('');
+    return card('🎯 الخطوة 3 من 5 — الخطوة الأولى',
+      progBar(3,5) + stepLabel(3,5) +
+      '<p class="sq">اختر الموقف الأول للمواجهة (20-40 مثالي)</p>' +
+      '<div class="sladder-list">' + (items || '<p style="color:var(--soft)">لم تُضف مواقف بعد</p>') + '</div>' +
+      navBtns('sessPrev()', 'sessNext()')
+    );
+  }
+
+  if (s === 4) return card('📅 الخطوة 4 من 5 — خطة التعرض',
+    progBar(4,5) + stepLabel(4,5) +
+    '<p class="sq">خطط للتعرض بالتفصيل</p>' +
+    recalled('الموقف', SS.ans.firstStep) +
+    '<div class="field"><label>متى بالضبط؟</label><input class="inp" type="text" data-key="expWhen" placeholder="مثال: غداً الساعة 6م" value="' + (SS.ans.expWhen||'') + '"></div>' +
+    '<div class="field"><label>ماذا ستفعل تحديداً؟</label><textarea class="inp" data-key="expWhat" placeholder="صِف الخطوة بدقة...">' + (SS.ans.expWhat||'') + '</textarea></div>' +
+    sliderUI('expAnxExpected', 0, 100, 50, 'القلق المتوقع (0-100)', '0', '100') +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 5) return card('✅ الخطوة 5 من 5 — بعد التعرض',
+    progBar(5,5) + stepLabel(5,5) +
+    '<p class="sq">كيف كان التعرض؟</p>' +
+    recalled('الموقف', SS.ans.firstStep) +
+    sliderUI('expAnxActual', 0, 100, 50, 'أعلى قلق وصلت إليه (0-100)', '0', '100') +
+    sliderUI('expAnxEnd', 0, 100, 20, 'القلق عند المغادرة (0-100)', '0', '100') +
+    diff(SS.ans.expAnxExpected, SS.ans.expAnxActual, '', true) +
+    '<textarea class="inp mt8" data-key="expLearning" placeholder="ماذا تعلمت؟">' + (SS.ans.expLearning||'') + '</textarea>' +
+    '<div class="sinsight">💡 Barlow: إذا انخفض القلق ولو قليلاً فقد نجح التعرض — الدماغ بدأ يتعلم أن الموقف آمن.</div>' +
+    navBtns('sessPrev()', 'sessGoto(\'done-fl\')', '💾 أنهِ الجلسة')
+  );
+
+  return card('✅ انتهت الجلسة', '<button class="btn btn-primary btn-full" onclick="switchEx(2)">جلسة جديدة</button>');
+}
+
+function addLadder() {
+  var sit = document.getElementById('lsit');
+  var sc = document.getElementById('lsc');
+  if (!sit||!sc||!sit.value.trim()||isNaN(parseInt(sc.value))) { toast('⚠️ أدخل الموقف والدرجة'); return; }
+  if (!SS.ans.ladder) SS.ans.ladder = [];
+  SS.ans.ladder.push({ situation: sit.value.trim(), score: parseInt(sc.value) });
+  SS.ans.ladder.sort(function(a,b){return a.score-b.score;});
+  renderEx(SS.tab);
+}
+function removeLadder(i) {
+  SS.ans.ladder.splice(i,1);
+  renderEx(SS.tab);
+}
+function selectStep(sit) {
+  SS.ans.firstStep = sit;
+  document.querySelectorAll('.sladder-item.sel-able').forEach(function(el){el.classList.remove('selected');});
+  event.currentTarget.classList.add('selected');
+}
+
+/* ══════════════════════
+   ٤. قبول المشاعر
+══════════════════════ */
+function pageEmotion() {
+  var s = SS.step;
+
+  if (s === 0) return card('💚 جلسة قبول المشاعر',
+    '<div class="ssource">المصدر: Barlow Unified Protocol Ch.5 — Emotion Acceptance</div>' +
+    '<p class="sdesc">المشاعر ليست عدواً. هذه الجلسة تعلمك مراقبة مشاعرك بدون حكم بدلاً من الهروب منها.</p>' +
+    '<div class="sinfo-box">' +
+    [['👁','راقب بدون حكم: "ألاحظ أنني أشعر بـ..."'],['🌊','المشاعر موجات — تأتي وتذهب'],['🚫','التجنب يُعمّق المشاعر — البقاء يُضعفها'],['🔄','غيّر علاقتك بالمشاعر، لا المشاعر نفسها']].map(function(r){
+      return '<div class="sinfo-row"><span class="sinfo-ico2">'+r[0]+'</span><span>'+r[1]+'</span></div>';
+    }).join('') + '</div>' +
+    '<button class="btn btn-primary btn-full" onclick="sessNext()">ابدأ الجلسة →</button>'
+  );
+
+  if (s === 1) return card('💭 الخطوة 1 من 5 — تحديد المشعر',
+    progBar(1,5) + stepLabel(1,5) +
+    '<p class="sq">ما الشعور الذي تجد صعوبة في تقبّله؟</p>' +
+    chips('targetEmotion', ['القلق','الحزن','الغضب','الخجل','الفراغ','الوحدة','الإحباط','الخوف','الذنب'], false) +
+    sliderUI('intensityPre', 0, 10, 5, 'شدة هذا الشعور الآن (0-10)', '0', '10') +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 2) return card('🔍 الخطوة 2 من 5 — كيف تتجنبه؟',
+    progBar(2,5) + stepLabel(2,5) +
+    '<p class="sq">كيف تتجنب هذا الشعور عادةً؟ (Barlow UP Table 5.1)</p>' +
+    chips('avoidance', ['التشتيت بالهاتف','مشاهدة التلفاز','القراءة المفرطة','طمأنة الذات الزائدة','التفكير في "ماذا لو"','الاجترار والتفكير المتكرر','تجنب المواقف المثيرة','طلب طمأنة الآخرين','التحكم بالتنفس','تجنب القهوة أو المنبهات'], true) +
+    '<textarea class="inp mt8" data-key="avoidanceOther" placeholder="طرق تجنب أخرى...">' + (SS.ans.avoidanceOther||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 3) return card('🧘 الخطوة 3 من 5 — تمرين المراقبة (3 دقائق)',
+    progBar(3,5) + stepLabel(3,5) +
+    '<p class="sq">راقب الشعور بدون حكم</p>' +
+    hint('اجلس بهدوء، لاحظ الشعور في جسمك — أين تحس به؟ لا تحاول تغييره، فقط لاحظه') +
+    '<div style="text-align:center;padding:1rem 0">' +
+    '<div id="eaCirc" class="breath-circle" onclick="startEATimer()" style="margin:0 auto;cursor:pointer"><span id="eaTxt">▶ ابدأ</span></div>' +
+    '<div id="eaPhase" style="font-size:.82rem;color:var(--text2);margin-top:.5rem">اضغط لبدء مؤقت 3 دقائق</div></div>' +
+    '<div class="shint mt8"><b>أسئلة للمساعدة:</b><br>• أين تشعر بـ "' + (SS.ans.targetEmotion||'هذا الشعور') + '" في جسمك؟<br>• هل يتغير بمرور الوقت أم ثابت؟<br>• قيّمه الآن: هل يزيد؟ يقل؟</div>' +
+    '<textarea class="inp mt8" data-key="observationNotes" placeholder="سجّل ملاحظاتك أثناء أو بعد التمرين...">' + (SS.ans.observationNotes||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 4) return card('🔄 الخطوة 4 من 5 — السلوك المعاكس',
+    progBar(4,5) + stepLabel(4,5) +
+    '<p class="sq">ما السلوك المعاكس لطريقة تجنبك؟</p>' +
+    hint('Barlow UP: بدّل السلوك المدفوع بالمشاعر بعكسه') +
+    '<div class="sedb-table">' +
+    [['الانسحاب الاجتماعي','التواصل الفعّال والاقتراب'],['مغادرة المواقف','البقاء حتى ينخفض القلق'],['التأجيل والمماطلة','خطوة صغيرة فورية'],['طلب الطمأنينة المفرط','تقبّل الغموض بوعي'],['فرط اليقظة','التركيز على المهمة الحالية']].map(function(r){
+      return '<div class="sedb-row"><div class="sedb-from">😔 '+r[0]+'</div><div class="sedb-arr">→</div><div class="sedb-to">✨ '+r[1]+'</div></div>';
+    }).join('') + '</div>' +
+    '<textarea class="inp mt8" data-key="oppositeAction" placeholder="ما السلوك المعاكس الذي ستجربه؟ كن محدداً...">' + (SS.ans.oppositeAction||'') + '</textarea>' +
+    navBtns('sessPrev()', 'sessNext()')
+  );
+
+  if (s === 5) return card('📊 الخطوة 5 من 5 — ختام',
+    progBar(5,5) + stepLabel(5,5) +
+    sliderUI('intensityPost', 0, 10, 5, 'شدة "' + (SS.ans.targetEmotion||'الشعور') + '" الآن (0-10)', '0', '10') +
+    diff(SS.ans.intensityPre, SS.ans.intensityPost, 'نقطة', true) +
+    '<textarea class="inp mt8" data-key="keyLearning" placeholder="ما أهم شيء تعلمته؟">' + (SS.ans.keyLearning||'') + '</textarea>' +
+    '<div class="sinsight">💡 الهدف ليس إزالة المشاعر — بل تغيير علاقتك بها.</div>' +
+    navBtns('sessPrev()', 'sessGoto(\'done-ea\')', '💾 أنهِ الجلسة')
+  );
+
+  return card('✅ انتهت الجلسة', '<button class="btn btn-primary btn-full" onclick="switchEx(3)">جلسة جديدة</button>');
+}
+
+function startEATimer() {
+  if (eaTimerInt) { clearInterval(eaTimerInt); eaTimerInt = null; document.getElementById('eaTxt').textContent = '▶ ابدأ'; document.getElementById('eaCirc').className='breath-circle'; return; }
+  var sec = 180;
+  document.getElementById('eaCirc').className = 'breath-circle inhale';
+  eaTimerInt = setInterval(function() {
+    sec--;
+    var m = Math.floor(sec/60), s2 = sec % 60;
+    var txt = document.getElementById('eaTxt');
+    var ph = document.getElementById('eaPhase');
+    if (txt) txt.textContent = m + ':' + (s2 < 10 ? '0' : '') + s2;
+    if (ph) ph.textContent = sec > 120 ? 'راقب الشعور في جسمك...' : sec > 60 ? 'هل يتغير؟' : 'الصمود الآن يُضعف المشعر';
+    if (sec <= 0) { clearInterval(eaTimerInt); eaTimerInt = null; if(txt) txt.textContent = '✓'; if(ph) ph.textContent = 'انتهى التمرين — سجّل ملاحظاتك'; document.getElementById('eaCirc').className='breath-circle'; }
+  }, 1000);
+}
+
+/* ══════════════════════
+   SESSION FINISH
+══════════════════════ */
+function sessFinish(type) {
+  collectInputs();
+  var dur = Math.round((Date.now() - SS.started) / 60000);
+  var session = { type: type, ans: Object.assign({}, SS.ans), dur: dur, date: ds(), ts: Date.now() };
+  var sessions = S.get('sessions', []);
+  sessions.push(session);
+  S.set('sessions', sessions);
+
+  var titles = { 'done-cbt': 'جلسة CBT تحدي الأفكار', 'done-ba': 'جلسة التنشيط السلوكي', 'done-fl': 'جلسة سلم الخوف', 'done-ea': 'جلسة قبول المشاعر' };
+  var summaryHtml = buildSummary(type);
+  var el = document.getElementById('exContent');
+  el.innerHTML = '<div class="scomplete">' +
+    '<div class="scomplete-ico">🎉</div>' +
+    '<div class="scomplete-title">أحسنت!</div>' +
+    '<div class="scomplete-sub">أكملت ' + (titles[type]||'الجلسة') + ' في ' + dur + ' دقيقة</div>' +
+    summaryHtml +
+    '<div class="snav mt8">' +
+    '<button class="btn btn-primary" style="flex:2" onclick="switchEx(6)">📜 سجل الجلسات</button>' +
+    '<button class="btn btn-ghost" style="flex:1" onclick="switchEx(SS.tab)">🔄 جديدة</button>' +
+    '</div></div>';
+}
+
+function buildSummary(type) {
+  var a = SS.ans;
+  var rows = [];
+  if (type === 'done-cbt') {
+    if (a.situation) rows.push(['الموقف', a.situation.slice(0,60)+'...']);
+    if (a.hotThought) rows.push(['الفكرة الساخنة', a.hotThought.slice(0,60)+'...']);
+    if (a.alternative) rows.push(['الفكرة البديلة', a.alternative.slice(0,60)+'...']);
+    if (a.hotBeliefPre != null && a.hotBeliefPost != null) rows.push(['تغير الإيمان', a.hotBeliefPre + '% → ' + a.hotBeliefPost + '%']);
+  } else if (type === 'done-ba') {
+    if (a.chosenActivity) rows.push(['النشاط', a.chosenActivity]);
+    if (a.expectedPleasure != null) rows.push(['متعة متوقعة', a.expectedPleasure + '/10']);
+    if (a.actualPleasure != null) rows.push(['متعة فعلية', a.actualPleasure + '/10']);
+    if (a.moodPre != null && a.moodPost != null) rows.push(['تغير المزاج', a.moodPre + ' → ' + a.moodPost]);
+  } else if (type === 'done-fl') {
+    if (a.fearType) rows.push(['مجال الخوف', a.fearType]);
+    if (a.ladder) rows.push(['خطوات السلم', a.ladder.length + ' موقف']);
+    if (a.firstStep) rows.push(['أول خطوة', a.firstStep]);
+    if (a.expAnxExpected != null && a.expAnxActual != null) rows.push(['قلق متوقع → فعلي', a.expAnxExpected + ' → ' + a.expAnxActual]);
+  } else if (type === 'done-ea') {
+    if (a.targetEmotion) rows.push(['المشعر', a.targetEmotion]);
+    if (a.intensityPre != null && a.intensityPost != null) rows.push(['الشدة قبل → بعد', a.intensityPre + ' → ' + a.intensityPost]);
+    if (a.oppositeAction) rows.push(['السلوك المعاكس', a.oppositeAction.slice(0,60)]);
+  }
+  if (!rows.length) return '';
+  return '<div class="ssummary">' + rows.map(function(r) {
+    return '<div class="ssumm-row"><span>' + r[0] + '</span><strong>' + r[1] + '</strong></div>';
+  }).join('') + '</div>';
+}
+
+/* ══════════════════════
+   ٥. تنفس
+══════════════════════ */
+function pageBreath() {
+  var bl = S.get('breathL', []);
+  return card('🫁 تنفس 4-7-8',
+    '<p style="text-align:center;font-size:.83rem;color:var(--text2)">شهيق 4 ثوانٍ • احتباس 7 ثوانٍ • زفير 8 ثوانٍ</p>' +
+    '<div id="bPhTx" style="text-align:center;font-size:.82rem;color:var(--text2);min-height:1.3em;margin-top:.5rem">اضغط الدائرة للبدء</div>' +
+    '<div class="breath-circle" id="bCirc" onclick="toggleBreath()"><span id="bCD"></span></div>' +
+    '<div id="bLog" style="text-align:center;font-size:.78rem;color:var(--text2);min-height:1em"></div>' +
+    (bl.length ? '<div class="divider"></div>' + bl.slice(-5).reverse().map(function(l){
+      return '<div style="display:flex;justify-content:space-between;font-size:.8rem;padding:.4rem 0;border-bottom:1px solid var(--border)"><span>'+fmtDate(l.date)+'</span><span style="color:var(--teal)">'+l.dur+' ثانية</span></div>';
+    }).join('') : '')
+  );
+}
+
+/* ══════════════════════
+   ٦. جدول نشاط
+══════════════════════ */
+function pageActivity() {
+  var e = S.get('actL', []);
+  return card('📅 جدول الأنشطة — منهج Barlow BA',
+    '<div class="field"><label>النشاط</label><input class="inp" id="aN" placeholder="مثال: المشي، القراءة..."></div>' +
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:.9rem">' +
+    '<div style="flex:1;min-width:120px"><label style="font-size:.78rem;color:var(--text2);font-weight:600;display:block;margin-bottom:4px">المتعة المتوقعة</label><div style="display:flex;align-items:center;gap:8px"><div class="slider-val" id="aEV" style="font-size:.78rem;width:28px;height:28px;min-width:28px">5</div><input type="range" min="1" max="10" value="5" style="flex:1" oninput="document.getElementById(\'aEV\').textContent=this.value" id="aE"></div></div>' +
+    '<div style="flex:1;min-width:120px"><label style="font-size:.78rem;color:var(--text2);font-weight:600;display:block;margin-bottom:4px">المتعة الفعلية</label><div style="display:flex;align-items:center;gap:8px"><div class="slider-val" id="aAV" style="font-size:.78rem;width:28px;height:28px;min-width:28px">5</div><input type="range" min="1" max="10" value="5" style="flex:1" oninput="document.getElementById(\'aAV\').textContent=this.value" id="aA"></div></div></div>' +
+    '<button class="btn btn-primary btn-sm" onclick="saveAct()">💾 حفظ</button>' +
+    (e.length ? '<div class="divider"></div>' + e.slice(-8).reverse().map(function(a){
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.82rem"><span>'+a.name+'</span><span style="color:var(--text2)">متوقع:<b>'+a.exp+'</b></span><span style="color:var(--teal)">فعلي:<b>'+a.act+'</b></span></div>';
+    }).join('') : '')
+  );
+}
+
+/* ══════════════════════
+   ٧. سجل الجلسات
+══════════════════════ */
+function pageHistory() {
+  var sessions = S.get('sessions', []);
+  var typeNames = { 'done-cbt': '🧠 CBT', 'done-ba': '⚡ تنشيط', 'done-fl': '😨 سلم الخوف', 'done-ea': '💚 قبول المشاعر' };
+  var typeColors = { 'done-cbt': 'var(--indigo)', 'done-ba': 'var(--teal)', 'done-fl': 'var(--amber)', 'done-ea': 'var(--emerald)' };
+  if (!sessions.length) return '<div class="empty-state"><div class="empty-ico">📜</div>لم تكمل أي جلسة بعد</div>';
+  return card('📜 سجل الجلسات (' + sessions.length + ')',
+    sessions.slice(-15).reverse().map(function(s, idx) {
+      var realIdx = sessions.length - 1 - idx;
+      return '<div style="padding:.7rem 0;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start">' +
+        '<div style="width:10px;height:10px;border-radius:50%;background:' + (typeColors[s.type]||'var(--soft)') + ';flex-shrink:0;margin-top:5px"></div>' +
+        '<div style="flex:1"><div style="font-size:.83rem;font-weight:700;color:var(--text)">' + (typeNames[s.type]||s.type) + '</div>' +
+        '<div style="font-size:.72rem;color:var(--soft)">' + fmtDate(s.date) + ' • ' + (s.dur||0) + ' دقيقة</div>' +
+        (s.ans.hotThought ? '<div style="font-size:.75rem;color:var(--text2);margin-top:2px">💭 ' + s.ans.hotThought.slice(0,50) + '...</div>' : '') +
+        (s.ans.chosenActivity ? '<div style="font-size:.75rem;color:var(--text2);margin-top:2px">⚡ ' + s.ans.chosenActivity + '</div>' : '') +
+        '</div>' +
+        '<button class="btn btn-ghost btn-sm" style="font-size:.7rem;flex-shrink:0" onclick="exportSess(' + realIdx + ')">📤</button>' +
+        '</div>';
+    }).join('')
+  );
+}
+
+function exportSess(idx) {
+  var sessions = S.get('sessions', []);
+  var s = sessions[idx];
+  if (!s) return;
+  var names = { 'done-cbt': 'جلسة CBT', 'done-ba': 'جلسة التنشيط', 'done-fl': 'سلم الخوف', 'done-ea': 'قبول المشاعر' };
+  var md = '# ' + (names[s.type]||s.type) + '\n> التاريخ: ' + s.date + ' | المدة: ' + (s.dur||0) + ' دقيقة\n\n';
+  Object.entries(s.ans).forEach(function(kv) {
+    var k = kv[0], v = kv[1];
+    if (v && typeof v === 'string' && v.trim()) md += '**' + k + ':** ' + v + '\n\n';
+    else if (Array.isArray(v) && v.length) md += '**' + k + ':** ' + v.join('، ') + '\n\n';
+  });
+  md += '\n---\n## 🤖 تعليمات Claude\nحلّل هذه الجلسة وقدّم تعليقاً سريرياً وتوصيات للجلسة القادمة.';
+  var blob = new Blob([md], {type:'text/markdown;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = Object.assign(document.createElement('a'), {href:url, download:'session_'+s.date+'.md'});
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast('✅ تم التصدير');
+}
+
+/* ══════════════════════
+   SAVE HELPERS
+══════════════════════ */
+function saveCBT() {
+  var e = { sit: document.getElementById('cS')?.value.trim(), auto: document.getElementById('cA')?.value.trim(), pro: document.getElementById('cP')?.value.trim(), con: document.getElementById('cC')?.value.trim(), alt: document.getElementById('cAl')?.value.trim(), date: ds(), ts: Date.now() };
+  if (!e.sit && !e.auto) { toast('⚠️ أدخل الموقف والفكرة'); return; }
+  var es = S.get('cbtE', []); es.push(e); S.set('cbtE', es);
+  toast('✅ تم الحفظ'); switchEx(0);
+}
+function saveAct() {
+  var n = document.getElementById('aN').value.trim();
+  if (!n) { toast('⚠️ أدخل اسم النشاط'); return; }
+  var e = S.get('actL', []);
+  e.push({ name: n, exp: +document.getElementById('aE').value, act: +document.getElementById('aA').value, date: ds(), ts: Date.now() });
+  S.set('actL', e); toast('✅ تم الحفظ'); switchEx(5);
+}
+
+/* ═══════════════════════════════
+   BREATH TOGGLE (4-7-8)
+═══════════════════════════════ */
+function toggleBreath() {
+  if (breathInt) {
+    clearInterval(breathInt);
+    breathInt = null;
+    breathPhase = 'idle';
+    breathStart = null;
+    var circ = document.getElementById('bCirc');
+    var cd = document.getElementById('bCD');
+    var ph = document.getElementById('bPhTx');
+    if (circ) { circ.className = 'breath-circle'; }
+    if (cd) cd.textContent = '';
+    if (ph) ph.textContent = 'اضغط الدائرة للبدء';
+    var log = document.getElementById('bLog');
+    if (log) log.textContent = '';
+    return;
+  }
+  breathStart = Date.now();
+  var cycles = 0;
+  var phase = 'inhale';
+  var phaseTime = 4000;
+  var elapsed = 0;
+  var phaseStart = Date.now();
+
+  function tick() {
+    var now = Date.now();
+    var inPhase = now - phaseStart;
+    var circ = document.getElementById('bCirc');
+    var cd = document.getElementById('bCD');
+    var ph = document.getElementById('bPhTx');
+    if (!circ) { clearInterval(breathInt); breathInt = null; return; }
+
+    var rem = Math.ceil((phaseTime - inPhase) / 1000);
+    if (rem < 0) rem = 0;
+
+    if (phase === 'inhale') {
+      circ.className = 'breath-circle inhale';
+      if (ph) ph.textContent = 'شهيق... (' + rem + 'ث)';
+      if (cd) cd.textContent = rem;
+      if (inPhase >= 4000) { phase = 'hold'; phaseTime = 7000; phaseStart = now; }
+    } else if (phase === 'hold') {
+      circ.className = 'breath-circle inhale';
+      if (ph) ph.textContent = 'احتبس... (' + rem + 'ث)';
+      if (cd) cd.textContent = rem;
+      if (inPhase >= 7000) { phase = 'exhale'; phaseTime = 8000; phaseStart = now; }
+    } else if (phase === 'exhale') {
+      circ.className = 'breath-circle exhale';
+      if (ph) ph.textContent = 'زفير... (' + rem + 'ث)';
+      if (cd) cd.textContent = rem;
+      if (inPhase >= 8000) {
+        cycles++;
+        phase = 'inhale'; phaseTime = 4000; phaseStart = now;
+        var log = document.getElementById('bLog');
+        if (log) log.textContent = 'دورة ' + cycles + ' مكتملة ✓';
+        if (cycles >= 4) {
+          clearInterval(breathInt); breathInt = null;
+          breathPhase = 'idle';
+          circ.className = 'breath-circle';
+          if (ph) ph.textContent = '✅ 4 دورات مكتملة! ممتاز.';
+          if (cd) cd.textContent = '✓';
+          var totalSec = Math.round((Date.now() - breathStart) / 1000);
+          var bl = S.get('breathL', []);
+          bl.push({ date: ds(), dur: totalSec, cycles: cycles, ts: Date.now() });
+          S.set('breathL', bl);
+          toast('✅ تمرين التنفس مكتمل — ' + totalSec + ' ثانية');
+        }
+      }
+    }
+  }
+
+  breathInt = setInterval(tick, 200);
+  tick();
+}
+
+/* ═══════════════════════════════
+   EXPORT REPORT AS MD
+═══════════════════════════════ */
+function exportMD() {
+  var logs = S.get('logs', []);
+  var scHist = S.get('scHist', []);
+  var cbtE = S.get('cbtE', []);
+  var actL = S.get('actL', []);
+  var prof = S.get('profile', {});
+  var now = new Date().toLocaleDateString('ar-EG');
+
+  var md = '# تقرير NafsiLog النفسي\n> التاريخ: ' + now + ' | أيام التسجيل: ' + logs.length + '\n\n';
+
+  if (logs.length) {
+    var moods = logs.map(function(l){return l.mood;});
+    var avgM = (moods.reduce(function(a,b){return a+b;},0)/moods.length).toFixed(1);
+    var sleeps = logs.map(function(l){return l.sleep;}).filter(function(v){return v&&v>0;});
+    var avgS = sleeps.length ? (sleeps.reduce(function(a,b){return a+b;},0)/sleeps.length).toFixed(1) : '—';
+    md += '## 📊 الملخص الإحصائي\n';
+    md += '- متوسط المزاج: **' + avgM + '/10**\n';
+    md += '- متوسط النوم: **' + avgS + ' ساعة**\n';
+    md += '- عدد جلسات CBT: **' + cbtE.length + '**\n';
+    md += '- الأنشطة المسجلة: **' + actL.length + '**\n\n';
+  }
+
+  if (scHist.length) {
+    md += '## 📋 نتائج المقاييس\n';
+    scHist.slice(-6).forEach(function(h) {
+      md += '- ' + h.type.toUpperCase() + ' (' + h.date + '): **' + h.score + '/' + h.max + '**\n';
+    });
+    md += '\n';
+  }
+
+  if (logs.length) {
+    md += '## 📅 آخر 7 تسجيلات\n';
+    logs.slice(-7).reverse().forEach(function(l) {
+      md += '**' + l.date + '** — مزاج: ' + l.mood + '/10';
+      if (l.sleep) md += ' | نوم: ' + l.sleep + 'h';
+      if (l.stressor) md += '\n> ضاغط: ' + l.stressor.slice(0,100);
+      if (l.gratitude) md += '\n> امتنان: ' + l.gratitude.slice(0,100);
+      md += '\n\n';
+    });
+  }
+
+  md += '\n---\n## 🤖 تعليمات Claude\nبناءً على هذه البيانات:\n1. حلّل الحالة النفسية وفق CBT\n2. اقترح خطة عمل 30 يوماً\n3. حدد الأولويات العلاجية\n4. اقترح تعديلات على الروتين اليومي\n';
+
+  var blob = new Blob([md], {type:'text/markdown;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = Object.assign(document.createElement('a'), {href:url, download:'nafsilog_report_'+ds()+'.md'});
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast('✅ تم تصدير التقرير');
+}
+
+
+
+/* ═══════════════════════════════════════════════════════
+   ██████████ REPORT ENGINE — مُغذَّى من "العقل قبل المزاج" ██████████
+   المصدر: Greenberger & Padesky, Mind Over Mood (2nd Ed.)
+   النموذج الخماسي CBT: أفكار ↔ مشاعر ↔ سلوك ↔ جسد ↔ بيئة
+═══════════════════════════════════════════════════════ */
+
+/* ─── KNOWLEDGE BASE من الكتاب ─── */
+
+/* ─── HELPER: كشف أنماط التفكير من نصوص الأفكار المزعجة ─── */
+function detectThoughtPatterns(texts){
+  const detected = new Map();
+  KB.thoughtPatterns.forEach(p=>{
+    let score=0;
+    texts.forEach(t=>{
+      if(!t) return;
+      const tl = t;
+      if(p.id==='all_or_nothing'   && /دائماً|أبداً|كل شيء|لا شيء|فاشل تماماً|مثالي/.test(tl)) score++;
+      if(p.id==='catastrophizing'  && /كارثة|نهاية|مستحيل|لن أستطيع|سيكون سيئاً/.test(tl)) score++;
+      if(p.id==='mind_reading'     && /يعتقد|يظن|يرى فيّ|يكره|لا يهتم/.test(tl)) score++;
+      if(p.id==='fortune_telling'  && /سيفشل|لن ينجح|سوف يكون|أعرف أنه/.test(tl)) score++;
+      if(p.id==='emotional_reason' && /أشعر أنني|شعوري يقول|قلبي يقول/.test(tl)) score++;
+      if(p.id==='should_must'      && /يجب|ينبغي|لازم|من المفروض/.test(tl)) score++;
+      if(p.id==='labeling'         && /أنا فاشل|أنا غبي|أنا عاجز|إنه سيء|هي كذا/.test(tl)) score++;
+      if(p.id==='personalization'  && /بسببي|خطئي|مسؤوليتي|أنا السبب/.test(tl)) score++;
+      if(p.id==='filtering'        && /لا شيء جيد|كل شيء سيء|لم يحدث خير/.test(tl)) score++;
+      if(p.id==='overgeneralize'   && /كل مرة|دائماً يحدث|أبداً لا يتغير/.test(tl)) score++;
+    });
+    if(score>0) detected.set(p.id, {pattern:p, score});
+  });
+  return [...detected.values()].sort((a,b)=>b.score-a.score).slice(0,3);
+}
+
+/* ─── MAIN RENDER ─── */
+function renderReport(){
+  const logs    = S.get('logs',[]);
+  const scHist  = S.get('scHist',[]);
+  const cbtE    = S.get('cbtE',[]);
+  const actL    = S.get('actL',[]);
+  const breathL = S.get('breathL',[]);
+  const prof    = S.get('profile',{});
+  const el      = document.getElementById('reportContent');
+
+  if(logs.length < 3){
+    el.innerHTML=`<div class="empty-state"><div class="empty-ico">🧠</div>
+      <strong style="color:var(--text);display:block;margin-bottom:.5rem">البيانات غير كافية بعد</strong>
+      سجّل على الأقل 3 أيام للحصول على تقريرك النفسي الشامل.
+      <br><br><button class="btn btn-primary btn-sm" onclick="go('daily')">ابدأ التسجيل →</button></div>`;
+    return;
+  }
+
+  /* ── 1. الإحصاءات الخام ── */
+  const moods   = logs.map(l=>l.mood);
+  const avgM    = avg(moods);
+  const sleeps  = logs.map(l=>l.sleep).filter(v=>v!=null&&v>0);
+  const avgS    = sleeps.length ? avg(sleeps) : null;
+  const stresses= logs.map(l=>l.stressLevel).filter(v=>v>0);
+  const avgSt   = stresses.length ? avg(stresses) : null;
+  const moodStd = stdDev(moods);
+
+  // الاتجاه: نصف أول vs نصف ثانٍ
+  const half    = Math.floor(logs.length/2)||1;
+  const moodTrend = avg(logs.slice(half).map(l=>l.mood)) - avg(logs.slice(0,half).map(l=>l.mood));
+
+  // معدلات
+  const gratCount   = logs.filter(l=>l.gratitude?.trim()).length;
+  const gratRate    = Math.round((gratCount/logs.length)*100);
+  const stressDays  = logs.filter(l=>l.stressor?.trim()).length;
+  const stressRate  = Math.round((stressDays/logs.length)*100);
+  const intrusCount = logs.filter(l=>l.intrusive?.trim()).length;
+  const intrusRate  = Math.round((intrusCount/logs.length)*100);
+  const badSleepR   = sleeps.length ? Math.round((sleeps.filter(s=>s<6).length/sleeps.length)*100) : 0;
+
+  // تاجات
+  const tagFreq = {};
+  logs.forEach(l=>(l.tags||[]).forEach(t=>{tagFreq[t]=(tagFreq[t]||0)+1;}));
+  const topTags = Object.entries(tagFreq).sort((a,b)=>b[1]-a[1]).slice(0,4);
+
+  // الأفكار المزعجة للكشف عن الأنماط
+  const intrusTexts = logs.map(l=>l.intrusive).filter(Boolean);
+  const cbtTexts    = cbtE.map(e=>e.auto).filter(Boolean);
+  const allThoughts = [...intrusTexts, ...cbtTexts];
+  const detectedPatterns = detectThoughtPatterns(allThoughts);
+
+  /* ── 2. آخر نتائج المقاييس ── */
+  const latPHQ = scHist.filter(h=>h.type==='phq').slice(-1)[0];
+  const latGAD = scHist.filter(h=>h.type==='gad').slice(-1)[0];
+  const phqClass = latPHQ ? KB.phq.classify(latPHQ.score) : null;
+  const gadClass = latGAD ? KB.gad.classify(latGAD.score) : null;
+
+  /* ── 3. حساب المؤشرات (مُحسَّن بعتبات الكتاب) ── */
+  // مؤشر الاكتئاب
+  let depScore = 0;
+  if(latPHQ) depScore = Math.round((latPHQ.score/27)*65);
+  else {
+    // تقدير من المزاج: PHQ يقيس 9 أعراض، المزاج المنخفض مؤشر رئيسي
+    depScore = Math.round(Math.max(0,(8-avgM)/7*50));
+  }
+  depScore += intrusRate>60?18:intrusRate>30?9:0;
+  depScore += gratRate<20?12:gratRate<40?6:0;
+  depScore += actL.length<2&&logs.length>7?8:0; // غياب الأنشطة
+  depScore = Math.min(100,depScore);
+
+  // مؤشر القلق
+  let anxScore = 0;
+  if(latGAD) anxScore = Math.round((latGAD.score/21)*65);
+  else anxScore = avgSt ? Math.round((avgSt/10)*50) : 15;
+  anxScore += moodStd>2.5?18:moodStd>1.8?9:0;  // التذبذب = قلق محتمل
+  anxScore += stressRate>65?15:stressRate>35?8:0;
+  anxScore = Math.min(100,anxScore);
+
+  // جودة النوم (CBT-I: المثالي 7-9 ساعات)
+  let sleepScore = 50;
+  if(avgS){
+    if(avgS>=7&&avgS<=9) sleepScore=90;
+    else if(avgS>=6) sleepScore=70;
+    else if(avgS>=5) sleepScore=50;
+    else sleepScore=30;
+    sleepScore = Math.max(0, sleepScore - badSleepR*0.25);
+  }
+
+  // المرونة النفسية (من مبادئ الكتاب: الامتنان + الأنشطة + CBT + الاستمرارية)
+  const streak = calcStreak(logs);
+  let resScore = 0;
+  resScore += Math.min(35, gratRate*0.35);          // ممارسة الامتنان (ف.12)
+  resScore += Math.min(20, streak*2.5);              // الاستمرارية والالتزام
+  resScore += Math.min(20, cbtE.length*3.5);         // العمل المعرفي (ف.7-9)
+  resScore += Math.min(15, actL.length*2.5);         // تنشيط السلوك (ف.13)
+  resScore += Math.min(10, breathL.length*2);        // تنظيم الانفعال
+  resScore = Math.min(100, Math.round(resScore));
+
+  // الرفاهية الكلية (وزن مدروس)
+  const wellbeing = Math.round(
+    (avgM/10)*35 +
+    (sleepScore/100)*20 +
+    ((100-depScore)/100)*25 +
+    ((100-anxScore)/100)*20
+  );
+
+  /* ── 4. التصنيفات ── */
+  const depClass = KB.phq.classify(latPHQ?latPHQ.score:Math.round(depScore/65*27));
+  const anxClass = KB.gad.classify(latGAD?latGAD.score:Math.round(anxScore/65*21));
+
+  // ── DSM-5 أعراض الاكتئاب الكبير المرصودة في البيانات ──
+  // كل عرض من DSM-5 يُطابَق مع بيانات التطبيق
+  const mddSymptomMatch = {
+    depressed_mood: avgM < 5,
+    anhedonia: actL.length < 2 && logs.length > 7,
+    sleep: avgS != null && (avgS < 6 || avgS > 10),
+    fatigue: avgSt != null && avgSt > 6,
+    concentration: logs.filter(l=>l.ev1?.includes('تركيز')||l.intrusive?.includes('تركيز')).length > 0,
+    worthlessness: intrusTexts.some(t => /فاشل|غبي|عديم|لا قيمة|لا أستحق/.test(t||'')),
+    death_thoughts: intrusTexts.some(t => /موت|أموت|انتهى|لا فائدة من الحياة/.test(t||''))
+  };
+  const mddSymptomCount = Object.values(mddSymptomMatch).filter(Boolean).length;
+
+  // ── DSM-5 أعراض القلق العام المرصودة ──
+  const gadSymptomMatch = {
+    restlessness: topTags.some(([t])=>t==='#توتر'||t==='#قلق'),
+    fatigue: avgSt != null && avgSt > 5,
+    concentration: moodStd > 2,
+    irritability: topTags.some(([t])=>t==='#غضب'),
+    muscle_tension: logs.filter(l=>l.stressor?.trim()).length > logs.length*0.4,
+    sleep_disturb: avgS != null && avgS < 6.5
+  };
+  const gadSymptomCount = Object.values(gadSymptomMatch).filter(Boolean).length;
+
+  // ── فحص مؤشرات الإحالة الفورية (DSM-5 دواعي الإحالة) ──
+  const urgentFlag = mddSymptomMatch.death_thoughts ||
+    (latPHQ && latPHQ.score >= 15) || (latGAD && latGAD.score >= 15);
+  const wellLabel = wellbeing>=75?{t:'ممتاز',e:'🌟'}:wellbeing>=55?{t:'جيد',e:'😊'}:wellbeing>=38?{t:'يحتاج اهتمام',e:'😐'}:{t:'مرحلة صعبة',e:'😔'};
+
+  /* ── 5. الأنماط والملاحظات (مدعومة من الكتاب) ── */
+  const insights = [];
+
+  // ── تحذير عاجل إذا كانت هناك مؤشرات خطورة (DSM-5) ──
+  if(urgentFlag){
+    insights.unshift({col:'var(--rose)',
+      txt:`<strong>⚠️ مؤشر يستدعي انتباهاً فورياً</strong> — بياناتك تحتوي على أعراض تستوجب التواصل مع متخصص صحة نفسية. هذا التطبيق أداة للتوعية الذاتية فقط وليس بديلاً عن التقييم المتخصص.`
+    });
+  }
+
+  // ── عرض عدد معايير DSM-5 المطابقة إن كانت كافية ──
+  if(mddSymptomCount >= 4 && !urgentFlag){
+    insights.push({col:'#fb923c',
+      txt:`<strong>مطابقة محتملة مع ${mddSymptomCount} أعراض من معايير الاكتئاب الكبير (DSM-5)</strong> — هذا لا يعني تشخيصاً، لكن يستحق تقييماً متخصصاً. المطلوب 5 أعراض لمدة أسبوعين للتشخيص الرسمي.`
+    });
+  }
+  if(gadSymptomCount >= 4 && !urgentFlag){
+    insights.push({col:'#fb923c',
+      txt:`<strong>مطابقة محتملة مع ${gadSymptomCount} أعراض من معايير القلق العام (DSM-5 GAD)</strong> — المطلوب 3 أعراض لستة أشهر للتشخيص. بياناتك تستحق استشارة متخصص.`
+    });
+  }
+
+  // اتجاه المزاج
+  if(moodTrend>0.7) insights.push({col:'var(--emerald)',txt:`<strong>مزاجك في تحسن ملحوظ</strong> — ارتفع بمعدل +${moodTrend.toFixed(1)} نقطة مقارنةً ببداية الفترة. هذا يعكس فاعلية ما تفعله.`});
+  else if(moodTrend<-0.7) insights.push({col:'var(--rose)',txt:`<strong>انخفاض في المزاج خلال الفترة الأخيرة</strong> (${Math.abs(moodTrend).toFixed(1)} نقطة). الكتاب يشير إلى أن جدول الأنشطة خطوة فعّالة أولى لكسر هذا النمط.`});
+  else insights.push({col:'var(--amber)',txt:`<strong>المزاج مستقر نسبياً</strong> — لا تغيير واضح في الاتجاه. الثبات ليس سيئاً، لكن يمكن بناء عليه.`});
+
+  // النوم (CBT يؤكد العلاقة المباشرة)
+  if(avgS&&avgS<6) insights.push({col:'var(--rose)',txt:`<strong>النوم أقل من 6 ساعات باستمرار</strong> (متوسط ${avgS.toFixed(1)}h). البحث يثبت أن النوم غير الكافي يُضخّم كل أعراض القلق والاكتئاب بشكل مباشر — هذه أولوية قصوى.`});
+  else if(avgS&&avgS>=7&&avgS<=9) insights.push({col:'var(--emerald)',txt:`<strong>جودة نوم جيدة</strong> (${avgS.toFixed(1)} ساعة) — النوم الجيد هو الأساس الذي تبنى عليه كل تدخلات الصحة النفسية الأخرى.`});
+
+  // التذبذب المزاجي
+  if(moodStd>2.5) insights.push({col:'var(--violet)',txt:`<strong>تذبذب عالٍ في المزاج</strong> (انحراف ${moodStd.toFixed(1)}). هذا النمط يشير في CBT إلى حساسية عاطفية أو استجابة مكبّرة لأحداث الحياة. سجل الأفكار يساعد في فهم المحفزات.`});
+
+  // أنماط التفكير المكتشفة
+  if(detectedPatterns.length>0){
+    detectedPatterns.forEach(({pattern})=>{
+      insights.push({col:'var(--indigo)',txt:`<strong>نمط تفكير محتمل: ${pattern.name}</strong> — ${pattern.desc}. هذا النمط يظهر في أفكارك المسجلة. سجل الأفكار CBT في قسم التمارين يساعدك على تحديه.`});
+    });
+  }
+
+  // تاجات
+  if(topTags.length) insights.push({col:'var(--blue)',txt:`<strong>أبرز المحفزات في بياناتك:</strong> ${topTags.map(([t,n])=>`${t} (${n} مرة)`).join('، ')}. هذا يساعدك على تحديد أين تضع طاقتك أولاً.`});
+
+  // الامتنان (مدعوم من ف.12)
+  if(gratRate>=60) insights.push({col:'var(--emerald)',txt:`<strong>ممارسة الامتنان منتظمة</strong> (${gratRate}% من الأيام). الكتاب يؤكد أن الامتنان يُعزز القناعات الجوهرية الإيجابية ويقلل الأفكار التلقائية السلبية.`});
+  else if(gratRate<25&&logs.length>=5) insights.push({col:'var(--amber)',txt:`<strong>الامتنان نادر في تسجيلاتك</strong> (${gratRate}%). الكتاب يقترح كتابة 3 أشياء ممتنّ لها يومياً كتمرين يُغيّر الأنماط المعرفية خلال أسبوعين.`});
+
+  /* ── 6. نقاط القوة والانتباه ── */
+  const strengths=[], warnings=[];
+  if(streak>=7) strengths.push('🔥 التزام استثنائي بالمتابعة');
+  else if(streak>=3) strengths.push('📅 استمرارية جيدة في التسجيل');
+  if(avgM>=7) strengths.push('😊 مستوى مزاج إيجابي عام');
+  if(gratRate>=50) strengths.push('🌟 ممارسة الامتنان');
+  if(avgS&&avgS>=7) strengths.push('💤 نوم كافٍ وصحي');
+  if(cbtE.length>=3) strengths.push('🧠 وعي معرفي نشط (CBT)');
+  if(actL.length>=4) strengths.push('⚡ تنشيط سلوكي منتظم');
+  if(breathL.length>=3) strengths.push('🫁 ممارسة تنظيم الانفعال');
+  if(resScore>=65) strengths.push('💪 مرونة نفسية جيدة');
+
+  if(urgentFlag) warnings.unshift('🚨 يستوجب تواصلاً مع متخصص فوراً');
+  if(depScore>=50||phqClass?.max>=10) warnings.push('⚠️ مؤشرات اكتئابية (DSM-5 MDD) تستحق متابعة');
+  else if(mddSymptomCount>=3) warnings.push('⚠️ ٣+ أعراض من معايير الاكتئاب الكبير مرصودة');
+  if(anxScore>=50||gadClass?.max>=10) warnings.push('⚠️ مستوى قلق مرتفع (DSM-5 GAD)');
+  else if(gadSymptomCount>=3) warnings.push('⚠️ ٣+ أعراض من معايير القلق العام مرصودة');
+  if(mddSymptomMatch.death_thoughts) warnings.unshift('🚨 أفكار حول الموت مرصودة في نصوصك');
+  if(avgS&&avgS<6) warnings.push('😴 نوم منخفض باستمرار');
+  if(intrusRate>50) warnings.push('💭 أفكار مزعجة متكررة');
+  if(stressRate>70) warnings.push('😰 ضغوط يومية مرتفعة جداً');
+  if(moodStd>2.5) warnings.push('📉 تذبذب حاد في المزاج');
+  if(actL.length<2&&logs.length>7) warnings.push('🛋️ نشاط منخفض جداً');
+
+  /* ── 7. خطة العمل (مبنية على بروتوكولات الكتاب) ── */
+  const plans = [];
+
+  // تنشيط السلوك للاكتئاب (ف.13)
+  if(depScore>=35||avgM<6){
+    plans.push({col:'var(--teal)',t:'بروتوكول تنشيط السلوك',
+      d:'جدّد نشاطاً ممتعاً واحداً كل يوم — حتى لو لم تشعر برغبة. الكتاب يؤكد: التحفيز يتبع الفعل، لا يسبقه. قارن مع الجلوس في المنزل، لا مع أوقاتك المثالية.',badge:'ف.13'});
+  }
+
+  // سلم الخوف للقلق (ف.14)
+  if(anxScore>=35||stressRate>50){
+    plans.push({col:'var(--violet)',t:'بروتوكول سلم الخوف',
+      d:'رتّب المواقف المقلقة من 0-100. ابدأ بالدرجة 20-30 وابقَ في الموقف حتى ينخفض القلق طبيعياً. التجنب يُقوّي القلق؛ المواجهة التدريجية تكسر الدائرة.',badge:'ف.14'});
+  }
+
+  // سجل الأفكار (ف.8-9)
+  if(intrusRate>30||cbtE.length<3){
+    plans.push({col:'var(--indigo)',t:'سجل الأفكار اليومي',
+      d:'عند أي فكرة مزعجة: سجّل الموقف → الفكرة الساخنة → دليل مع → دليل ضد → فكرة بديلة. اسأل دائماً: "ما الدليل الموضوعي؟" (ليس التفسيرات، الحقائق فقط).',badge:'ف.8-9'});
+  }
+
+  // النوم
+  if(avgS&&avgS<7){
+    plans.push({col:'var(--blue)',t:'تحسين النوم (CBT-I)',
+      d:'طبّق قاعدة 10-3-2-1: لا كافيين قبل 10 ساعات — لا أكل ثقيل قبل 3 — لا عمل قبل 2 — لا شاشة قبل 1 من موعد النوم. النوم هو الركيزة الأساسية لكل تدخل نفسي آخر.',badge:'CBT-I'});
+  }
+
+  // الامتنان (ف.12)
+  if(gratRate<50){
+    plans.push({col:'var(--emerald)',t:'تمرين الامتنان اليومي',
+      d:'اكتب 3 أشياء امتننت لها كل ليلة (ولو صغيرة). الكتاب يشير إلى أن هذا يُعزز القناعات الجوهرية الإيجابية ويُقلل الأفكار التلقائية السلبية خلال أسبوعين.',badge:'ف.12'});
+  }
+
+  // أنماط التفكير
+  if(detectedPatterns.length>0){
+    const topP = detectedPatterns[0].pattern;
+    plans.push({col:'var(--rose)',t:`تحدّي نمط "${topP.name}"`,
+      d:`هذا النمط يبدو في أفكارك المسجلة. عند ملاحظته: توقف ← اسأل "هل هذه حقيقة أم تفسير؟" ← ابحث عن دليل موضوعي ← اكتب فكرة بديلة أكثر توازناً في سجل CBT.`,badge:'ف.7'});
+  }
+
+  // Barlow UP: التجنب العاطفي
+  const avoidanceCount = logs.filter(l=>(l.tags||[]).some(t=>['#عزلة','#وحدة'].includes(t))).length;
+  if(avoidanceCount > logs.length*0.3){
+    const edbEx = KB.unifiedProtocol.edbExamples.find(e=>e.disorder==='اكتئاب')||KB.unifiedProtocol.edbExamples[0];
+    plans.push({col:'var(--blue)',t:'منع التجنب العاطفي (Barlow UP)',
+      d:`بياناتك تُظهر نمط ${edbEx.edb}. جرّب السلوك المعاكس: ${edbEx.opposite}. الانسحاب يُخفف الانزعاج الآن لكن يُعمّق الاضطراب على المدى البعيد.`,badge:'UP ف.5'});
+  }
+
+  // Barlow BA: منهج ACTION
+  if(actL.length < 3 && logs.length > 5){
+    plans.push({col:'var(--teal)',t:'منهج ACTION للتنشيط (Barlow Ch.8)',
+      d:`A: قيّم إذا كان السلوك اقتراباً أم تجنباً → C: اختر سلوكاً مختلفاً → T: جرّبه → I: أعطه فرصة عادلة → O: راقب النتيجة → N: لا تستسلم. ابدأ بنشاط واحد صغير مضمون النجاح.`,badge:'BA ف.8'});
+  }
+
+  // Safety alert from Barlow protocol
+  if(urgentFlag){
+    plans.unshift({col:'var(--rose)',t:'🚨 الأولوية القصوى: تواصل مع متخصص',
+      d:`بياناتك تحتوي مؤشرات تستوجب تقييماً متخصصاً فورياً. هذا التطبيق أداة مساندة فقط — يُرجى التواصل مع طبيب نفسي أو أخصائي صحة نفسية في أقرب وقت.`,badge:'⚠️'});
+  }
+
+  while(plans.length<4) plans.push({col:'var(--soft)',t:'تابع التسجيل اليومي',
+    d:'30 يوماً من البيانات تعطي صورة أدق بكثير وتكشف أنماطاً لا تراها الآن. الاستمرارية في حد ذاتها مهارة علاجية.',badge:''});
+
+  /* ── 8. رسالة الإغلاق ── */
+  let closing = '';
+  if(wellbeing>=70)      closing = `أنت في وضع نفسي جيد، وبياناتك تعكس شخصاً يبذل جهداً حقيقياً. الكتاب الذي بُني عليه هذا التقرير يقول: "المشكلات التي تجلبنا إلى العمل النفسي يمكن أن تكون بذرة شيء جميد جديد." استمر في البناء.`;
+  else if(wellbeing>=45) closing = `أنت في منطقة التعافي — فيها تحديات حقيقية وفيها أيضاً موارد حقيقية. كل خطوة صغيرة في الخطة المقترحة تبني أساساً يصعب هدمه لاحقاً.`;
+  else                   closing = `الفترة الحالية صعبة، والأرقام تعكس ذلك بصدق. لكن حقيقة أنك هنا وتتتبع وتسجّل هي نفسها دليل على رغبة حقيقية في التغيير. ابدأ بخطوة واحدة فقط من الخطة أدناه — الأصغر والأسهل.`;
+
+  /* ── 9. بناء HTML ── */
+  const now = new Date().toLocaleDateString('ar-EG',{year:'numeric',month:'long',day:'numeric'});
+
+  el.innerHTML = `
+
+    <div class="report-hero">
+      <div class="report-emoji">${wellLabel.e}</div>
+      <div class="report-title">الحالة النفسية العامة: ${wellLabel.t}</div>
+      <div class="report-sub">مبني على ${logs.length} يوم تسجيل • مرجع: العقل قبل المزاج (Greenberger & Padesky)</div>
+      <div class="report-date">آخر تحديث: ${now}</div>
+    </div>
+
+    <!-- GAUGES -->
+    <div class="gauge-row">
+      ${buildGauge('مؤشر المزاج',Math.round(avgM*10),100,moodColor(avgM),`متوسط ${avgM.toFixed(1)}/10`)}
+      ${buildGauge('جودة النوم',Math.round(sleepScore),100,'var(--indigo)',avgS?`متوسط ${avgS.toFixed(1)} ساعة`:'غير كافٍ')}
+      ${buildGauge('مؤشر الاكتئاب',100-depScore,100,depClass.color,depClass.label)}
+      ${buildGauge('مؤشر القلق',100-anxScore,100,anxClass.color,anxClass.label)}
+      ${buildGauge('الرفاهية الكلية',wellbeing,100,'var(--teal)',`${wellbeing}/100`)}
+      ${buildGauge('المرونة النفسية',resScore,100,'var(--amber)',`${resScore}/100`)}
+    </div>
+
+    <!-- PHQ / GAD SCORES -->
+    ${latPHQ||latGAD?`<div class="rep-block">
+      <div class="rep-block-head">
+        <div class="rep-block-icon" style="background:rgba(245,158,11,.15)">📋</div>
+        <div><div class="rep-block-title">نتائج المقاييس المعيارية</div>
+        <div class="rep-block-sub">مفسّرة وفق معايير PHQ-9 و GAD-7 السريرية</div></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        ${latPHQ?`<div style="flex:1;min-width:130px;background:var(--s3);border-radius:11px;padding:.9rem;text-align:center">
+          <div style="font-size:.72rem;color:var(--text2);margin-bottom:.3rem">PHQ-9 — الاكتئاب</div>
+          <div style="font-family:Cairo,sans-serif;font-size:2rem;font-weight:900;color:${phqClass.color}">${latPHQ.score}</div>
+          <div style="font-size:.72rem;color:${phqClass.color};font-weight:700;margin:.2rem 0">${phqClass.label}</div>
+          <div style="font-size:.68rem;color:var(--soft)">${fmtDate(latPHQ.date)}</div>
+        </div>`:''}
+        ${latGAD?`<div style="flex:1;min-width:130px;background:var(--s3);border-radius:11px;padding:.9rem;text-align:center">
+          <div style="font-size:.72rem;color:var(--text2);margin-bottom:.3rem">GAD-7 — القلق</div>
+          <div style="font-family:Cairo,sans-serif;font-size:2rem;font-weight:900;color:${gadClass.color}">${latGAD.score}</div>
+          <div style="font-size:.72rem;color:${gadClass.color};font-weight:700;margin:.2rem 0">${gadClass.label}</div>
+          <div style="font-size:.68rem;color:var(--soft)">${fmtDate(latGAD.date)}</div>
+        </div>`:''}
+      </div>
+      ${phqClass?`<div style="margin-top:.8rem;font-size:.78rem;color:var(--text2);background:rgba(255,255,255,.03);border-radius:9px;padding:.7rem"><strong>التوجيه السريري:</strong> ${phqClass.action}</div>`:''}
+    </div>`:''}
+
+    <!-- THOUGHT PATTERNS -->
+    ${detectedPatterns.length>0?`<div class="rep-block">
+      <div class="rep-block-head">
+        <div class="rep-block-icon" style="background:rgba(99,102,241,.15)">🔎</div>
+        <div><div class="rep-block-title">أنماط التفكير المكتشفة</div>
+        <div class="rep-block-sub">مستنبطة من أفكارك المسجلة — مرجع: ف.7 من الكتاب</div></div>
+      </div>
+      ${detectedPatterns.map(({pattern})=>`
+        <div style="padding:.65rem 0;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start">
+          <div style="background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.2);color:#a5b4fc;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;flex-shrink:0;margin-top:2px">${pattern.name}</div>
+          <div style="font-size:.82rem;color:var(--text2);line-height:1.5">${pattern.desc}</div>
+        </div>`).join('')}
+      <div style="margin-top:.8rem;font-size:.75rem;color:var(--soft)">💡 ${KB.thoughtRecord.hotThoughtTip}</div>
+    </div>`:''}
+
+    <!-- INSIGHTS -->
+    <div class="rep-block">
+      <div class="rep-block-head">
+        <div class="rep-block-icon" style="background:rgba(45,212,191,.15)">🔍</div>
+        <div><div class="rep-block-title">الأنماط والملاحظات</div>
+        <div class="rep-block-sub">مستنبطة من بياناتك الفعلية</div></div>
+      </div>
+      <div class="insight-list">
+        ${insights.map(i=>`<div class="insight-item">
+          <div class="insight-dot" style="background:${i.col}"></div>
+          <div class="rep-text">${i.txt}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- STRENGTHS & WARNINGS -->
+    <div class="rep-block">
+      <div class="rep-block-head">
+        <div class="rep-block-icon" style="background:rgba(16,185,129,.15)">💪</div>
+        <div><div class="rep-block-title">نقاط القوة والانتباه</div></div>
+      </div>
+      ${strengths.length?`<div style="font-size:.73rem;font-weight:700;color:var(--emerald);margin-bottom:6px">نقاط القوة</div>
+      <div class="pill-grid" style="margin-bottom:.9rem">
+        ${strengths.map(s=>`<div class="pill" style="background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.22);color:var(--emerald)">${s}</div>`).join('')}
+      </div>`:''}
+      ${warnings.length?`<div style="font-size:.73rem;font-weight:700;color:var(--amber);margin-bottom:6px">يستحق الانتباه</div>
+      <div class="pill-grid">
+        ${warnings.map(w=>`<div class="pill" style="background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.22);color:var(--amber)">${w}</div>`).join('')}
+      </div>`:''}
+    </div>
+
+    <!-- ACTION PLAN -->
+    <div class="rep-block">
+      <div class="rep-block-head">
+        <div class="rep-block-icon" style="background:rgba(45,212,191,.15)">🗓️</div>
+        <div><div class="rep-block-title">خطة العمل المقترحة</div>
+        <div class="rep-block-sub">مبنية على بروتوكولات "العقل قبل المزاج" — الأولوية من الأعلى</div></div>
+      </div>
+      ${plans.slice(0,5).map((p,i)=>`
+        <div class="plan-step">
+          <div class="plan-num" style="background:${p.col}">${i+1}</div>
+          <div class="plan-text">
+            <strong>${p.t}</strong>
+            ${p.badge?`<span style="background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.2);color:#a5b4fc;padding:1px 7px;border-radius:10px;font-size:.65rem;font-weight:700;margin-right:6px">${p.badge}</span>`:''}
+            <br>${p.d}
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <!-- CBT FIVE-PART MODEL NOTE -->
+    <div style="background:rgba(99,102,241,.05);border:1px solid rgba(99,102,241,.12);border-radius:14px;padding:1rem 1.2rem;margin-bottom:.9rem">
+      <div style="font-size:.75rem;font-weight:700;color:#a5b4fc;margin-bottom:.4rem">💡 النموذج الخماسي — أساس CBT (ف.2)</div>
+      <div style="font-size:.78rem;color:var(--text2);line-height:1.65">${KB.fivePart.parts.join(' ↔ ')}<br><em style="color:var(--soft)">${KB.fivePart.insight}</em></div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="closing-card">"${closing}"</div>
+
+    <!-- EXPORT CTA -->
+    <div class="export-cta">
+      <div style="font-size:1.8rem">📤</div>
+      <div class="export-cta-text">
+        <strong>تعمّق أكثر مع الذكاء الاصطناعي</strong>
+        صدّر بياناتك لتحليل نفسي أعمق وخطة عمل 90 يوماً مخصصة.
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="exportMD()" style="flex-shrink:0">تصدير MD</button>
+    </div>
+
+    <div style="font-size:.68rem;color:var(--soft);text-align:center;padding:.5rem 0;line-height:1.6">
+      مراجع: Greenberger & Padesky, Mind Over Mood (2nd Ed.) • APA, DSM-5 (2013) • Barlow, Clinical Handbook of Psychological Disorders (4th Ed.)<br>
+      للتوعية الذاتية فقط — ليس تشخيصاً طبياً ولا بديلاً عن الاستشارة المتخصصة
+    </div>
+  `;
+}
+
+function buildGauge(label,val,max,color,sub){
+  const pct=Math.min(100,Math.round((val/max)*100));
+  return`<div class="gauge-card">
+    <div class="gauge-label"><span>${label}</span><span style="color:${color};font-weight:800">${pct}%</span></div>
+    <div class="gauge-bar-track"><div class="gauge-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+    <div class="gauge-val">${sub}</div>
+  </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════
+   CHARTS ENGINE — رسوم بيانية تفاعلية
+══════════════════════════════════════════════════════════ */
+
+let curReportTab = 0;
+
+function switchReportTab(t){
+  curReportTab = t;
+  for(let i=0;i<5;i++){
+    const b=document.getElementById('rtab'+i);
+    if(b) b.className='chart-tab'+(i===t?' active':'');
+  }
+  const rc = document.getElementById('reportContent');
+  const cc = document.getElementById('chartsContent');
+  if(t===0){ rc.style.display=''; cc.style.display='none'; }
+  else { rc.style.display='none'; cc.style.display=''; renderChartTab(t); }
+}
+
+function renderChartTab(t){
+  const logs = S.get('logs',[]);
+  const el = document.getElementById('chartsContent');
+  if(logs.length < 3){
+    el.innerHTML=`<div class="empty-state"><div class="empty-ico">📊</div>تحتاج 3 أيام تسجيل على الأقل لعرض الرسوم البيانية</div>`;
+    return;
+  }
+  if(t===1) el.innerHTML = buildMoodSleepChart(logs);
+  else if(t===2) el.innerHTML = buildCorrelationsChart(logs);
+  else if(t===3) el.innerHTML = buildPatternsChart(logs);
+  else if(t===4) el.innerHTML = buildScalesChart();
+  // Draw after render
+  requestAnimationFrame(()=>{ if(t===1) drawMoodSleep(logs); else if(t===4) drawScales(); });
+}
+
+/* ── 1. مزاج ونوم عبر الزمن ── */
+function buildMoodSleepChart(logs){
+  const recent = logs.slice(-30);
+  const avgM = avg(recent.map(l=>l.mood)).toFixed(1);
+  const sleeps = recent.map(l=>l.sleep).filter(v=>v!=null&&v>0);
+  const avgS = sleeps.length ? avg(sleeps).toFixed(1) : '—';
+  // trend arrow
+  const half = Math.floor(recent.length/2)||1;
+  const trend = avg(recent.slice(half).map(l=>l.mood)) - avg(recent.slice(0,half).map(l=>l.mood));
+  const trendTxt = trend > 0.5 ? '↑ تحسن' : trend < -0.5 ? '↓ انخفاض' : '→ مستقر';
+  const trendCol = trend > 0.5 ? 'var(--emerald)' : trend < -0.5 ? 'var(--rose)' : 'var(--amber)';
+
+  return `
+  <div class="chart-wrap">
+    <div class="chart-title">
+      <span>📈 المزاج اليومي (آخر ${recent.length} يوم)</span>
+      <span class="chart-subtitle" style="color:${trendCol};font-weight:700">${trendTxt}</span>
+    </div>
+    <canvas id="cMoodSleep" class="nafsi-chart" height="200"></canvas>
+  </div>
+  <div class="corr-grid">
+    <div class="corr-card">
+      <div class="corr-label">متوسط المزاج</div>
+      <div class="corr-value" style="color:${moodColor(+avgM)}">${avgM}<span style="font-size:.8rem;color:var(--soft)">/10</span></div>
+    </div>
+    <div class="corr-card">
+      <div class="corr-label">متوسط النوم</div>
+      <div class="corr-value" style="color:var(--indigo)">${avgS}<span style="font-size:.8rem;color:var(--soft)"> ساعة</span></div>
+    </div>
+  </div>
+  ${buildStreakHeatmap(logs)}`;
+}
+
+function drawMoodSleep(logs){
+  const canvas = document.getElementById('cMoodSleep');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const recent = logs.slice(-30);
+  const W = canvas.offsetWidth * devicePixelRatio;
+  const H = 200 * devicePixelRatio;
+  canvas.width = W; canvas.height = H;
+  const scale = devicePixelRatio;
+  ctx.scale(scale, scale);
+  const w = canvas.offsetWidth, h = 200;
+  const pad = {l:28, r:10, t:10, b:28};
+  const pw = w-pad.l-pad.r, ph = h-pad.t-pad.b;
+  const n = recent.length;
+
+  // Grid lines
+  ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;
+  [2,4,6,8,10].forEach(v=>{
+    const y = pad.t + ph - (v/10)*ph;
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+pw,y);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font=`${10*scale}px Tajawal`;ctx.textAlign='right';
+    ctx.fillText(v, pad.l-4, y+4);
+  });
+
+  const xPos = i => pad.l + (i/(n-1||1))*pw;
+  const yMood = v => pad.t + ph - ((v-1)/9)*ph;
+  const ySleep = v => pad.t + ph - ((Math.min(v,12)-0)/12)*ph;
+
+  // Sleep bars
+  recent.forEach((l,i)=>{
+    if(!l.sleep||l.sleep<=0) return;
+    const x = xPos(i);
+    const barH = ((Math.min(l.sleep,12))/12)*ph;
+    ctx.fillStyle='rgba(99,102,241,0.15)';
+    ctx.fillRect(x-4, pad.t+ph-barH, 8, barH);
+  });
+
+  // Mood line
+  ctx.beginPath();ctx.strokeStyle='rgba(45,212,191,0.3)';ctx.lineWidth=1.5*scale;
+  recent.forEach((l,i)=>{ i===0?ctx.moveTo(xPos(i),yMood(l.mood)):ctx.lineTo(xPos(i),yMood(l.mood)); });
+  ctx.stroke();
+
+  // Mood gradient fill
+  const grad = ctx.createLinearGradient(0,pad.t,0,pad.t+ph);
+  grad.addColorStop(0,'rgba(45,212,191,0.2)');grad.addColorStop(1,'rgba(45,212,191,0)');
+  ctx.beginPath();
+  recent.forEach((l,i)=>{ i===0?ctx.moveTo(xPos(i),yMood(l.mood)):ctx.lineTo(xPos(i),yMood(l.mood)); });
+  ctx.lineTo(xPos(n-1),pad.t+ph);ctx.lineTo(xPos(0),pad.t+ph);ctx.closePath();
+  ctx.fillStyle=grad;ctx.fill();
+
+  // Mood dots
+  recent.forEach((l,i)=>{
+    const x=xPos(i), y=yMood(l.mood);
+    ctx.beginPath();ctx.arc(x,y,3*scale,0,Math.PI*2);
+    ctx.fillStyle=moodColor(l.mood);ctx.fill();
+  });
+
+  // X labels
+  ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font=`${9*scale}px Tajawal`;ctx.textAlign='center';
+  [0, Math.floor(n/4), Math.floor(n/2), Math.floor(3*n/4), n-1].forEach(i=>{
+    if(i<recent.length) ctx.fillText(fmtDate(recent[i].date), xPos(i), h-6);
+  });
+
+  // Legend
+  ctx.fillStyle='rgba(45,212,191,0.8)';ctx.font=`${10*scale}px Tajawal`;ctx.textAlign='left';
+  ctx.fillText('المزاج', pad.l+4, pad.t+14);
+  ctx.fillStyle='rgba(99,102,241,0.6)';
+  ctx.fillText('النوم (أعمدة)', pad.l+50, pad.t+14);
+}
+
+function buildStreakHeatmap(logs){
+  const last42 = [];
+  const today = new Date();
+  for(let i=41;i>=0;i--){
+    const d = new Date(today); d.setDate(d.getDate()-i);
+    const ds = d.toISOString().split('T')[0];
+    const l = logs.find(x=>x.date===ds);
+    last42.push({ds, l});
+  }
+  const cells = last42.map(({ds,l})=>{
+    const col = l ? moodColor(l.mood) : 'rgba(255,255,255,0.04)';
+    const title = l ? `${fmtDate(ds)}: ${l.mood}/10` : fmtDate(ds);
+    return `<div title="${title}" style="width:14px;height:14px;border-radius:3px;background:${col};flex-shrink:0"></div>`;
+  }).join('');
+  return `<div class="chart-wrap" style="margin-top:.8rem">
+    <div class="chart-title"><span>🗓️ خريطة المزاج (6 أسابيع)</span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:3px">${cells}</div>
+    <div style="display:flex;gap:6px;margin-top:.6rem;font-size:.7rem;color:var(--soft);align-items:center">
+      <span>أضعف</span>
+      ${['#f43f5e','#fb923c','#f59e0b','#84cc16','#10b981'].map(c=>`<div style="width:10px;height:10px;border-radius:2px;background:${c}"></div>`).join('')}
+      <span>أقوى</span>
+    </div>
+  </div>`;
+}
+
+/* ── 2. الارتباطات ── */
+function buildCorrelationsChart(logs){
+  const withSleep = logs.filter(l=>l.sleep!=null&&l.sleep>0);
+  const corrMoodSleep = withSleep.length>=4 ? pearson(withSleep.map(l=>l.mood), withSleep.map(l=>l.sleep)) : null;
+  const withStress = logs.filter(l=>l.stressLevel>0);
+  const corrMoodStress = withStress.length>=4 ? pearson(withStress.map(l=>l.mood), withStress.map(l=>l.stressLevel)) : null;
+
+  // Day-of-week average moods
+  const dayAvgs = {};
+  const dayNames = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  logs.forEach(l=>{
+    const d = new Date(l.date+'T00:00:00').getDay();
+    if(!dayAvgs[d]) dayAvgs[d]={sum:0,count:0};
+    dayAvgs[d].sum+=l.mood; dayAvgs[d].count++;
+  });
+  const bestDay = Object.entries(dayAvgs).sort((a,b)=>(b[1].sum/b[1].count)-(a[1].sum/a[1].count))[0];
+  const worstDay = Object.entries(dayAvgs).sort((a,b)=>(a[1].sum/a[1].count)-(b[1].sum/b[1].count))[0];
+
+  // Morning vs evening pattern (using log timestamp)
+  const moodByHour = {};
+  logs.forEach(l=>{ if(l.ts){ const h=new Date(l.ts).getHours(); const bucket=h<12?'صباح':h<17?'ظهيرة':'مساء'; if(!moodByHour[bucket]){moodByHour[bucket]={sum:0,n:0};} moodByHour[bucket].sum+=l.mood;moodByHour[bucket].n++; }});
+
+  const corrStr = r => r===null ? 'بيانات غير كافية' : Math.abs(r)>0.5 ? (r>0?'ارتباط إيجابي قوي':'ارتباط عكسي قوي') : Math.abs(r)>0.3 ? (r>0?'ارتباط إيجابي معتدل':'ارتباط عكسي معتدل') : 'ارتباط ضعيف';
+  const corrCol = r => r===null ? 'var(--soft)' : Math.abs(r)>0.5 ? (r>0?'var(--emerald)':'var(--rose)') : 'var(--amber)';
+
+  // Stressor tags correlation
+  const tagMood = {};
+  logs.forEach(l=>(l.tags||[]).forEach(t=>{if(!tagMood[t]){tagMood[t]={sum:0,n:0,neg:0};} tagMood[t].sum+=l.mood;tagMood[t].n++; if(l.mood<5)tagMood[t].neg++;}));
+  const tagInsights = Object.entries(tagMood).filter(([,v])=>v.n>=2).sort((a,b)=>(a[1].sum/a[1].n)-(b[1].sum/b[1].n)).slice(0,4);
+
+  return `
+  <div class="chart-wrap">
+    <div class="chart-title">🔗 ارتباطات المزاج</div>
+    <div class="corr-grid">
+      <div class="corr-card">
+        <div class="corr-label">المزاج ↔ النوم</div>
+        <div class="corr-value" style="color:${corrCol(corrMoodSleep)};font-size:1rem">${corrStr(corrMoodSleep)}</div>
+        <div class="corr-desc">${corrMoodSleep!==null?`r = ${corrMoodSleep.toFixed(2)}`:'يحتاج 4 أيام نوم مسجل'}</div>
+      </div>
+      <div class="corr-card">
+        <div class="corr-label">المزاج ↔ الضغط</div>
+        <div class="corr-value" style="color:${corrCol(corrMoodStress)};font-size:1rem">${corrStr(corrMoodStress)}</div>
+        <div class="corr-desc">${corrMoodStress!==null?`r = ${corrMoodStress.toFixed(2)}`:'يحتاج 4 أيام ضغط مسجل'}</div>
+      </div>
+    </div>
+  </div>
+
+  ${bestDay||worstDay?`<div class="chart-wrap">
+    <div class="chart-title">📅 أفضل وأسوأ أيام الأسبوع</div>
+    ${bestDay?`<div class="insight-bar">
+      <div class="ibar-label" style="color:var(--emerald)">أفضل يوم</div>
+      <div class="ibar-track"><div class="ibar-fill" style="width:${(bestDay[1].sum/bestDay[1].count/10)*100}%;background:var(--emerald)"></div></div>
+      <div class="ibar-val" style="color:var(--emerald)">${dayNames[+bestDay[0]]} (${(bestDay[1].sum/bestDay[1].count).toFixed(1)})</div>
+    </div>`:''}
+    ${worstDay&&worstDay[0]!==bestDay?.[0]?`<div class="insight-bar">
+      <div class="ibar-label" style="color:var(--rose)">أضعف يوم</div>
+      <div class="ibar-track"><div class="ibar-fill" style="width:${(worstDay[1].sum/worstDay[1].count/10)*100}%;background:var(--rose)"></div></div>
+      <div class="ibar-val" style="color:var(--rose)">${dayNames[+worstDay[0]]} (${(worstDay[1].sum/worstDay[1].count).toFixed(1)})</div>
+    </div>`:''}
+    <div style="font-size:.72rem;color:var(--soft);margin-top:.4rem">مبني على ${logs.length} يوم تسجيل</div>
+  </div>`:''}
+
+  ${tagInsights.length?`<div class="chart-wrap">
+    <div class="chart-title">🏷️ التاجات ومتوسط المزاج</div>
+    ${tagInsights.map(([tag,v])=>{
+      const m=(v.sum/v.n).toFixed(1);
+      return `<div class="insight-bar">
+        <div class="ibar-label">${tag}</div>
+        <div class="ibar-track"><div class="ibar-fill" style="width:${(m/10)*100}%;background:${moodColor(+m)}"></div></div>
+        <div class="ibar-val" style="color:${moodColor(+m)}">${m}</div>
+      </div>`;
+    }).join('')}
+    <div style="font-size:.72rem;color:var(--soft);margin-top:.4rem">متوسط المزاج في الأيام التي يظهر فيها كل تاج</div>
+  </div>`:''}`;
+}
+
+/* ── 3. أنماط الأيام ── */
+function buildPatternsChart(logs){
+  const dayNames = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const dayData = Array.from({length:7},()=>({moods:[],sleeps:[]}));
+  logs.forEach(l=>{
+    const d=new Date(l.date+'T00:00:00').getDay();
+    dayData[d].moods.push(l.mood);
+    if(l.sleep&&l.sleep>0) dayData[d].sleeps.push(l.sleep);
+  });
+
+  const rows = dayNames.map((name,i)=>{
+    const m = dayData[i].moods;
+    if(!m.length) return '';
+    const avgM2=avg(m);
+    const col=moodColor(avgM2);
+    const badgeTxt=avgM2>=7?'جيد':avgM2>=5?'متوسط':'صعب';
+    return `<div class="pattern-row">
+      <div class="pattern-day">${name}</div>
+      <div style="display:flex;align-items:center;gap:8px;flex:1;justify-content:flex-end">
+        <div style="width:80px"><div style="height:6px;border-radius:3px;background:rgba(255,255,255,.05);overflow:hidden"><div style="height:100%;border-radius:3px;background:${col};width:${(avgM2/10)*100}%"></div></div></div>
+        <div class="pattern-mood" style="color:${col};min-width:28px">${avgM2.toFixed(1)}</div>
+        <div class="pattern-badge" style="background:${col}20;color:${col};border:1px solid ${col}40">${badgeTxt}</div>
+      </div>
+    </div>`;
+  }).filter(Boolean).join('');
+
+  // Sleep patterns
+  const sleepRows = dayNames.map((name,i)=>{
+    const s=dayData[i].sleeps;
+    if(!s.length) return '';
+    const avgS2=avg(s);
+    const col2=avgS2>=7?'var(--emerald)':avgS2>=6?'var(--amber)':'var(--rose)';
+    return `<div class="pattern-row">
+      <div class="pattern-day">${name}</div>
+      <div style="display:flex;align-items:center;gap:8px;flex:1;justify-content:flex-end">
+        <div style="width:80px"><div style="height:6px;border-radius:3px;background:rgba(255,255,255,.05);overflow:hidden"><div style="height:100%;border-radius:3px;background:${col2};width:${(Math.min(avgS2,10)/10)*100}%"></div></div></div>
+        <div class="pattern-mood" style="color:${col2};min-width:28px">${avgS2.toFixed(1)}h</div>
+      </div>
+    </div>`;
+  }).filter(Boolean).join('');
+
+  // Detect pattern insight
+  const moodDays = dayNames.map((n,i)=>({n,avg:dayData[i].moods.length?avg(dayData[i].moods):null})).filter(d=>d.avg!==null);
+  const spread = moodDays.length>=3 ? Math.max(...moodDays.map(d=>d.avg)) - Math.min(...moodDays.map(d=>d.avg)) : 0;
+
+  return `
+  <div class="chart-wrap">
+    <div class="chart-title">📅 متوسط المزاج حسب اليوم</div>
+    ${rows||'<div style="color:var(--soft);font-size:.82rem">بيانات غير كافية لعرض النمط</div>'}
+    ${spread>2?`<div style="font-size:.75rem;color:var(--amber);margin-top:.7rem;padding:.6rem;background:rgba(245,158,11,.06);border-radius:8px">⚡ تذبذب ملحوظ بين أيام الأسبوع (${spread.toFixed(1)} نقطة) — قد يعكس ضغوطاً مرتبطة بجدول معين</div>`:''}
+  </div>
+  ${sleepRows?`<div class="chart-wrap">
+    <div class="chart-title">🌙 متوسط النوم حسب اليوم</div>
+    ${sleepRows}
+  </div>`:''}`;
+}
+
+/* ── 4. المقاييس عبر الزمن ── */
+function buildScalesChart(){
+  const hist = S.get('scHist',[]);
+  const phqH = hist.filter(h=>h.type==='phq').slice(-10);
+  const gadH = hist.filter(h=>h.type==='gad').slice(-10);
+  if(!phqH.length&&!gadH.length){
+    return `<div class="empty-state"><div class="empty-ico">📊</div>لا توجد نتائج مقاييس بعد<br><span style="font-size:.8rem">أكمل PHQ-9 أو GAD-7 من قسم المقاييس</span></div>`;
+  }
+  return `
+  ${phqH.length>=2?`<div class="chart-wrap">
+    <div class="chart-title">📉 تطور PHQ-9 (الاكتئاب)</div>
+    <canvas id="cPHQ" class="nafsi-chart" height="160"></canvas>
+  </div>`:''}
+  ${gadH.length>=2?`<div class="chart-wrap">
+    <div class="chart-title">📉 تطور GAD-7 (القلق)</div>
+    <canvas id="cGAD" class="nafsi-chart" height="160"></canvas>
+  </div>`:''}
+  ${phqH.length===1||gadH.length===1?`<div style="font-size:.78rem;color:var(--soft);text-align:center;padding:.5rem">أكمل القياس مرة أخرى لرؤية خط التطور</div>`:''}`;
+}
+
+function drawScales(){
+  const hist = S.get('scHist',[]);
+  const phqH = hist.filter(h=>h.type==='phq').slice(-10);
+  const gadH = hist.filter(h=>h.type==='gad').slice(-10);
+  if(phqH.length>=2) drawLineChart('cPHQ', phqH.map(h=>({x:fmtDate(h.date),y:h.score})), 27, 'var(--rose)', ['لا أعراض','خفيف','متوسط','شديد']);
+  if(gadH.length>=2) drawLineChart('cGAD', gadH.map(h=>({x:fmtDate(h.date),y:h.score})), 21, 'var(--violet)', ['لا أعراض','خفيف','متوسط','شديد']);
+}
+
+function drawLineChart(canvasId, data, maxY, lineColor, zones){
+  const canvas = document.getElementById(canvasId);
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth * devicePixelRatio;
+  const H = 160 * devicePixelRatio;
+  canvas.width = W; canvas.height = H;
+  const scale = devicePixelRatio;
+  ctx.scale(scale, scale);
+  const w = canvas.offsetWidth, h = 160;
+  const pad = {l:30,r:10,t:10,b:28};
+  const pw=w-pad.l-pad.r, ph=h-pad.t-pad.b;
+  const n=data.length;
+
+  // Zone backgrounds
+  const zonePcts = maxY===27 ? [4/27,9/27,14/27,19/27,1] : [4/21,9/21,14/21,1];
+  const zoneColors = ['rgba(16,185,129,0.06)','rgba(132,204,22,0.06)','rgba(245,158,11,0.06)','rgba(251,146,60,0.06)','rgba(244,63,94,0.06)'];
+  let prev=0;
+  zonePcts.forEach((p,i)=>{
+    const y1=pad.t+ph-(p*ph), y2=pad.t+ph-(prev*ph);
+    ctx.fillStyle=zoneColors[i]||'rgba(244,63,94,0.06)';
+    ctx.fillRect(pad.l,y1,pw,y2-y1);
+    prev=p;
+  });
+
+  // Grid
+  ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=1;
+  [0,5,10,15,maxY===27?20:null,maxY].filter(v=>v!==null).forEach(v=>{
+    const y=pad.t+ph-(v/maxY)*ph;
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+pw,y);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font=`${9*scale}px Tajawal`;ctx.textAlign='right';
+    ctx.fillText(v,pad.l-4,y+4);
+  });
+
+  const xPos=i=>pad.l+(i/(n-1))*pw;
+  const yPos=v=>pad.t+ph-(v/maxY)*ph;
+
+  // Line
+  ctx.beginPath();ctx.strokeStyle=lineColor;ctx.lineWidth=2*scale;ctx.lineJoin='round';
+  data.forEach((d,i)=>{ i===0?ctx.moveTo(xPos(i),yPos(d.y)):ctx.lineTo(xPos(i),yPos(d.y)); });
+  ctx.stroke();
+
+  // Dots + values
+  data.forEach((d,i)=>{
+    const x=xPos(i),y=yPos(d.y);
+    ctx.beginPath();ctx.arc(x,y,4*scale,0,Math.PI*2);
+    ctx.fillStyle=lineColor;ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.7)';ctx.font=`bold ${10*scale}px Cairo`;ctx.textAlign='center';
+    ctx.fillText(d.y,x,y-8);
+  });
+
+  // X labels
+  ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font=`${9*scale}px Tajawal`;ctx.textAlign='center';
+  data.forEach((d,i)=>ctx.fillText(d.x,xPos(i),h-6));
+}
+
+/* ── MATH HELPERS ── */
+function pearson(xs, ys){
+  const n=xs.length;
+  if(n<3) return null;
+  const mx=avg(xs),my=avg(ys);
+  let num=0,dx=0,dy=0;
+  for(let i=0;i<n;i++){num+=(xs[i]-mx)*(ys[i]-my);dx+=(xs[i]-mx)**2;dy+=(ys[i]-my)**2;}
+  const denom=Math.sqrt(dx*dy);
+  return denom===0?0:+(num/denom).toFixed(3);
+}
+
+
+/* ═══════════════════════════════
+   SETTINGS
+═══════════════════════════════ */
+function loadProfile(){
+  const p=S.get('profile',{});
+  const m={pAge:'age',pGender:'gender',pStatus:'status',pGoals:'goals',pMed:'medical',pPHQ:'phqBaseline',pGAD:'gadBaseline'};
+  Object.entries(m).forEach(([id,k])=>{const el=document.getElementById(id);if(el&&p[k]!=null)el.value=p[k];});
+}
+function saveProfile(){
+  S.set('profile',{age:document.getElementById('pAge').value,gender:document.getElementById('pGender').value,status:document.getElementById('pStatus').value,goals:document.getElementById('pGoals').value,medical:document.getElementById('pMed').value,phqBaseline:document.getElementById('pPHQ').value,gadBaseline:document.getElementById('pGAD').value});
+  toast('✅ تم حفظ البيانات');
+}
+function changePin(){
+  const cur=document.getElementById('curPin').value;const n=document.getElementById('newPin').value;const c=document.getElementById('confPin').value;
+  const stored=S.get('pin');
+  if(cur!==stored){toast('⚠️ الرمز الحالي خاطئ');return;}
+  if(!/^\d{4}$/.test(n)){toast('⚠️ الرمز يجب أن يكون 4 أرقام');return;}
+  if(n!==c){toast('⚠️ الرمزان غير متطابقين');return;}
+  S.set('pin',n);['curPin','newPin','confPin'].forEach(id=>document.getElementById(id).value='');
+  toast('✅ تم تغيير الرمز');
+}
+function setRem(){
+  const t=document.getElementById('remTime').value;
+  if(!('Notification' in window)){toast('⚠️ المتصفح لا يدعم الإشعارات');return;}
+  Notification.requestPermission().then(p=>{if(p==='granted'){S.set('remTime',t);schedRem(t);toast(`🔔 تذكير مضبوط على ${t}`);}else toast('⚠️ لم يُسمح بالإشعارات');});
+}
+function schedRem(t){const[h,m]=t.split(':').map(Number);const now=new Date();const tar=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0);if(tar<=now)tar.setDate(tar.getDate()+1);setTimeout(()=>{try{new Notification('NafsiLog 🌿',{body:'سجّلت مزاجك اليوم؟'});}catch{}schedRem(t);},tar-now);}
+function clearAll(){if(!confirm('سيتم مسح جميع البيانات نهائياً. هل أنت متأكد؟'))return;['logs','profile','scHist','cbtE','actL','breathL','customSc','pin','remTime'].forEach(k=>S.del(k));toast('🗑️ تم المسح');renderHome();}
+
+/* ═══════════════════════════════
+   UTILITIES
+═══════════════════════════════ */
+function ds(){return new Date().toISOString().split('T')[0];}
+function fmtDate(d){try{return new Date(d+'T00:00:00').toLocaleDateString('ar-EG',{month:'short',day:'numeric'});}catch{return d;}}
+function moodEmo(m){return m>=9?'😄':m>=7?'😊':m>=5?'😐':m>=3?'😕':'😞';}
+function moodColor(m){return m>=8?'#10b981':m>=6?'#f59e0b':m>=4?'#6366f1':'#f43f5e';}
+function scColor(s,max){const p=s/max;return p<.25?'var(--emerald)':p<.5?'var(--amber)':p<.75?'var(--rose)':'#dc2626';}
+function avg(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;}
+function stdDev(arr){if(arr.length<2)return 0;const m=avg(arr);return Math.sqrt(arr.reduce((a,v)=>a+(v-m)**2,0)/arr.length);}
+function calcStreak(logs){if(!logs.length)return 0;const sorted=[...logs].sort((a,b)=>b.date.localeCompare(a.date));let s=0,cur=new Date();for(const l of sorted){const d=new Date(l.date+'T00:00:00');const diff=Math.floor((cur-d)/86400000);if(diff<=1){s++;cur=d;}else break;}return s;}
+function avgMood(logs){if(!logs.length)return'—';return(logs.reduce((a,l)=>a+l.mood,0)/logs.length).toFixed(1);}
+
+let toastT;
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2500);}
+
+/* ═══════════════════════════════
+   BOOT
+═══════════════════════════════ */
+initLock();
+const rt=S.get('remTime');if(rt&&typeof Notification!=='undefined'&&Notification.permission==='granted')schedRem(rt);
+</script>
+</body>
+</html>
