@@ -13,7 +13,7 @@ const browser = await chromium.launch();
 const data = makeDataset();
 data.profile.medical = 'SECRET-MED-HISTORY';
 const baseSeed = seedScript(data);
-const readySettings = ['nl_ai_settings', JSON.stringify({ enabled: true, consentVersion: 1, consentAt: '2026-10-30T00:00:00Z', endpoint: EP, accessCode: 'test-code', keepHistory: true })];
+const readySettings = ['nl_ai_settings', JSON.stringify({ enabled: true, consentVersion: 2, consentAt: '2026-10-30T00:00:00Z', endpoint: EP, accessCode: 'test-code', keepHistory: true })];
 
 /** Fake upstream model + real handler. `model(sentBody)` returns the model's raw text or {status}. */
 function server({ model = () => '{"reply":"حسناً"}', env = {}, raw } = {}) {
@@ -40,7 +40,7 @@ function server({ model = () => '{"reply":"حسناً"}', env = {}, raw } = {}) 
 async function app(opts = {}) {
   const r = await openApp(browser, { seed: opts.seed || baseSeed, viewport: opts.viewport, onRoute: opts.onRoute });
   await unlock(r.page);
-  await r.page.evaluate(() => go('ai'));
+  await r.page.evaluate(() => { go('ai'); aiSwitch(0); });
   return r;
 }
 const send = async (page, text) => { await page.fill('#aiInput', text); await page.click('#aiSendBtn'); await page.waitForFunction(() => !aiBusy); await page.waitForTimeout(50); };

@@ -66,6 +66,8 @@ await test('daily log saves, upserts by date and survives reload', async () => {
   logs = await store(page, 'logs');
   eq(logs.filter(l => l.date === today).length, 1, 'upsert not duplicate');
   assert(logs.length === before + 1 || logs.length === before, 'count');
+  // Chromium commits file:// localStorage to disk asynchronously; give it time before a hard reload.
+  await page.waitForTimeout(2000);
   await page.reload();
   await unlock(page);
   eq((await store(page, 'logs')).find(l => l.date === today).mood, 6, 'persisted after reload');

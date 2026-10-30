@@ -82,3 +82,39 @@ Never sent: medical history/medications, age, gender, marital status, PIN. The s
 - Pattern detection is keyword/threshold based, not clinically validated; Arabic dialect coverage is partial.
 - Crisis detection is a phrase list; it will miss indirect language and can't replace human judgement.
 - The live AI path was tested against the real handler with a simulated provider. **No call to a real model was made** (no credentials were available).
+
+## Comprehensive analysis (v2): money • fatherhood • risk radar
+
+**Tabs:** 🧭 الصورة الشاملة (default) • 💬 محادثة • 📈 الحالة النفسية • 💰 المال • 👨‍👧 أبوّتي • 🔎 الأنماط • ✅ الخطة • 📄 التقارير • 🔐 الخصوصية.
+
+**Finance source — keepMoney (Hybrid or Local), schema v16 export.** The user exports JSON from keepMoney and imports it in 💰 المال. `nlFinSanitize` keeps only date/type/amount/category/account/debt/goal/source links and drops descriptions, notes and tags; invalid rows are rejected and counted. Stored as `nl_fin` (previous import kept in `nl_fin_prev` for undo). keepMoney is never modified. Reading KeepHybrid's localStorage directly was ruled out: its data is encrypted at rest (`km_local_data_enc`) and synced through Firebase.
+
+`NLF.analyze` (last ≤3 complete months): average income/expense (personal vs clinic `bizId`), share of income remaining after expenses and charity, deficit months, liquid balance (asset accounts, keepMoney's balance rules) and emergency-fund months, remaining debt (principal × simple interest − payments with `debtId`, plus card balances), debt-service ratio, overdue debts, monthly subscriptions, investments, approximate net worth, income-source shares, income variation and lowest month, top personal categories, goal progress (education goals detected by name). `NLF.moodLink` joins daily personal spending with mood.
+
+**Fatherhood.** Daily form adds optional `familyMin`, `exerciseMin`, `parentScore` (1–5; empty = not rated, never 0) and a `#مال` tag. `NLFam.analyze`: family minutes/day, parent self-rating and trend, rating on high-stress / short-sleep / #شغل days vs others, family time ↔ mood. Missions are a fixed library of evidence-informed parenting practices (special time, labelled praise, listening, repair, routine, transition ritual, modelling, money habits, self-care), chosen by data and filtered by children's ages. Children (nickname + age) and protection checklist (`nl_family`) stay on the device; names are never sent.
+
+**Risk radar (`NLR.compute`).** Rule-based flags across four domains, each with level (مرتفع/متوسط/منخفض/غير معروف), evidence and an optional action. "غير معروف" whenever data is missing — never guessed. Recent crisis language (journal or conversations, 14 days) shows the safety card above everything. Thresholds:
+
+| Domain | Item | High | Medium |
+|---|---|---|---|
+| نفسي | mood (≥5 logs) | mean < 4.5 (n≥7) | mean < 5.5 or slope ≤ −0.5/wk |
+| | low streak | ≥5 days ≤3 | ≥3 |
+| | PHQ-9 / GAD-7 (60 days) | ≥15 | ≥10 |
+| | distress | mean ≥8 | ≥7 |
+| صحي | sleep | mean < 6 h | < 6.5 h or ≥50% short nights |
+| | activity | < 75 min/wk | < 150 min/wk |
+| | burnout signal | — | sleep < 6.5 + distress ≥ 6.5 + #شغل ≥ 30% |
+| مالي | deficit months (of 3) | ≥2 | 1 |
+| | remaining share of income | < 0 | < 10% |
+| | emergency fund | < 1 month | < 3 months |
+| | debt service | > 40% | > 25% |
+| | overdue debt | any | — |
+| | top income source / variation | — | > 70% / CV > 35% |
+| عائلي | family time | < 10 min/day | < 20 |
+| | parent rating | ≤ 2.5 | ≤ 3 or falling |
+| | stress spill-over | — | rating ≥1 point lower on stress/short-sleep/#شغل days |
+| | protection | — | emergency < 3 months; no education goal (with children); will/insurance marked "غير متوفر" |
+
+**Father persona.** Local overview message (`nlFatherWord`) and chat replies use a warm, candid father voice (strength first, one or two concerns, one step). The user can choose how they are addressed or switch to a neutral style. Server adds a persona block (rules 1–9 still apply) and new rules: not a financial/legal advisor; risks are flags, not predictions.
+
+**AI scopes added** (all default off): `finance` (aggregates only), `family` (counts, ages, minutes, ratings), `risks` (titles and levels). Server rejects context keys `nick`, `children`, `party`, `description`, `note(s)`. Consent version bumped to **2** so existing users re-consent.

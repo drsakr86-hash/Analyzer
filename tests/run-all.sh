@@ -7,3 +7,4 @@ node -e "const h=require('fs').readFileSync('index.html','utf8');[...h.matchAll(
 node --experimental-strip-types tests/edge.test.mjs
 node tests/e2e-existing.mjs
 node --experimental-strip-types tests/e2e-ai.mjs
+node --experimental-strip-types tests/e2e-life.mjs

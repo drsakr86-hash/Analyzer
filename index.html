@@ -378,6 +378,21 @@ canvas.nafsi-chart{width:100%!important;max-height:200px}
 .ai-pre{direction:ltr;text-align:left;font-size:.68rem;background:var(--s3);border-radius:9px;padding:.7rem;max-height:52vh;overflow:auto;white-space:pre-wrap;color:var(--text2)}
 .ai-hist{display:flex;gap:6px;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--border)}
 .ai-hist>div{flex:1;font-size:.82rem}
+
+/* ── التحليل الشامل ── */
+.nl-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:.9rem}
+@media(max-width:420px){.nl-tiles{grid-template-columns:repeat(2,1fr)}}
+.nl-tile{display:flex;flex-direction:column;align-items:center;gap:3px;padding:.7rem .3rem;background:var(--s2);border:1.5px solid;border-radius:12px;cursor:pointer;font-family:inherit;color:var(--text)}
+.nl-tile-ico{font-size:1.3rem}.nl-tile-lbl{font-size:.74rem;font-weight:700}.nl-tile-lv{font-size:.7rem;font-weight:800}
+.nl-risk{padding:.6rem 0;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px}
+.nl-risk:last-child{border-bottom:none}
+.nl-risk-head{display:flex;align-items:center;gap:7px;font-size:.86rem}
+.nl-risk-head .ai-muted{margin-right:auto}
+.nl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.nl-father{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(45,212,191,.05));border:1px solid rgba(245,158,11,.22);border-radius:14px;padding:.9rem 1rem;margin-bottom:.9rem}
+.nl-father-head{font-size:.84rem;font-weight:800;margin-bottom:.4rem;color:#fcd34d}
+.nl-father .rep-text{color:var(--text);line-height:1.85}
+.nl-fam-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .bottom-nav .nav-btn{min-width:0}
 @media(max-width:360px){.nav-btn{font-size:.56rem}.nav-btn .nav-ico{font-size:1.1rem}}
 </style>
@@ -489,7 +504,17 @@ canvas.nafsi-chart{width:100%!important;max-height:200px}
       <div class="tag-toggle" onclick="tg(this,'#امتنان')">#امتنان</div>
       <div class="tag-toggle" onclick="tg(this,'#توتر')">#توتر</div>
       <div class="tag-toggle" onclick="tg(this,'#وحدة')">#وحدة</div>
+      <div class="tag-toggle" onclick="tg(this,'#مال')">#مال</div>
     </div>
+  </div>
+  <div class="card">
+    <div class="card-title">👨‍👧 الأسرة والصحة <span style="font-weight:400;text-transform:none">(اختياري)</span></div>
+    <div class="nl-fam-grid">
+      <div class="field"><label>وقت نوعي مع الأولاد/الأسرة (دقيقة)</label><input class="inp" type="number" id="famMin" min="0" max="1440" inputmode="numeric" placeholder="مثال: 30"></div>
+      <div class="field"><label>نشاط بدني (دقيقة)</label><input class="inp" type="number" id="exMin" min="0" max="1440" inputmode="numeric" placeholder="مثال: 20"></div>
+    </div>
+    <div class="field" style="margin-bottom:0"><label>رضاك عن نفسك كأب اليوم</label>
+      <select class="inp" id="parentScore"><option value="">— لم أقيّم —</option><option value="1">1 — يوم صعب</option><option value="2">2</option><option value="3">3 — متوسط</option><option value="4">4</option><option value="5">5 — راضٍ جداً</option></select></div>
   </div>
   <button class="btn btn-primary btn-full" onclick="saveDaily()" style="margin-bottom:1rem">💾 حفظ تسجيل اليوم</button>
 </div>
@@ -722,17 +747,19 @@ function initDaily(){
     document.getElementById('stressor').value=ex.stressor||'';
     document.getElementById('stressSlider').value=ex.stressLevel||5;document.getElementById('stressVal').textContent=ex.stressLevel||5;
     document.getElementById('intrusive').value=ex.intrusive||'';document.getElementById('gratitude').value=ex.gratitude||'';
+    document.getElementById('famMin').value=ex.familyMin??'';document.getElementById('exMin').value=ex.exerciseMin??'';document.getElementById('parentScore').value=ex.parentScore??'';
     selTags=ex.tags||[];
     selTags.forEach(tag=>document.querySelectorAll('.tag-toggle').forEach(el=>{if(el.textContent===tag)el.classList.add('on');}));
   } else {
     ['moodSlider','stressSlider'].forEach(id=>document.getElementById(id).value=5);
     ['moodVal','stressVal'].forEach(id=>document.getElementById(id).textContent=5);
-    ['sleepH','ev1','ev2','ev3','stressor','intrusive','gratitude'].forEach(id=>document.getElementById(id).value='');
+    ['sleepH','ev1','ev2','ev3','stressor','intrusive','gratitude','famMin','exMin','parentScore'].forEach(id=>document.getElementById(id).value='');
   }
 }
+function nlOptInt(id,lo,hi){const v=document.getElementById(id).value;if(v===''||v==null)return null;const n=Math.round(Number(v));return Number.isFinite(n)?Math.min(hi,Math.max(lo,n)):null;}
 function tg(el,tag){el.classList.toggle('on');if(el.classList.contains('on')){if(!selTags.includes(tag))selTags.push(tag);}else selTags=selTags.filter(t=>t!==tag);}
 function saveDaily(){
-  const entry={date:ds(),mood:+document.getElementById('moodSlider').value,sleep:parseFloat(document.getElementById('sleepH').value)||null,ev1:document.getElementById('ev1').value.trim(),ev2:document.getElementById('ev2').value.trim(),ev3:document.getElementById('ev3').value.trim(),stressor:document.getElementById('stressor').value.trim(),stressLevel:+document.getElementById('stressSlider').value,intrusive:document.getElementById('intrusive').value.trim(),gratitude:document.getElementById('gratitude').value.trim(),tags:[...selTags],ts:Date.now()};
+  const entry={date:ds(),mood:+document.getElementById('moodSlider').value,sleep:parseFloat(document.getElementById('sleepH').value)||null,ev1:document.getElementById('ev1').value.trim(),ev2:document.getElementById('ev2').value.trim(),ev3:document.getElementById('ev3').value.trim(),stressor:document.getElementById('stressor').value.trim(),stressLevel:+document.getElementById('stressSlider').value,intrusive:document.getElementById('intrusive').value.trim(),gratitude:document.getElementById('gratitude').value.trim(),tags:[...selTags],familyMin:nlOptInt('famMin',0,1440),exerciseMin:nlOptInt('exMin',0,1440),parentScore:nlOptInt('parentScore',1,5),ts:Date.now()};
   const logs=S.get('logs',[]);const i=logs.findIndex(l=>l.date===ds());
   if(i>=0)logs[i]=entry;else logs.push(entry);
   S.set('logs',logs);toast('✅ تم حفظ تسجيل اليوم');go('home');
@@ -2183,7 +2210,7 @@ function renderReport(){
     </div>
 
     <!-- GAUGES -->
-    <div style="font-size:.7rem;color:var(--soft);margin:-.4rem 0 .6rem;text-align:center">المؤشرات المئوية حسابات تقريبية من بياناتك وليست درجات سريرية • <a href="#" onclick="go('ai');aiSwitch(1);return false" style="color:var(--teal)">تحليل مفصل بالأرقام والأدلة ←</a></div>
+    <div style="font-size:.7rem;color:var(--soft);margin:-.4rem 0 .6rem;text-align:center">المؤشرات المئوية حسابات تقريبية من بياناتك وليست درجات سريرية • <a href="#" onclick="go('ai');aiSwitch('trends');return false" style="color:var(--teal)">تحليل مفصل بالأرقام والأدلة ←</a></div>
     <div class="gauge-row">
       ${buildGauge('مؤشر المزاج',Math.round(avgM*10),100,moodColor(avgM),`متوسط ${avgM.toFixed(1)}/10`)}
       ${buildGauge('جودة النوم',Math.round(sleepScore),100,'var(--indigo)',avgS?`متوسط ${avgS.toFixed(1)} ساعة`:'غير كافٍ')}
@@ -2733,7 +2760,7 @@ function setRem(){
   Notification.requestPermission().then(p=>{if(p==='granted'){S.set('remTime',t);schedRem(t);toast(`🔔 تذكير مضبوط على ${t}`);}else toast('⚠️ لم يُسمح بالإشعارات');});
 }
 function schedRem(t){const[h,m]=t.split(':').map(Number);const now=new Date();const tar=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0);if(tar<=now)tar.setDate(tar.getDate()+1);setTimeout(()=>{try{new Notification('NafsiLog 🌿',{body:'سجّلت مزاجك اليوم؟'});}catch{}schedRem(t);},tar-now);}
-function clearAll(){if(!confirm('سيتم مسح جميع البيانات نهائياً (اليوميات، المقاييس، الجلسات، بيانات المساعد، النسخة المؤقتة). هل أنت متأكد؟'))return;['logs','profile','scHist','cbtE','actL','breathL','customSc','sessions','pin','remTime','backup_preimport','ai_settings','ai_conv','ai_actions','ai_reports','ai_patternFb'].forEach(k=>S.del(k));if(typeof aiConvMem!=='undefined'){aiConvMem=null;aiPending={};}toast('🗑️ تم المسح');renderHome();}
+function clearAll(){if(!confirm('سيتم مسح جميع البيانات نهائياً (اليوميات، المقاييس، الجلسات، بيانات المساعد، النسخة المؤقتة). هل أنت متأكد؟'))return;['logs','profile','scHist','cbtE','actL','breathL','customSc','sessions','pin','remTime','backup_preimport','ai_settings','ai_conv','ai_actions','ai_reports','ai_patternFb','fin','fin_prev','family'].forEach(k=>S.del(k));if(typeof aiConvMem!=='undefined'){aiConvMem=null;aiPending={};}toast('🗑️ تم المسح');renderHome();}
 
 /* ═══════════════════════════════
    UTILITIES
@@ -2766,15 +2793,18 @@ const rt=S.get('remTime');if(rt&&typeof Notification!=='undefined'&&Notification
    Everything numeric is computed here, deterministically, on the device.
    The optional language model only explains numbers it is given.
 ═══════════════════════════════════════════════════════════════════ */
-const AI_CONSENT_VERSION = 1;
+const AI_CONSENT_VERSION = 2; // v2: added finance / family / risk scopes and father persona
 const AI_KEYS = ['ai_settings', 'ai_conv', 'ai_actions', 'ai_reports', 'ai_patternFb'];
-const AI_DEFAULT_SCOPES = { stats: true, journal: false, sessions: false, scales: false, goals: false };
+const AI_DEFAULT_SCOPES = { stats: true, journal: false, sessions: false, scales: false, goals: false, finance: false, family: false, risks: false };
 const AI_SCOPE_LABELS = {
   stats: '📊 ملخص أرقام آخر 30 يوماً',
   journal: '📝 نصوص يومياتي (آخر 7 أيام)',
   sessions: '🧘 آخر جلسات التمارين',
   scales: '📋 نتائج المقاييس',
   goals: '🎯 أهدافي',
+  finance: '💰 ملخص مالي محسوب (بدون أسماء أو أوصاف)',
+  family: '👨‍👧 مؤشرات الأسرة (بدون أسماء)',
+  risks: '🧭 ملخص رادار المخاطر',
 };
 
 /* ─────────── date & number helpers ─────────── */
@@ -3101,6 +3131,7 @@ const NLA = {
       stats: cur, prevPeriod: prevP, prevStats: { daysLogged: prev.daysLogged, mood: prev.mood, sleep: prev.sleep, distress: prev.distress, exercises: prev.exercises },
       comparison: cmp, patterns: pats.map(x => ({ id: x.id, title: x.title, observation: x.observation, hypothesis: x.hypothesis, n: x.n, suff: x.suff.label, dates: x.evidence.map(e => e.date) })),
       observations, insufficient, nextSteps: next, narrative: null,
+      ...nlReportExtras(data, p),
     };
   },
 };
@@ -3174,7 +3205,8 @@ const AIService = {
     if (gap < 1500) await new Promise(r => setTimeout(r, 1500 - gap)); // gentle client-side spacing
     if (this._calls.length >= 40) throw new AIError('rate_limited');
     this._calls.push(Date.now());
-    const body = JSON.stringify({ task, messages, context, safety_flag });
+    const persona = AIService.settings().persona === 'neutral' ? 'neutral' : 'father';
+    const body = JSON.stringify({ task, messages, context, safety_flag, persona });
     if (body.length > 30000) throw new AIError('context_too_large');
     const s = this.settings();
     const headers = { 'content-type': 'application/json', 'x-nafsilog-access': s.accessCode };
@@ -3243,6 +3275,9 @@ function aiBuildContext(scopes, data = NLA.load()) {
     ctx.scales = { note: 'PHQ-9/GAD-7 are screening questionnaires, not diagnoses.', results: data.scHist.slice(-8).map(h => ({ type: h.type, score: nlNum(h.score), max: nlNum(h.max), date: h.date })) };
     meta.push(`${ctx.scales.results.length} نتائج مقاييس`);
   }
+  if (scopes.finance) { const f = nlFinanceContext(); if (f) { ctx.finance = f; meta.push('ملخص مالي محسوب'); } }
+  if (scopes.family) { ctx.family = nlFamilyContext(); meta.push('مؤشرات الأسرة'); }
+  if (scopes.risks) { ctx.risk_radar = NLR.summary(NLR.compute(data)); meta.push('ملخص المخاطر'); }
   if (scopes.goals) {
     ctx.goals = NLA.goals(data.profile).map(g => nlClip(g, 100));
     const acts = (S.get('ai_actions', []) || []).filter(a => a.status !== 'dismissed').slice(-6);
@@ -3266,7 +3301,7 @@ function aiUnverifiedNumbers(text, sources) {
 }
 
 /* ─────────── state & storage helpers ─────────── */
-let aiTab = 0, aiPeriodDays = 30, aiCustom = null, aiBusy = false, aiConvMem = null, aiPending = {};
+let aiTab = 'overview', aiPeriodDays = 30, aiCustom = null, aiBusy = false, aiConvMem = null, aiPending = {};
 function aiUid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 function aiConvs() { const s = AIService.settings(); if (!s.keepHistory) return aiConvMem || (aiConvMem = []); const c = S.get('ai_conv', []); return Array.isArray(c) ? c : []; }
 function aiSaveConvs(c) { if (AIService.settings().keepHistory) S.set('ai_conv', c.slice(-20)); else aiConvMem = c; }
@@ -3284,20 +3319,21 @@ function aiStatusPill() {
 }
 
 /* ─────────── page shell ─────────── */
-const AI_TABS = ['💬 محادثة', '📈 الاتجاهات', '🔎 الأنماط', '✅ الخطة', '📄 التقارير', '🔐 الخصوصية والإعداد'];
+const AI_TABS = [['overview', '🧭 الصورة الشاملة'], ['chat', '💬 محادثة'], ['trends', '📈 الحالة النفسية'], ['finance', '💰 المال'], ['father', '👨‍👧 أبوّتي'], ['patterns', '🔎 الأنماط'], ['plan', '✅ الخطة'], ['reports', '📄 التقارير'], ['privacy', '🔐 الخصوصية والإعداد']];
+const AI_TAB_LEGACY = ['chat', 'trends', 'patterns', 'plan', 'reports', 'privacy'];
 function renderAI() {
   const el = document.getElementById('aiContent'); if (!el) return;
   document.getElementById('aiStatus').innerHTML = aiStatusPill();
-  document.getElementById('aiTabs').innerHTML = AI_TABS.map((t, i) => `<button class="chart-tab${i === aiTab ? ' active' : ''}" onclick="aiSwitch(${i})">${t}</button>`).join('');
+  document.getElementById('aiTabs').innerHTML = AI_TABS.map(([id, t]) => `<button class="chart-tab${id === aiTab ? ' active' : ''}" onclick="aiSwitch('${id}')">${t}</button>`).join('');
   try {
-    el.innerHTML = [aiChatView, aiTrendsView, aiPatternsView, aiPlanView, aiReportsView, aiPrivacyView][aiTab]();
+    el.innerHTML = ({ overview: aiOverviewView, chat: aiChatView, trends: aiTrendsView, finance: aiFinanceView, father: aiFatherView, patterns: aiPatternsView, plan: aiPlanView, reports: aiReportsView, privacy: aiPrivacyView }[aiTab] || aiOverviewView)();
   } catch (e) {
     console.error(e);
     el.innerHTML = `<div class="empty-state"><div class="empty-ico">⚠️</div>تعذر عرض هذا القسم. بياناتك لم تتأثر.</div>`;
   }
-  if (aiTab === 0) { const m = document.getElementById('aiMsgs'); if (m) m.scrollTop = m.scrollHeight; }
+  if (aiTab === 'chat') { const m = document.getElementById('aiMsgs'); if (m) m.scrollTop = m.scrollHeight; }
 }
-function aiSwitch(t) { aiTab = t; renderAI(); window.scrollTo({ top: 0 }); }
+function aiSwitch(t) { aiTab = typeof t === 'number' ? AI_TAB_LEGACY[t] : t; renderAI(); window.scrollTo({ top: 0 }); const b = document.querySelector('#aiTabs .chart-tab.active'); if (b && b.scrollIntoView) b.scrollIntoView({ block: 'nearest', inline: 'center' }); }
 function aiPeriodBar(onchange) {
   const opts = [[7, '7 أيام'], [14, '14 يوماً'], [30, '30 يوماً'], [90, '90 يوماً']];
   return `<div class="ai-period">${opts.map(([d, l]) => `<button class="chip${!aiCustom && aiPeriodDays === d ? ' sel' : ''}" onclick="aiCustom=null;aiPeriodDays=${d};${onchange}">${l}</button>`).join('')}
@@ -3404,12 +3440,12 @@ function aiLocalReply(text, crisis) {
   if (flow && !isQuestion) return aiFlowStep(text);
   if (/نوم|نمت/.test(t)) {
     if (!st.sleep.n) return { role: 'assistant', source: 'local', text: `لا توجد ساعات نوم مسجلة في آخر 30 يوماً (${range}). سجّل ساعات نومك في «يومي» لأتمكن من تحليلها.` };
-    return { role: 'assistant', source: 'local', text: `خلال ${range}: متوسط نومك ${st.sleep.mean} ساعة في ${st.sleep.n} أيام مسجلة، منها ${st.sleep.shortDays} أيام أقل من 6 ساعات.\nالمزاج والنوم: ${nlCorrText(st.moodSleep.r, st.moodSleep.n)}\nما الذي تلاحظه أنت في الأيام التي تنام فيها قليلاً؟`, data: `${st.sleep.n} تسجيل نوم`, buttons: [{ label: '📈 عرض الاتجاهات', fn: 'aiSwitch(1)' }] };
+    return { role: 'assistant', source: 'local', text: `خلال ${range}: متوسط نومك ${st.sleep.mean} ساعة في ${st.sleep.n} أيام مسجلة، منها ${st.sleep.shortDays} أيام أقل من 6 ساعات.\nالمزاج والنوم: ${nlCorrText(st.moodSleep.r, st.moodSleep.n)}\nما الذي تلاحظه أنت في الأيام التي تنام فيها قليلاً؟`, data: `${st.sleep.n} تسجيل نوم`, buttons: [{ label: '📈 عرض الاتجاهات', fn: "aiSwitch('trends')" }] };
   }
   if (/مزاج/.test(t) && isQuestion) {
     if (!st.mood.n) return { role: 'assistant', source: 'local', text: `لا توجد تسجيلات مزاج في آخر 30 يوماً (${range}).` };
     const trend = st.mood.slopePerWeek == null ? 'الاتجاه غير محسوب لقلة البيانات' : Math.abs(st.mood.slopePerWeek) < 0.2 ? 'مستقر تقريباً' : (st.mood.slopePerWeek > 0 ? 'يميل للارتفاع' : 'يميل للانخفاض') + ` (${st.mood.slopePerWeek} نقطة/أسبوع)`;
-    return { role: 'assistant', source: 'local', text: `خلال ${range} سجلت ${st.mood.n} أيام. متوسط المزاج ${st.mood.mean}/10 (الوسيط ${st.mood.median}، بين ${st.mood.min} و${st.mood.max}). الاتجاه: ${trend}.\nهل هناك يوم بعينه تريد أن نفهم ما حدث فيه؟`, data: `${st.mood.n} تسجيلاً يومياً`, buttons: [{ label: '📈 التفاصيل', fn: 'aiSwitch(1)' }] };
+    return { role: 'assistant', source: 'local', text: `خلال ${range} سجلت ${st.mood.n} أيام. متوسط المزاج ${st.mood.mean}/10 (الوسيط ${st.mood.median}، بين ${st.mood.min} و${st.mood.max}). الاتجاه: ${trend}.\nهل هناك يوم بعينه تريد أن نفهم ما حدث فيه؟`, data: `${st.mood.n} تسجيلاً يومياً`, buttons: [{ label: '📈 التفاصيل', fn: "aiSwitch('trends')" }] };
   }
   if (/phq|gad|مقياس|مقاييس|اكتئاب|قلق.*(درجه|نتيج)/.test(t)) {
     const h = data.scHist.slice(-4);
@@ -3422,12 +3458,25 @@ function aiLocalReply(text, crisis) {
   }
   if (/نمط|انماط|متكرر/.test(t)) {
     const pats = NLA.patterns(data, p).filter(x => x.suff.level >= 1).slice(0, 2);
-    if (!pats.length) return { role: 'assistant', source: 'local', text: 'لم تظهر أنماط بأدلة كافية في آخر 30 يوماً بعد.', buttons: [{ label: '🔎 مستكشف الأنماط', fn: 'aiSwitch(2)' }] };
-    return { role: 'assistant', source: 'local', text: pats.map(x => `• ${x.title}: ${x.observation}`).join('\n') + '\nهذه فرضيات للتأمل وليست استنتاجات نهائية.', buttons: [{ label: '🔎 الأدلة والتفاصيل', fn: 'aiSwitch(2)' }] };
+    if (!pats.length) return { role: 'assistant', source: 'local', text: 'لم تظهر أنماط بأدلة كافية في آخر 30 يوماً بعد.', buttons: [{ label: '🔎 مستكشف الأنماط', fn: "aiSwitch('patterns')" }] };
+    return { role: 'assistant', source: 'local', text: pats.map(x => `• ${x.title}: ${x.observation}`).join('\n') + '\nهذه فرضيات للتأمل وليست استنتاجات نهائية.', buttons: [{ label: '🔎 الأدلة والتفاصيل', fn: "aiSwitch('patterns')" }] };
+  }
+  if (/مخاطر|خطر|اقلق من ايه|الصوره الشامله|تحليل شامل|وضعي ايه|احوالي/.test(t)) {
+    const r = NLR.compute(data);
+    return { role: 'assistant', source: 'local', text: nlFatherWord(r) + '\n\n' + r.domains.map(d => `${NL_LEVELS[d.level].ico} ${d.label}: ${NL_LEVELS[d.level].label}`).join(' • '), data: 'رادار المخاطر (آخر 30 يوماً + keepMoney)', buttons: [{ label: '🧭 الصورة الشاملة', fn: "aiSwitch('overview')" }] };
+  }
+  if (/مصروف|مصاريف|صرف|دخل|فلوس|مال|ادخار|توفير|دين|ديون|قسط|اقساط|ميزاني/.test(t)) {
+    const a = NLF.analyze(NLF.load());
+    if (!a) return { role: 'assistant', source: 'local', text: 'لم تُستورد بيانات keepMoney بعد. صدّرها من keepMoney ثم استوردها من تبويب «المال».', buttons: [{ label: '💰 المال', fn: "aiSwitch('finance')" }] };
+    return { role: 'assistant', source: 'local', text: `${nlCallMe()}، حسب ملف keepMoney (آخر ${a.last3Count} شهور مكتملة): متوسط دخلك ${nlMoney(a.avgIncome, a.currency)} ومصروفك ${nlMoney(a.avgExpense, a.currency)}، ويتبقى ${nlPct(a.savingsRate)} من الدخل. صندوق الطوارئ يغطي ${a.emergencyMonths == null ? '—' : nlRound(a.emergencyMonths) + ' شهر'}، والديون المتبقية ${nlMoney(a.debtRemaining, a.currency)}.${a.savingsRate != null && a.savingsRate < 0.1 ? '\nنصيحتي: ابدأ بادخار ثابت ولو صغير أول ما يدخل الدخل، قبل أي مصروف.' : ''}\nهذا تحليل لأرقامك وليس نصيحة مالية متخصصة.`, data: `${a.txCount} حركة مستوردة`, buttons: [{ label: '💰 التفاصيل', fn: "aiSwitch('finance')" }] };
+  }
+  if (/اولاد|ولادي|ابني|بنتي|ابنائي|عيالي|تربيه|كاب|ابوه|ابوتي|الابوه|اب جيد|اب كويس/.test(t)) {
+    const fx = NLFam.analyze(data, p), m = NLFam.missions(fx, nlFamily())[0];
+    return { role: 'assistant', source: 'local', text: `${nlCallMe()}، ${fx.famN ? `في آخر 30 يوماً سجلت متوسط ${fx.famMean} دقيقة يومياً مع الأسرة${fx.psMean != null ? `، ورضاك عن نفسك كأب ${fx.psMean}/5` : ''}.` : 'لسه ما سجلتش وقتك مع الأولاد في «يومي» — ابدأ عشان أقدر أشوف الصورة.'}\nالأب الكويس مش اللي ما بيغلطش، اللي بيرجع يصلح ويفضل حاضر.${m ? `\nمهمة الأسبوع: ${m.title} — ${m.step}` : ''}`, buttons: [{ label: '👨‍👧 أبوّتي', fn: "aiSwitch('father')" }] };
   }
   if (/خطه|اقترح|ماذا افعل|اعمل ايه/.test(t)) {
     const sug = NLA.suggestions(data, p).slice(0, 2);
-    return { role: 'assistant', source: 'local', text: sug.length ? 'اقتراحات مبنية على سجلاتك:\n' + sug.map(a => `• ${a.title}: ${a.step} (${a.timeframe})`).join('\n') : 'لا توجد اقتراحات جديدة الآن.', buttons: [{ label: '✅ فتح الخطة', fn: 'aiSwitch(3)' }] };
+    return { role: 'assistant', source: 'local', text: sug.length ? 'اقتراحات مبنية على سجلاتك:\n' + sug.map(a => `• ${a.title}: ${a.step} (${a.timeframe})`).join('\n') : 'لا توجد اقتراحات جديدة الآن.', buttons: [{ label: '✅ فتح الخطة', fn: "aiSwitch('plan')" }] };
   }
   // Start guided reflection (five-part CBT model)
   aiUpdateConv(c => { c.flow = { step: 1, data: { situation: text } }; });
@@ -3708,6 +3757,7 @@ function aiReportHTML(r) {
     <div class="ai-lbl">حيث البيانات غير كافية</div>${list(r.insufficient, 'البيانات كافية للأقسام أعلاه.')}
     <div class="ai-lbl">خطوات مقترحة</div>${list(r.nextSteps, 'لا توجد.')}
     ${r.narrative ? `<div class="ai-msg bot" style="margin-top:.6rem"><span class="ai-src ai">ملخص سردي من نموذج ذكاء اصطناعي (${new Date(r.narrative.at).toLocaleDateString('ar-EG')})</span><div class="ai-bubble">${esc(r.narrative.summary)}${r.narrative.observations.length ? '<br><br>' + r.narrative.observations.map(o => '• ' + esc(o)).join('<br>') : ''}${r.narrative.next_steps.length ? '<br><br><strong>خطوات:</strong><br>' + r.narrative.next_steps.map(o => '• ' + esc(o)).join('<br>') : ''}</div>${r.narrative.unverified && r.narrative.unverified.length ? `<div class="ai-warn">⚠️ أرقام غير محسوبة في التطبيق: ${r.narrative.unverified.map(esc).join('، ')}</div>` : ''}</div>` : ''}
+    ${nlReportExtrasHTML(r)}
     <div class="ai-muted" style="margin-top:.6rem">تقرير للتأمل الذاتي، ليس تقييماً سريرياً. PHQ-9 وGAD-7 أدوات فحص أولي.</div>
     <div class="ai-btns" style="margin-top:.6rem">
       <button class="btn btn-ghost btn-sm" onclick="aiExportReport('${r.id}','md')">⬇️ Markdown</button>
@@ -3719,7 +3769,7 @@ async function aiNarrate(id) {
   if (aiBusy) return;
   const reps = S.get('ai_reports', []) || [], r = reps.find(x => x.id === id); if (!r) return;
   aiBusy = true; toast('جارٍ إعداد الملخص…');
-  const payload = { period: { from: r.from, to: r.to, days: r.days }, stats: { daysLogged: r.stats.daysLogged, coveragePct: r.stats.coverage, mood: r.stats.mood, sleep: r.stats.sleep, distress: r.stats.distress, moodSleep: r.stats.moodSleep, exercises: r.stats.exercises, topTags: r.stats.tags.slice(0, 5) }, comparison: r.comparison, pattern_titles: r.patterns.map(p => ({ title: p.title, evidence_sufficiency: p.suff, n: p.n })), insufficient: r.insufficient };
+  const payload = { risk_radar: r.risks || null, finance: r.finance ? { remainingRatePct: r.finance.savingsRate == null ? null : Math.round(r.finance.savingsRate * 100), emergencyFundMonths: r.finance.emergencyMonths, debtServicePct: r.finance.debtService == null ? null : Math.round(r.finance.debtService * 100), deficitMonths: r.finance.deficitMonths } : null, family: r.family ? { familyMinutesPerDay: r.family.famMean, parentSelfRating5: r.family.psMean } : null, period: { from: r.from, to: r.to, days: r.days }, stats: { daysLogged: r.stats.daysLogged, coveragePct: r.stats.coverage, mood: r.stats.mood, sleep: r.stats.sleep, distress: r.stats.distress, moodSleep: r.stats.moodSleep, exercises: r.stats.exercises, topTags: r.stats.tags.slice(0, 5) }, comparison: r.comparison, pattern_titles: r.patterns.map(p => ({ title: p.title, evidence_sufficiency: p.suff, n: p.n })), insufficient: r.insufficient };
   try {
     const n = await AIService.call('report_narrative', { context: { report: payload } });
     n.at = new Date().toISOString(); n.unverified = aiUnverifiedNumbers([n.summary, ...n.observations, ...n.next_steps].join(' '), payload);
@@ -3743,6 +3793,7 @@ function aiExportReport(id, fmt) {
   md += `## أنماط محتملة (فرضيات)\n${r.patterns.map(p => `- **${p.title}** (كفاية الأدلة: ${p.suff}، ن=${p.n})\n  - ${p.observation}\n  - ${p.hypothesis}`).join('\n') || '- لا توجد'}\n\n`;
   md += `## المقارنة بالفترة السابقة\n${r.comparison.valid ? r.comparison.rows.map(x => `- ${x.label}: ${x.valid ? `${x.prev} ← ${x.cur} (${x.delta > 0 ? '+' : ''}${x.delta})` : 'غير كافٍ'}`).join('\n') : '- ' + r.comparison.reason}\n\n`;
   md += `## حيث البيانات غير كافية\n${r.insufficient.map(o => '- ' + o).join('\n') || '- —'}\n\n## خطوات مقترحة\n${r.nextSteps.map(o => '- ' + o).join('\n') || '- —'}\n`;
+  md += nlReportExtrasMD(r);
   if (r.narrative) md += `\n## ملخص سردي (نموذج ذكاء اصطناعي)\n${r.narrative.summary}\n`;
   aiDownload(`nafsilog_insight_${r.from}_${r.to}.md`, md, 'text/markdown');
 }
@@ -3767,12 +3818,17 @@ function aiPrivacyView() {
       <div id="aiConnRes" class="ai-muted" style="margin-top:.5rem"></div></div>
     <div class="card"><div class="card-title">📤 ما يُرسل افتراضياً مع المحادثة</div>
       ${Object.keys(AI_SCOPE_LABELS).map(k => `<label class="ai-scope block"><input type="checkbox" ${s.scopes[k] ? 'checked' : ''} onchange="aiSetScope('${k}',this.checked)"> ${AI_SCOPE_LABELS[k]}</label>`).join('')}
-      <div class="ai-muted" style="margin-top:.5rem">لا يُرسل أبداً: التاريخ الطبي والأدوية، العمر، الجنس، الحالة الاجتماعية، الرمز السري. تُحجب أرقام الهواتف والبريد من النصوص. يمكنك تغيير الاختيار قبل كل رسالة.${host ? `<br>الوجهة الحالية: <span dir="ltr">${esc(host)}</span>` : ''}</div></div>` : ''}
+      <div class="ai-muted" style="margin-top:.5rem">لا يُرسل أبداً: أسماء الأولاد، أسماء الدائنين وأوصاف الحركات، التاريخ الطبي والأدوية، العمر، الجنس، الحالة الاجتماعية، الرمز السري. تُحجب أرقام الهواتف والبريد من النصوص. يمكنك تغيير الاختيار قبل كل رسالة.${host ? `<br>الوجهة الحالية: <span dir="ltr">${esc(host)}</span>` : ''}</div></div>` : ''}
+    <div class="card"><div class="card-title">🧔🏻‍♂️ أسلوب المساعد</div>
+      <label class="ai-scope block"><input type="radio" name="nlPersona" ${s.persona !== 'neutral' ? 'checked' : ''} onchange="AIService.save({persona:'father'});renderAI()"> الأب الحكيم — دافئ وصريح، يطمئن ويوجّه</label>
+      <label class="ai-scope block"><input type="radio" name="nlPersona" ${s.persona === 'neutral' ? 'checked' : ''} onchange="AIService.save({persona:'neutral'});renderAI()"> محايد — مختصر ومهني</label></div>
     <div class="card"><div class="card-title">🗄️ بيانات المساعد على هذا الجهاز</div>
       <label class="ai-scope block"><input type="checkbox" ${s.keepHistory ? 'checked' : ''} onchange="aiSetKeep(this.checked)"> حفظ المحادثات على هذا الجهاز</label>
       <div class="ai-row"><span>المحادثات</span><span>${count('ai_conv')} • ${size('ai_conv')} ك.ب <button class="ai-link" onclick="aiWipe('ai_conv')">حذف</button></span></div>
       <div class="ai-row"><span>التقارير</span><span>${count('ai_reports')} • ${size('ai_reports')} ك.ب <button class="ai-link" onclick="aiWipe('ai_reports')">حذف</button></span></div>
       <div class="ai-row"><span>خطة العمل</span><span>${count('ai_actions')} <button class="ai-link" onclick="aiWipe('ai_actions')">حذف</button></span></div>
+      <div class="ai-row"><span>البيانات المالية (keepMoney)</span><span>${(S.get('fin', null) || { tx: [] }).tx.length} حركة • ${size('fin')} ك.ب <button class="ai-link" onclick="nlFinDelete()">حذف</button></span></div>
+      <div class="ai-row"><span>بيانات الأسرة</span><span>${nlFamily().children.length} أبناء <button class="ai-link" onclick="aiWipe('family')">حذف</button></span></div>
       <div class="ai-row"><span>تقييماتك للأنماط</span><span>${count('ai_patternFb')} <button class="ai-link" onclick="aiWipe('ai_patternFb')">حذف</button></span></div>
       <button class="btn btn-danger btn-sm" style="margin-top:.6rem" onclick="aiWipeAll()">🗑️ حذف كل بيانات المساعد</button>
       <div class="ai-muted" style="margin-top:.5rem">لا تُحذف يومياتك أو مقاييسك أو تمارينك من هنا.</div></div>
@@ -3781,7 +3837,7 @@ function aiPrivacyView() {
 }
 function aiConsentDialog() {
   aiModal('قبل تفعيل المساعد الذكي', `<div class="rep-text ai-consent">
-    <p><strong>ما الذي يُرسل؟</strong> عند كل طلب فقط، ما تختاره من: ملخص أرقام محسوبة، نصوص آخر 7 أيام، آخر جلسات التمارين، نتائج المقاييس، أهدافك — مع رسائل المحادثة الحالية. لا تُرسل يومياتك كاملة. لا يُرسل أبداً التاريخ الطبي أو العمر أو الجنس أو الحالة الاجتماعية أو الرمز السري.</p>
+    <p><strong>ما الذي يُرسل؟</strong> عند كل طلب فقط، ما تختاره من: ملخص أرقام محسوبة، نصوص آخر 7 أيام، آخر جلسات التمارين، نتائج المقاييس، أهدافك، ملخص مالي محسوب (أرقام فقط، بلا أسماء دائنين أو أوصاف حركات)، مؤشرات الأسرة (بلا أسماء الأولاد)، ملخص المخاطر — مع رسائل المحادثة الحالية. لا تُرسل يومياتك كاملة. لا يُرسل أبداً التاريخ الطبي أو العمر أو الجنس أو الحالة الاجتماعية أو الرمز السري.</p>
     <p><strong>إلى أين؟</strong> إلى خادم وسيط تضبط عنوانه أنت (Supabase Edge Function)، والذي يمرر الطلب إلى مزود الذكاء الاصطناعي المهيأ عليه (مثل Anthropic). البيانات تغادر جهازك عبر الإنترنت.</p>
     <p><strong>ما الذي يُحفظ؟</strong> الخادم الوسيط لا يخزن محتوى رسائلك ولا يسجله (يحفظ فقط عداداً مُشفَّراً لحد الطلبات). مزود الذكاء الاصطناعي قد يحتفظ بالطلبات لفترة محدودة وفق سياسته (مثل مراقبة إساءة الاستخدام) — راجع سياسة المزود. على جهازك: تُحفظ المحادثات والتقارير فقط إن سمحت بذلك، ويمكنك حذفها في أي وقت.</p>
     <p><strong>حدود المساعد:</strong> ليس طبيباً ولا معالجاً، لا يشخص، وقد يخطئ. في حالات الخطر اتصل بالطوارئ.</p>
@@ -3824,7 +3880,7 @@ function aiCloseModal() { const m = document.getElementById('aiModal'); if (m) m
 /* ═══════════════════════════════════════════════════════════════════
    BACKUP / IMPORT (validated, de-duplicated, with automatic pre-import snapshot)
 ═══════════════════════════════════════════════════════════════════ */
-const NL_BACKUP_KEYS = ['logs', 'scHist', 'customSc', 'sessions', 'cbtE', 'actL', 'breathL', 'profile', 'remTime', ...AI_KEYS];
+const NL_BACKUP_KEYS = ['logs', 'scHist', 'customSc', 'sessions', 'cbtE', 'actL', 'breathL', 'profile', 'remTime', 'fin', 'family', ...AI_KEYS];
 function nlSnapshot() { const o = {}; NL_BACKUP_KEYS.forEach(k => { const v = S.get(k, null); if (v != null) o[k] = v; }); return o; }
 function nlExportBackup() {
   const out = { app: 'NafsiLog', format: 2, exportedAt: new Date().toISOString(), note: 'الرمز السري غير مضمن. هذا الملف يحتوي بيانات شخصية حساسة — احفظه في مكان آمن.', data: nlSnapshot() };
@@ -3835,7 +3891,7 @@ const nlDate = v => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !i
 const nlClamp = (v, lo, hi) => { const n = nlNum(v); return n == null ? null : Math.min(hi, Math.max(lo, n)); };
 const nlTs = v => { const n = nlNum(v); return n != null && n >= 0 ? n : 0; };
 const NL_VALIDATORS = {
-  logs: r => { const date = nlDate(r.date), mood = nlClamp(r.mood, 1, 10); if (!date || mood == null) return null; return { date, mood: Math.round(mood), sleep: nlClamp(r.sleep, 0, 24), ev1: nlStr(r.ev1, 300), ev2: nlStr(r.ev2, 300), ev3: nlStr(r.ev3, 300), stressor: nlStr(r.stressor), stressLevel: nlClamp(r.stressLevel, 1, 10) ?? 5, intrusive: nlStr(r.intrusive), gratitude: nlStr(r.gratitude, 1000), tags: Array.isArray(r.tags) ? r.tags.filter(t => typeof t === 'string').map(t => t.slice(0, 40)).slice(0, 20) : [], ts: nlTs(r.ts) }; },
+  logs: r => { const date = nlDate(r.date), mood = nlClamp(r.mood, 1, 10); if (!date || mood == null) return null; return { date, mood: Math.round(mood), sleep: nlClamp(r.sleep, 0, 24), ev1: nlStr(r.ev1, 300), ev2: nlStr(r.ev2, 300), ev3: nlStr(r.ev3, 300), stressor: nlStr(r.stressor), stressLevel: nlClamp(r.stressLevel, 1, 10) ?? 5, intrusive: nlStr(r.intrusive), gratitude: nlStr(r.gratitude, 1000), tags: Array.isArray(r.tags) ? r.tags.filter(t => typeof t === 'string').map(t => t.slice(0, 40)).slice(0, 20) : [], familyMin: nlClamp(r.familyMin, 0, 1440), exerciseMin: nlClamp(r.exerciseMin, 0, 1440), parentScore: r.parentScore == null ? null : nlClamp(r.parentScore, 1, 5), ts: nlTs(r.ts) }; },
   scHist: r => { const date = nlDate(r.date); if (!date || !['phq', 'gad'].includes(r.type)) return null; const max = r.type === 'phq' ? 27 : 21; const score = nlClamp(r.score, 0, max); return score == null ? null : { type: r.type, score: Math.round(score), max, date, ts: nlTs(r.ts) }; },
   customSc: r => { const date = nlDate(r.date), name = nlStr(r.name, 80).trim(); if (!date || !name) return null; return { name, score: nlClamp(r.score, 1, 10) ?? 5, notes: nlStr(r.notes, 2000), date, ts: nlTs(r.ts) }; },
   sessions: r => { const date = nlDate(r.date); if (!date || !['done-cbt', 'done-ba', 'done-fl', 'done-ea'].includes(r.type) || !r.ans || typeof r.ans !== 'object') return null; const ans = {}; Object.entries(r.ans).slice(0, 60).forEach(([k, v]) => { if (typeof v === 'string') ans[k] = v.slice(0, 5000); else if (typeof v === 'number' && Number.isFinite(v)) ans[k] = v; else if (Array.isArray(v)) ans[k] = v.slice(0, 50).map(x => typeof x === 'string' ? x.slice(0, 500) : x && typeof x === 'object' ? { situation: nlStr(x.situation, 500), score: nlClamp(x.score, 0, 100) ?? 0 } : null).filter(x => x != null); }); return { type: r.type, ans, dur: nlClamp(r.dur, 0, 1440) ?? 0, date, ts: nlTs(r.ts) }; },
@@ -3857,6 +3913,8 @@ function nlValidateBackup(obj) {
     clean[k] = ok; report[k] = { ok: ok.length, rejected: rej };
   });
   if (src.profile && typeof src.profile === 'object') { const p = src.profile; clean.profile = { age: nlStr(p.age, 5), gender: nlStr(p.gender, 40), status: nlStr(p.status, 40), goals: nlStr(p.goals, 500), medical: nlStr(p.medical, 3000), phqBaseline: nlStr(String(p.phqBaseline ?? ''), 3), gadBaseline: nlStr(String(p.gadBaseline ?? ''), 3) }; }
+  if (src.fin) { const f = nlFinSanitize(src.fin); if (f.fin) { clean.fin = f.fin; report.fin = { ok: f.accepted, rejected: f.rejected }; } }
+  if (src.family && typeof src.family === 'object') clean.family = { children: (Array.isArray(src.family.children) ? src.family.children : []).slice(0, 10).map(c => ({ nick: nlStr(c && c.nick, 20), age: nlClamp(c && c.age, 0, 30) })), protections: Object.fromEntries(['will', 'lifeIns', 'healthIns'].map(k => [k, ['yes', 'no'].includes(src.family.protections && src.family.protections[k]) ? src.family.protections[k] : ''])), callMe: nlStr(src.family.callMe, 30) };
   if (src.ai_reports && Array.isArray(src.ai_reports)) clean.ai_reports = src.ai_reports.filter(r => r && typeof r === 'object' && typeof r.id === 'string' && nlDate(r.from) && nlDate(r.to) && r.stats && typeof r.stats === 'object').slice(-30);
   if (src.ai_patternFb && typeof src.ai_patternFb === 'object' && !Array.isArray(src.ai_patternFb)) { clean.ai_patternFb = {}; Object.entries(src.ai_patternFb).slice(0, 200).forEach(([k, v]) => { if (v && ['confirmed', 'refine', 'rejected'].includes(v.status)) clean.ai_patternFb[k.slice(0, 120)] = { status: v.status, note: nlStr(v.note, 300), at: nlStr(v.at, 40) }; }); }
   return { clean, report };
@@ -3877,6 +3935,8 @@ function nlMerge(cur, inc) {
   if (inc.ai_reports) { const ids = new Set((cur.ai_reports || []).map(a => a.id)); out.ai_reports = [...(cur.ai_reports || []), ...inc.ai_reports.filter(a => !ids.has(a.id))].slice(-30); }
   if (inc.ai_patternFb) out.ai_patternFb = { ...inc.ai_patternFb, ...(cur.ai_patternFb || {}) };
   if (inc.profile && (!cur.profile || !Object.values(cur.profile).some(v => v))) out.profile = inc.profile;
+  if (inc.fin && (!cur.fin || (inc.fin.importedAt || '') > (cur.fin.importedAt || ''))) out.fin = inc.fin;
+  if (inc.family && (!cur.family || !(cur.family.children || []).length)) out.family = inc.family;
   return out;
 }
 function nlImportFile(input) {
@@ -3886,7 +3946,7 @@ function nlImportFile(input) {
   rd.onload = () => {
     let obj; try { obj = JSON.parse(rd.result); } catch { toast('⚠️ ملف JSON غير صالح'); return; }
     const v = nlValidateBackup(obj); if (v.error) { toast('⚠️ ' + v.error); return; }
-    const names = { logs: 'تسجيلات يومية', scHist: 'نتائج مقاييس', customSc: 'مقاييس مخصصة', sessions: 'جلسات', cbtE: 'سجلات أفكار', actL: 'أنشطة', breathL: 'تمارين تنفس', ai_actions: 'خطوات خطة' };
+    const names = { fin: 'حركات مالية', logs: 'تسجيلات يومية', scHist: 'نتائج مقاييس', customSc: 'مقاييس مخصصة', sessions: 'جلسات', cbtE: 'سجلات أفكار', actL: 'أنشطة', breathL: 'تمارين تنفس', ai_actions: 'خطوات خطة' };
     const lines = Object.entries(v.report).map(([k, r]) => `${names[k] || k}: ${r.ok} صالحة${r.rejected ? ` • ${r.rejected} مرفوضة` : ''}`);
     if (!confirm(`سيتم دمج النسخة مع بياناتك الحالية (دون حذف أي شيء، وبدون تكرار):\n\n${lines.join('\n')}\n\nستُحفظ نسخة من بياناتك الحالية تلقائياً قبل الدمج ويمكن استرجاعها. متابعة؟`)) return;
     const before = nlSnapshot();
@@ -3914,6 +3974,523 @@ function renderBackupCard() {
     ${b ? `<div class="ai-row" style="margin-top:.6rem"><span class="ai-muted">نسخة ما قبل آخر استيراد: ${new Date(b.at).toLocaleString('ar-EG')}</span><button class="ai-link" onclick="nlRestorePreImport()">↩️ استرجاع</button></div>` : ''}`;
 }
 
+</script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   NafsiLog — التحليل الشامل: المال • الأبوّة • رادار المخاطر
+   كل الأرقام تُحسب هنا على الجهاز. لا يُرسل شيء إلا بموافقة ونطاق يختاره المستخدم.
+   مصدر البيانات المالية: ملف تصدير keepMoney (Hybrid / Local) — schema v16.
+═══════════════════════════════════════════════════════════════════ */
+
+/* ─────────── helpers ─────────── */
+function nlMonthOf(d) { return String(d).slice(0, 7); }
+function nlAddMonths(ym, n) { const [y, m] = ym.split('-').map(Number); const d = new Date(y, m - 1 + n, 1); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); }
+function nlMonthLabel(ym) { const [y, m] = ym.split('-').map(Number); return new Date(y, m - 1, 1).toLocaleDateString('ar-EG', { month: 'short', year: '2-digit' }); }
+function nlMoney(v, cur) {
+  if (v == null || !Number.isFinite(v)) return '—';
+  const s = Math.round(v).toLocaleString('ar-EG');
+  const c = !cur || cur === 'EGP' ? 'ج.م' : cur;
+  return `${s} ${c}`;
+}
+function nlPct(v) { return v == null || !Number.isFinite(v) ? '—' : `${Math.round(v * 100)}%`; }
+const NL_LEVELS = {
+  high: { label: 'مرتفع', col: 'var(--rose)', rank: 3, ico: '🔴' },
+  med: { label: 'متوسط', col: 'var(--amber)', rank: 2, ico: '🟠' },
+  low: { label: 'منخفض', col: 'var(--emerald)', rank: 1, ico: '🟢' },
+  unknown: { label: 'غير معروف', col: 'var(--slate)', rank: 0, ico: '⚪' },
+};
+
+/* ═══════════════════════════ FINANCE ═══════════════════════════ */
+const NL_FIN_TYPES = ['Income', 'Expense', 'Saving', 'Charity', 'Transfer'];
+const NL_ASSET_ACC = new Set(['cash', 'wallet', 'bank', 'savings']);
+const NL_DEFAULT_SOURCES = [
+  { id: 'sal_dmn', name: 'مركز دمنهور للعيون', group: 'salary' }, { id: 'sal_safwa', name: 'مركز الصفوة كفر الدوار', group: 'salary' },
+  { id: 'sal_hosp', name: 'مستشفى العيون', group: 'salary' }, { id: 'cl_rah', name: 'عيادة الرحمانية', group: 'clinic' },
+  { id: 'cl_dmn', name: 'عيادة دمنهور', group: 'clinic' }, { id: 'op_cat', name: 'عمليات المياه البيضاء', group: 'procedure' },
+  { id: 'op_lasik', name: 'عمليات الليزك', group: 'procedure' }, { id: 'op_inj', name: 'الحقن', group: 'procedure' }, { id: 'op_laser', name: 'الليزر', group: 'procedure' },
+];
+
+/** Reduce a keepMoney export (or a stored snapshot) to the minimum needed. Drops free-text descriptions and notes. */
+function nlFinSanitize(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return { error: 'الملف ليس بيانات keepMoney.' };
+  const isSnap = raw.source === 'keepMoney' && Array.isArray(raw.tx);
+  const txIn = isSnap ? raw.tx : raw.transactions;
+  if (!Array.isArray(txIn)) return { error: 'الملف لا يحتوي قائمة حركات (transactions). صدّر البيانات من keepMoney ← الإعدادات ← تصدير JSON.' };
+  const str = (v, n) => typeof v === 'string' ? v.slice(0, n) : '';
+  const num = v => { const n = Number(v); return Number.isFinite(n) ? n : null; };
+  let rejected = 0;
+  const tx = [];
+  txIn.slice(0, 50000).forEach(t => {
+    if (!t || typeof t !== 'object') { rejected++; return; }
+    const date = nlDate(str(t.date, 10)), amount = num(t.amount);
+    if (!date || amount == null || amount < 0 || !NL_FIN_TYPES.includes(t.type)) { rejected++; return; }
+    tx.push({ date, type: t.type, amount, category: str(t.category, 60), accountId: str(t.accountId, 60), toAccountId: str(t.toAccountId, 60), debtId: str(t.debtId, 60), goalId: str(t.goalId, 60), sourceId: str(t.sourceId, 60), biz: !!(t.biz || t.bizId) });
+  });
+  const arr = k => Array.isArray(raw[k]) ? raw[k].filter(x => x && typeof x === 'object').slice(0, 2000) : [];
+  const fin = {
+    source: 'keepMoney', schemaVersion: num(raw.schemaVersion) || 0, exportedAt: str(raw.exportedAt, 40), importedAt: isSnap ? str(raw.importedAt, 40) : new Date().toISOString(),
+    currency: str((raw.settings && raw.settings.currency) || raw.currency, 8) || 'EGP',
+    tx: tx.sort((a, b) => a.date.localeCompare(b.date)),
+    accounts: arr('accounts').map(a => ({ id: str(a.id, 60), name: str(a.name, 60), type: str(a.type, 20) || 'cash', openingBalance: num(a.openingBalance) || 0, archived: !!a.archived })),
+    debts: arr('debts').map(d => ({ id: str(d.id, 60), kind: d.kind === 'owed_to_me' ? 'owed_to_me' : 'i_owe', party: str(d.party, 60), principal: Math.max(0, num(d.principal) || 0), interestRate: Math.max(0, num(d.interestRate) || 0), installments: Math.max(0, num(d.installments) || 0), dueDate: nlDate(str(d.dueDate, 10)) || '', settled: !!d.settled })),
+    goals: arr('goals').map(g => ({ id: str(g.id, 60), name: str(g.name, 80), target: Math.max(0, num(g.target) || 0), initial: Math.max(0, num(g.initial) || 0), deadline: nlDate(str(g.deadline, 10)) || '', archived: !!g.archived })),
+    investments: arr('investments').map(x => ({ kind: str(x.kind, 20), qty: num(x.qty) || 0, currentPrice: num(x.currentPrice) || num(x.buyPrice) || 0, archived: !!x.archived })),
+    subscriptions: arr('subscriptions').map(x => ({ name: str(x.name, 60), amount: Math.max(0, num(x.amount) || 0), cycle: ['weekly', 'monthly', 'quarterly', 'yearly'].includes(x.cycle) ? x.cycle : 'monthly', interval: Math.max(1, num(x.interval) || 1), paused: !!x.paused, endDate: nlDate(str(x.endDate, 10)) || '' })),
+    incomeSources: arr('incomeSources').map(s => ({ id: str(s.id, 60), name: str(s.name, 60), group: str(s.group, 20) })),
+  };
+  return { fin, rejected, accepted: tx.length };
+}
+
+const NLF = {
+  load() { const f = S.get('fin', null); return f && Array.isArray(f.tx) ? f : null; },
+
+  accountBalance(fin, id) {
+    const acc = fin.accounts.find(a => a.id === id); let bal = acc ? acc.openingBalance : 0;
+    const SIGN = { Income: 1, Expense: -1, Saving: -1, Charity: -1 };
+    for (const t of fin.tx) {
+      if (t.type === 'Transfer') { if (t.accountId === id) bal -= t.amount; if (t.toAccountId === id) bal += t.amount; continue; }
+      if (t.accountId === id) bal += SIGN[t.type] * t.amount;
+    }
+    return bal;
+  },
+
+  analyze(fin, today = ds()) {
+    if (!fin) return null;
+    const curM = nlMonthOf(today);
+    const byM = {};
+    const M = m => byM[m] || (byM[m] = { month: m, income: 0, expense: 0, personal: 0, biz: 0, saving: 0, charity: 0, debtPaid: 0, n: 0 });
+    fin.tx.forEach(t => {
+      if (t.type === 'Transfer') return;
+      const r = M(nlMonthOf(t.date)); r.n++;
+      if (t.type === 'Income') r.income += t.amount;
+      if (t.type === 'Expense') { r.expense += t.amount; if (t.biz) r.biz += t.amount; else r.personal += t.amount; }
+      if (t.type === 'Saving') r.saving += t.amount;
+      if (t.type === 'Charity') r.charity += t.amount;
+      if (t.debtId) r.debtPaid += t.amount;
+    });
+    const firstM = fin.tx.length ? nlMonthOf(fin.tx[0].date) : curM;
+    const complete = []; // last up to 6 complete months since data start
+    for (let m = nlAddMonths(curM, -1), i = 0; i < 6 && m >= firstM; m = nlAddMonths(m, -1), i++) complete.unshift(M(m));
+    const last3 = complete.slice(-3);
+    const sum = (a, k) => a.reduce((s, r) => s + r[k], 0);
+    const avg = (a, k) => a.length ? sum(a, k) / a.length : null;
+    const inc3 = sum(last3, 'income'), exp3 = sum(last3, 'expense'), ch3 = sum(last3, 'charity'), sav3 = sum(last3, 'saving');
+    const savingsRate = last3.length && inc3 > 0 ? (inc3 - exp3 - ch3) / inc3 : null;
+    const deficitMonths = last3.filter(r => r.expense + r.charity > r.income).length;
+    const avgIncome = avg(last3, 'income'), avgExpense = avg(last3, 'expense'), avgPersonal = avg(last3, 'personal');
+
+    // accounts
+    const accRows = fin.accounts.filter(a => !a.archived).map(a => ({ ...a, balance: this.accountBalance(fin, a.id) }));
+    const liquid = accRows.filter(a => NL_ASSET_ACC.has(a.type)).reduce((s, a) => s + Math.max(0, a.balance), 0);
+    const cardDebt = accRows.filter(a => a.type === 'card').reduce((s, a) => s + Math.max(0, -a.balance), 0);
+    const balancesSuspect = accRows.some(a => NL_ASSET_ACC.has(a.type) && a.balance < 0);
+    const monthlyNeed = avgPersonal != null && avgPersonal > 0 ? avgPersonal : avgExpense;
+    const emergencyMonths = monthlyNeed > 0 ? liquid / monthlyNeed : null;
+
+    // debts
+    const paidBy = {}; fin.tx.forEach(t => { if (t.debtId) paidBy[t.debtId] = (paidBy[t.debtId] || 0) + t.amount; });
+    const debtRows = fin.debts.map(d => {
+      const total = d.interestRate > 0 ? Math.round(d.principal * (1 + d.interestRate / 100)) : d.principal;
+      const remaining = Math.max(0, total - (paidBy[d.id] || 0));
+      const settled = d.settled || remaining <= 0;
+      return { ...d, total, remaining, settled, overdue: !settled && d.dueDate && d.dueDate < today };
+    });
+    const owe = debtRows.filter(d => d.kind === 'i_owe' && !d.settled);
+    const debtRemaining = owe.reduce((s, d) => s + d.remaining, 0) + cardDebt;
+    const owedToMe = debtRows.filter(d => d.kind === 'owed_to_me' && !d.settled).reduce((s, d) => s + d.remaining, 0);
+    const avgDebtPaid = avg(last3, 'debtPaid');
+    const debtService = avgIncome > 0 && avgDebtPaid != null ? avgDebtPaid / avgIncome : null;
+
+    // subscriptions
+    const perMonth = { weekly: 52 / 12, monthly: 1, quarterly: 1 / 3, yearly: 1 / 12 };
+    const subsMonthly = fin.subscriptions.filter(s => !s.paused && (!s.endDate || s.endDate >= today)).reduce((a, s) => a + s.amount * perMonth[s.cycle] / s.interval, 0);
+
+    // investments & goals
+    const investments = fin.investments.filter(x => !x.archived).reduce((s, x) => s + x.qty * x.currentPrice, 0);
+    const goalSaved = {}; fin.tx.forEach(t => { if (t.type === 'Saving' && t.goalId) goalSaved[t.goalId] = (goalSaved[t.goalId] || 0) + t.amount; });
+    const EDU = /تعليم|مدرس|جامع|دراس|اولاد|الاولاد|ابن|بنت|اطفال|عيال/;
+    const goals = fin.goals.filter(g => !g.archived).map(g => { const saved = g.initial + (goalSaved[g.id] || 0); return { name: g.name, target: g.target, saved, pct: g.target > 0 ? Math.min(1, saved / g.target) : null, deadline: g.deadline, education: EDU.test(nlNormalizeAr(g.name)) }; });
+
+    // income sources (last 3 complete months)
+    const srcList = fin.incomeSources.length ? fin.incomeSources : NL_DEFAULT_SOURCES;
+    const from3 = last3.length ? last3[0].month : curM;
+    const srcAgg = {};
+    fin.tx.filter(t => t.type === 'Income' && nlMonthOf(t.date) >= from3 && nlMonthOf(t.date) < curM).forEach(t => {
+      const s = srcList.find(x => x.id === t.sourceId) || srcList.find(x => x.name === t.category);
+      const k = s ? s.name : (t.category || 'غير محدد'); srcAgg[k] = (srcAgg[k] || 0) + t.amount;
+    });
+    const sources = Object.entries(srcAgg).map(([name, amount]) => ({ name, amount, share: inc3 > 0 ? amount / inc3 : 0 })).sort((a, b) => b.amount - a.amount);
+    const incs = complete.map(r => r.income);
+    const incMean = incs.length ? incs.reduce((a, b) => a + b, 0) / incs.length : 0;
+    const incomeCV = incs.length >= 3 && incMean > 0 ? Math.sqrt(incs.reduce((a, v) => a + (v - incMean) ** 2, 0) / (incs.length - 1)) / incMean : null;
+    const guaranteedIncome = incs.length >= 3 ? Math.min(...incs) : null;
+
+    // top personal expense categories (last 3 complete months)
+    const cat = {};
+    fin.tx.filter(t => t.type === 'Expense' && !t.biz && !t.debtId && nlMonthOf(t.date) >= from3 && nlMonthOf(t.date) < curM).forEach(t => { const k = t.category || 'أخرى'; cat[k] = (cat[k] || 0) + t.amount; });
+    const topCategories = Object.entries(cat).map(([name, amount]) => ({ name, amount, monthly: last3.length ? amount / last3.length : amount })).sort((a, b) => b.amount - a.amount).slice(0, 6);
+
+    const lastTx = fin.tx.length ? fin.tx[fin.tx.length - 1].date : null;
+    const staleDays = lastTx ? nlDaysBetween(lastTx, today) : null;
+    const netWorth = liquid + investments + owedToMe - debtRemaining;
+    return {
+      currency: fin.currency, importedAt: fin.importedAt, lastTx, staleDays, txCount: fin.tx.length,
+      months: complete, current: M(curM), monthsCount: complete.length,
+      avgIncome, avgExpense, avgPersonal, avgSaving: avg(last3, 'saving'), savingsRate, explicitSavingRate: inc3 > 0 ? sav3 / inc3 : null, deficitMonths, last3Count: last3.length,
+      liquid, emergencyMonths, balancesSuspect, accounts: accRows.length,
+      debtRemaining, cardDebt, owedToMe, debtService, overdue: owe.filter(d => d.overdue).map(d => ({ party: d.party, remaining: d.remaining, dueDate: d.dueDate })), debtsOpen: owe.length,
+      subsMonthly, investments, netWorth, goals, educationGoal: goals.some(g => g.education),
+      sources, topShare: sources.length ? sources[0].share : null, incomeCV, guaranteedIncome, topCategories,
+    };
+  },
+
+  /** Daily personal spending joined with daily mood (only dates inside the imported range). */
+  moodLink(fin, logs) {
+    if (!fin || !fin.tx.length) return null;
+    const first = fin.tx[0].date, last = fin.tx[fin.tx.length - 1].date;
+    const spend = {}; fin.tx.forEach(t => { if (t.type === 'Expense' && !t.biz && !t.debtId) spend[t.date] = (spend[t.date] || 0) + t.amount; });
+    const days = logs.filter(l => l.date >= first && l.date <= last && nlNum(l.mood) != null).map(l => ({ date: l.date, mood: +l.mood, spend: spend[l.date] || 0, money: (l.tags || []).includes('#مال'), stress: String(l.stressor || '').trim() ? +l.stressLevel : null }));
+    if (days.length < 8) return { n: days.length, enough: false };
+    const low = days.filter(d => d.mood <= 4), rest = days.filter(d => d.mood > 4);
+    const mean = a => a.length ? a.reduce((s, d) => s + d.spend, 0) / a.length : null;
+    const r = nlPearson(days.map(d => d.mood), days.map(d => d.spend));
+    const moneyDays = days.filter(d => d.money);
+    return {
+      n: days.length, enough: true, r: nlRound(r, 2), lowN: low.length, restN: rest.length,
+      lowSpend: low.length >= 3 ? mean(low) : null, restSpend: rest.length >= 3 ? mean(rest) : null,
+      moneyTagDays: moneyDays.length, moneyTagMood: moneyDays.length >= 3 ? nlRound(nlMean(moneyDays.map(d => d.mood))) : null,
+      otherMood: nlRound(nlMean(days.filter(d => !d.money).map(d => d.mood))),
+      top: low.filter(d => d.spend > 0).sort((a, b) => b.spend - a.spend).slice(0, 4),
+    };
+  },
+};
+
+function nlFinImportFile(input) {
+  const f = input.files && input.files[0]; input.value = ''; if (!f) return;
+  if (f.size > 25 * 1024 * 1024) { toast('⚠️ الملف أكبر من المسموح'); return; }
+  const rd = new FileReader();
+  rd.onload = () => {
+    let obj; try { obj = JSON.parse(rd.result); } catch { toast('⚠️ ملف JSON غير صالح'); return; }
+    const r = nlFinSanitize(obj); if (r.error) { toast('⚠️ ' + r.error); return; }
+    if (obj.app === 'NafsiLog') { toast('⚠️ هذه نسخة NafsiLog — استوردها من الإعدادات'); return; }
+    const prev = S.get('fin', null);
+    const msg = `ملف keepMoney (نسخة ${r.fin.schemaVersion || '?'}):\n• ${r.accepted} حركة صالحة${r.rejected ? ` • ${r.rejected} مرفوضة` : ''}\n• ${r.fin.debts.length} ديون • ${r.fin.goals.length} أهداف • ${r.fin.accounts.length} حسابات\n\nتُحفظ على هذا الجهاز فقط، دون أوصاف الحركات والملاحظات.${prev ? '\nستحل محل البيانات المستوردة سابقاً (يمكن التراجع).' : ''}\nمتابعة؟`;
+    if (!confirm(msg)) return;
+    if (prev) S.set('fin_prev', prev);
+    if (!S.set('fin', r.fin)) { toast('⚠️ تعذر الحفظ — المساحة ممتلئة؟'); return; }
+    toast('✅ تم استيراد البيانات المالية'); renderAI();
+  };
+  rd.readAsText(f);
+}
+function nlFinUndo() { const p = S.get('fin_prev', null); if (!p) return; if (!confirm('الرجوع للبيانات المالية المستوردة سابقاً؟')) return; S.set('fin', p); S.del('fin_prev'); renderAI(); }
+function nlFinDelete() { if (!confirm('حذف البيانات المالية المستوردة من هذا الجهاز؟ (لن يتأثر keepMoney)')) return; S.del('fin'); S.del('fin_prev'); toast('🗑️ تم الحذف'); renderAI(); }
+
+/* ═══════════════════════════ FAMILY / FATHERHOOD ═══════════════════════════ */
+function nlFamily() {
+  const f = S.get('family', {}) || {};
+  return { children: Array.isArray(f.children) ? f.children : [], protections: { will: '', lifeIns: '', healthIns: '', ...(f.protections || {}) }, callMe: typeof f.callMe === 'string' ? f.callMe : '' };
+}
+function nlFamilySave(patch) { S.set('family', { ...nlFamily(), ...patch }); }
+
+const NLFam = {
+  analyze(data, p) {
+    const logs = data.logs.filter(l => NLA.inP(l.date, p) && nlNum(l.mood) != null).sort((a, b) => a.date.localeCompare(b.date));
+    const fam = logs.filter(l => nlNum(l.familyMin) != null), ex = logs.filter(l => nlNum(l.exerciseMin) != null), ps = logs.filter(l => nlNum(l.parentScore) != null);
+    const mean = (a, k) => a.length ? nlRound(nlMean(a.map(l => +l[k]))) : null;
+    const famMean = mean(fam, 'familyMin');
+    const exWeekly = ex.length ? nlRound(nlMean(ex.map(l => +l.exerciseMin)) * 7, 0) : null;
+    const split = (cond) => {
+      const a = ps.filter(cond), b = ps.filter(l => !cond(l));
+      return a.length >= 3 && b.length >= 3 ? { with: nlRound(nlMean(a.map(l => +l.parentScore))), without: nlRound(nlMean(b.map(l => +l.parentScore))), nWith: a.length, nWithout: b.length } : null;
+    };
+    const pts = ps.map(l => ({ x: nlDaysBetween(p.from, l.date), y: +l.parentScore }));
+    const slope = ps.length >= 5 ? nlSlope(pts) : null;
+    return {
+      n: logs.length, famN: fam.length, famMean, famGoodDays: fam.filter(l => +l.familyMin >= 15).length, famZeroDays: fam.filter(l => +l.familyMin === 0).length,
+      exN: ex.length, exWeekly, psN: ps.length, psMean: mean(ps, 'parentScore'), psSlopeWeek: slope == null ? null : nlRound(slope * 7, 2),
+      psShortSleep: split(l => nlNum(l.sleep) != null && +l.sleep < 6),
+      psStress: split(l => String(l.stressor || '').trim() && +l.stressLevel >= 7),
+      psWork: split(l => (l.tags || []).includes('#شغل')),
+      famVsMood: fam.length >= 6 ? nlRound(nlPearson(fam.map(l => +l.familyMin), fam.map(l => +l.mood)), 2) : null,
+      series: logs.map(l => ({ date: l.date, fam: nlNum(l.familyMin), ps: nlNum(l.parentScore) })),
+    };
+  },
+  MISSIONS: [
+    { id: 'special', ages: [0, 17], title: 'وقت خاص يومي', step: '10–15 دقيقة يومياً مع كل طفل: هو يختار النشاط، والهاتف بعيد، وأنت تتابع وتعلّق بإيجابية دون توجيه أو أسئلة كثيرة.', timeframe: '7 أيام', reason: 'الانتباه الإيجابي المنتظم من أقوى ما يبني العلاقة ويقلل العناد.' },
+    { id: 'praise', ages: [2, 12], title: 'مدح محدد', step: 'امدح سلوكاً محدداً 3 مرات يومياً: «أعجبني إنك رتبت شنطتك بنفسك» بدل «شاطر».', timeframe: '5 أيام', reason: 'المدح الوصفي يعلّم الطفل ماذا يكرر.' },
+    { id: 'listen', ages: [6, 17], title: 'سؤال المساء', step: 'اسأل كل ابن قبل النوم: «إيه أحلى حاجة وأصعب حاجة حصلت النهارده؟» واسمع للآخر بدون نصيحة.', timeframe: '7 أيام', reason: 'الاستماع دون مقاطعة يفتح باب الحكي في المواقف الكبيرة لاحقاً.' },
+    { id: 'transition', ages: [0, 17], title: 'دقيقتان قبل باب البيت', step: 'قبل دخول البيت بعد العمل: تنفّس 4-7-8 دورتين، وقل لنفسك: «الشغل خلص، دلوقتي دوري كأب».', timeframe: 'كل يوم عمل', reason: 'ينخفض الصبر في أيام الضغط؛ فاصل قصير يحمي البيت من ضغط اليوم.' },
+    { id: 'repair', ages: [3, 17], title: 'الإصلاح بعد الانفعال', step: 'إن انفعلت: ارجع خلال اليوم وقل «أنا اتعصبت، وده مش ذنبك، وأنا آسف على طريقتي». ثم وضّح القاعدة بهدوء.', timeframe: 'عند الحاجة', reason: 'الإصلاح يعلّم الطفل إدارة المشاعر أكثر من عدم الخطأ أصلاً.' },
+    { id: 'routine', ages: [0, 12], title: 'روتين نوم ثابت', step: 'ثبّت موعد نوم الأطفال وطقساً قصيراً (حكاية/دعاء/حضن) تشارك فيه 3 ليالٍ أسبوعياً على الأقل.', timeframe: 'أسبوعان', reason: 'الروتين يقلل صراعات المساء ويمنحك وقتاً ثابتاً معهم.' },
+    { id: 'model', ages: [6, 17], title: 'كن القدوة في الهاتف', step: 'حدد ساعة يومية بلا شاشات للعائلة كلها، وابدأ بنفسك.', timeframe: 'أسبوع', reason: 'الأبناء يقلدون ما نفعله أكثر مما نقوله.' },
+    { id: 'money', ages: [6, 17], title: 'درس مال صغير', step: 'أعطِ مصروفاً أسبوعياً ثابتاً وشجّع تقسيمه: جزء للإنفاق، جزء للادخار، جزء للصدقة.', timeframe: 'شهر', reason: 'عادات المال تُتعلم مبكراً بالممارسة لا بالمحاضرة.' },
+    { id: 'self', ages: [0, 17], title: 'اشحن نفسك أولاً', step: 'خطط لساعة أسبوعية لنفسك (رياضة/صديق/هواية) — الأب المستنزف يصعب عليه الصبر.', timeframe: 'هذا الأسبوع', reason: 'رعاية نفسك جزء من رعاية أولادك.' },
+  ],
+  missions(fa, fam) {
+    const ages = fam.children.map(c => nlNum(c.age)).filter(a => a != null);
+    const fits = m => !ages.length || ages.some(a => a >= m.ages[0] && a <= m.ages[1]);
+    const pick = [];
+    const add = (id, why) => { const m = this.MISSIONS.find(x => x.id === id); if (m && fits(m) && !pick.some(x => x.id === id)) pick.push({ ...m, reason: why || m.reason }); };
+    if (fa.famMean != null && fa.famMean < 20) add('special', `متوسط الوقت النوعي مع الأسرة ${fa.famMean} دقيقة/يوم في ${fa.famN} أيام مسجلة.`);
+    if (fa.psStress && fa.psStress.with < fa.psStress.without - 0.5) add('transition', `رضاك كأب ${fa.psStress.with}/5 في أيام الضغط العالي مقابل ${fa.psStress.without}/5 في غيرها.`);
+    if (fa.psWork && fa.psWork.with < fa.psWork.without - 0.5) add('transition', `رضاك كأب أقل في أيام #شغل (${fa.psWork.with} مقابل ${fa.psWork.without}).`);
+    if (fa.psShortSleep && fa.psShortSleep.with < fa.psShortSleep.without - 0.5) add('self', `رضاك كأب ${fa.psShortSleep.with}/5 بعد نوم أقل من 6 ساعات مقابل ${fa.psShortSleep.without}/5.`);
+    if (fa.psMean != null && fa.psMean <= 3) add('repair');
+    ['special', 'praise', 'listen', 'routine', 'model', 'money', 'self'].forEach(id => add(id));
+    return pick.slice(0, 5);
+  },
+};
+
+/* ═══════════════════════════ RISK RADAR ═══════════════════════════ */
+const NLR = {
+  DOMAINS: { psych: { label: 'نفسي', ico: '🧠' }, health: { label: 'صحي وحياتي', ico: '💪' }, money: { label: 'مالي', ico: '💰' }, family: { label: 'عائلي', ico: '👨‍👧' } },
+  compute(data = NLA.load(), today = ds()) {
+    const p = NLA.period(30, today), st = NLA.stats(data, p);
+    const fin = NLF.load(), fa = NLF.analyze(fin, today), fam = nlFamily(), fx = NLFam.analyze(data, p);
+    const R = { psych: [], health: [], money: [], family: [] };
+    const add = (d, level, title, evidence, action, tab) => R[d].push({ level, title, evidence, action: action || null, tab: tab || null });
+    const cur = fa ? fa.currency : 'EGP';
+
+    // crisis language in the last 14 days (journal + conversations) → separate banner
+    const since = nlAddDays(today, -13);
+    const crisisDates = data.logs.filter(l => l.date >= since && (nlDetectCrisis(l.intrusive) || nlDetectCrisis(l.stressor))).map(l => l.date);
+    (aiConvs() || []).forEach(c => (c.messages || []).forEach(m => { if (m.role === 'user' && m.ts && isoLocal(new Date(m.ts)) >= since && nlDetectCrisis(m.text)) crisisDates.push(isoLocal(new Date(m.ts))); }));
+
+    /* ── psych ── */
+    if (st.mood.n < 5) add('psych', 'unknown', 'المزاج العام', `${st.mood.n} تسجيلات فقط في آخر 30 يوماً — سجّل يومياً لتقييم أدق.`, null, 'trends');
+    else {
+      const lv = st.mood.mean < 4.5 && st.mood.n >= 7 ? 'high' : st.mood.mean < 5.5 || (st.mood.slopePerWeek != null && st.mood.slopePerWeek <= -0.5) ? 'med' : 'low';
+      add('psych', lv, 'المزاج العام', `متوسط ${st.mood.mean}/10 في ${st.mood.n} أيام${st.mood.slopePerWeek != null ? `، الاتجاه ${st.mood.slopePerWeek > 0 ? '+' : ''}${st.mood.slopePerWeek} نقطة/أسبوع` : ''}.`, lv !== 'low' ? { title: 'نشاط ممتع صغير يومياً', step: 'اختر نشاطاً صغيراً واحداً يومياً من جلسة التنشيط السلوكي وسجّل المتعة قبل وبعد.', timeframe: '7 أيام', reason: `متوسط المزاج ${st.mood.mean}/10.` } : null, 'trends');
+      let run = 0, maxRun = 0, prevD = null;
+      [...st.dailyMood].forEach(m => { const consec = prevD && nlDaysBetween(prevD, m.date) === 1; run = m.mood <= 3 ? (consec ? run + 1 : 1) : 0; maxRun = Math.max(maxRun, run); prevD = m.date; });
+      if (maxRun >= 3) add('psych', maxRun >= 5 ? 'high' : 'med', 'أيام منخفضة متتالية', `${maxRun} أيام متتالية بمزاج 3/10 أو أقل.`, { title: 'كلّم شخصاً تثق به', step: 'تواصل هذا الأسبوع مع صديق أو قريب أو مختص وأخبره كيف كانت الأيام الأخيرة.', timeframe: 'خلال 3 أيام', reason: `${maxRun} أيام منخفضة متتالية.` }, 'trends');
+    }
+    const recent = (t) => data.scHist.filter(h => h.type === t && h.date >= nlAddDays(today, -59)).slice(-1)[0];
+    [['phq', 'PHQ-9 (فحص مزاج)'], ['gad', 'GAD-7 (فحص قلق)']].forEach(([t, name]) => {
+      const h = recent(t);
+      if (!h) add('psych', 'unknown', name, 'لا توجد نتيجة خلال آخر 60 يوماً — أكمل المقياس من قسم «مقاييس».');
+      else add('psych', h.score >= 15 ? 'high' : h.score >= 10 ? 'med' : 'low', name, `آخر نتيجة ${h.score}/${h.max} في ${fmtDate(h.date)}. أداة فحص وليست تشخيصاً${h.score >= 10 ? ' — تستحق مناقشتها مع مختص' : ''}.`, h.score >= 10 ? { title: 'موعد مع مختص', step: 'احجز استشارة مع طبيب أو أخصائي نفسي وخذ معك تقرير الفترة من التطبيق.', timeframe: 'خلال أسبوعين', reason: `${name}: ${h.score}/${h.max}.` } : null);
+    });
+    if (st.distress.n >= 5) { const lv = st.distress.mean >= 8 ? 'high' : st.distress.mean >= 7 ? 'med' : 'low'; add('psych', lv, 'شدة الضغوط اليومية', `متوسط الانزعاج ${st.distress.mean}/10 في ${st.distress.n} أيام ضاغطة.`, lv !== 'low' ? { title: 'تفريغ الضغط اليومي', step: 'بعد أصعب موقف في اليوم: 4 دورات تنفس 4-7-8 ثم اكتب الفكرة الساخنة في سجل الأفكار.', timeframe: '7 أيام', reason: `متوسط الانزعاج ${st.distress.mean}/10.` } : null, 'patterns'); }
+
+    /* ── health & life ── */
+    if (st.sleep.n < 5) add('health', 'unknown', 'النوم', `${st.sleep.n} أيام نوم مسجلة فقط.`);
+    else { const lv = st.sleep.mean < 6 ? 'high' : st.sleep.mean < 6.5 || st.sleep.shortDays / st.sleep.n >= 0.5 ? 'med' : 'low'; add('health', lv, 'النوم', `متوسط ${st.sleep.mean} ساعة، ${st.sleep.shortDays} من ${st.sleep.n} أيام أقل من 6 ساعات.`, lv !== 'low' ? { title: 'موعد نوم ثابت', step: 'حدد موعد نوم ثابتاً وأوقف الشاشات قبله بـ 30 دقيقة لمدة 5 ليالٍ.', timeframe: '5 ليالٍ', reason: `متوسط النوم ${st.sleep.mean} ساعة.` } : null, 'trends'); }
+    if (fx.exN < 5) add('health', 'unknown', 'النشاط البدني', `سجّل دقائق النشاط البدني في «يومي» (${fx.exN} أيام مسجلة).`);
+    else { const lv = fx.exWeekly < 75 ? 'high' : fx.exWeekly < 150 ? 'med' : 'low'; add('health', lv, 'النشاط البدني', `حوالي ${fx.exWeekly} دقيقة أسبوعياً (التوصية العامة للبالغين 150 دقيقة نشاطاً معتدلاً).`, lv !== 'low' ? { title: 'مشي 20 دقيقة', step: 'امشِ 20 دقيقة 4 أيام هذا الأسبوع — يمكن أن تكون مع الأولاد.', timeframe: 'أسبوع', reason: `النشاط الحالي ${fx.exWeekly} دقيقة/أسبوع.` } : null); }
+    const workShare = st.daysLogged ? (st.tags.find(t => t.tag === '#شغل') || { n: 0 }).n / st.daysLogged : 0;
+    if (st.sleep.n >= 5 && st.distress.n >= 5 && st.sleep.mean < 6.5 && st.distress.mean >= 6.5 && workShare >= 0.3) add('health', 'med', 'علامات إنهاك محتملة', `نوم ${st.sleep.mean} ساعة + انزعاج ${st.distress.mean}/10 + #شغل في ${Math.round(workShare * 100)}% من الأيام. مؤشر يستحق الانتباه وليس تشخيصاً.`, { title: 'يوم راحة حقيقي', step: 'خطط لنصف يوم أسبوعياً بلا عمل ولا عيادة ولا هاتف عمل.', timeframe: 'هذا الأسبوع', reason: 'اجتماع قلة النوم وارتفاع الضغط وكثرة العمل.' });
+
+    /* ── money ── */
+    if (!fa) add('money', 'unknown', 'البيانات المالية', 'لم تُستورد بيانات keepMoney بعد.', null, 'finance');
+    else if (fa.last3Count < 2) add('money', 'unknown', 'البيانات المالية', `البيانات تغطي ${fa.monthsCount} شهر مكتمل فقط — نحتاج شهرين على الأقل.`, null, 'finance');
+    else {
+      if (fa.staleDays != null && fa.staleDays > 30) add('money', 'unknown', 'حداثة البيانات', `آخر حركة مستوردة منذ ${fa.staleDays} يوماً — صدّر ملفاً جديداً من keepMoney.`, null, 'finance');
+      add('money', fa.deficitMonths >= 2 ? 'high' : fa.deficitMonths === 1 ? 'med' : 'low', 'التوازن الشهري', `المصروف تجاوز الدخل في ${fa.deficitMonths} من آخر ${fa.last3Count} شهور.`, fa.deficitMonths ? { title: 'مراجعة أكبر 3 بنود', step: `راجع أكبر بنود الصرف (${fa.topCategories.slice(0, 3).map(c => c.name).join('، ') || '—'}) وحدد سقفاً لكل منها في keepMoney.`, timeframe: 'هذا الشهر', reason: `عجز في ${fa.deficitMonths} شهور.` } : null, 'finance');
+      if (fa.savingsRate != null) add('money', fa.savingsRate < 0 ? 'high' : fa.savingsRate < 0.1 ? 'med' : 'low', 'معدل ما يتبقى من الدخل', `${nlPct(fa.savingsRate)} من الدخل يتبقى بعد المصروفات والصدقات (متوسط آخر ${fa.last3Count} شهور).`, fa.savingsRate < 0.1 ? { title: 'ادفع لنفسك أولاً', step: 'حوّل 10% من أي دخل لحساب ادخار فور استلامه في keepMoney.', timeframe: 'الشهر القادم', reason: `المتبقي ${nlPct(fa.savingsRate)} فقط.` } : null, 'finance');
+      if (fa.emergencyMonths != null) add('money', fa.emergencyMonths < 1 ? 'high' : fa.emergencyMonths < 3 ? 'med' : 'low', 'صندوق الطوارئ', `السيولة ${nlMoney(fa.liquid, cur)} تغطي ${nlRound(fa.emergencyMonths)} شهر من المصروف الشخصي${fa.balancesSuspect ? ' (بعض الأرصدة سالبة — راجع الأرصدة الافتتاحية في keepMoney)' : ''}.`, fa.emergencyMonths < 3 ? { title: 'بناء صندوق طوارئ', step: `هدف ادخار في keepMoney باسم «طوارئ الأسرة» = ${nlMoney((fa.avgPersonal || fa.avgExpense) * 3, cur)} (3 أشهر مصروف) بقسط شهري ثابت.`, timeframe: '6–12 شهراً', reason: `التغطية الحالية ${nlRound(fa.emergencyMonths)} شهر.` } : null, 'finance');
+      if (fa.debtService != null && fa.debtService > 0) add('money', fa.debtService > 0.4 ? 'high' : fa.debtService > 0.25 ? 'med' : 'low', 'عبء الديون', `أقساط الديون ${nlPct(fa.debtService)} من الدخل الشهري، والمتبقي ${nlMoney(fa.debtRemaining, cur)}.`, fa.debtService > 0.25 ? { title: 'خطة سداد', step: 'رتّب الديون من الأعلى فائدة، ولا تضف التزاماً جديداً حتى ينخفض العبء تحت 25%.', timeframe: '3 أشهر', reason: `الأقساط ${nlPct(fa.debtService)} من الدخل.` } : null, 'finance');
+      if (fa.overdue.length) add('money', 'high', 'ديون متأخرة', `${fa.overdue.length} دين تجاوز موعد استحقاقه.`, { title: 'تواصل بشأن المتأخر', step: 'تواصل مع الدائن واتفق على جدول واقعي بدل التأجيل الصامت.', timeframe: 'هذا الأسبوع', reason: `${fa.overdue.length} دين متأخر.` }, 'finance');
+      if (fa.topShare != null && fa.topShare > 0.7) add('money', 'med', 'الاعتماد على مصدر دخل واحد', `${nlPct(fa.topShare)} من الدخل من «${fa.sources[0].name}».`, null, 'finance');
+      if (fa.incomeCV != null && fa.incomeCV > 0.35) add('money', 'med', 'تذبذب الدخل', `الدخل يتغير كثيراً بين الشهور (معامل اختلاف ${nlPct(fa.incomeCV)}). أقل شهر: ${nlMoney(fa.guaranteedIncome, cur)} — خطط مصروفك الأساسي عليه.`, null, 'finance');
+    }
+
+    /* ── family ── */
+    if (fx.famN < 5) add('family', 'unknown', 'الوقت النوعي مع الأسرة', `سجّل دقائق الوقت مع الأولاد في «يومي» (${fx.famN} أيام مسجلة).`, null, 'father');
+    else { const lv = fx.famMean < 10 ? 'high' : fx.famMean < 20 ? 'med' : 'low'; add('family', lv, 'الوقت النوعي مع الأسرة', `متوسط ${fx.famMean} دقيقة/يوم؛ ${fx.famGoodDays} من ${fx.famN} أيام فيها 15 دقيقة أو أكثر.`, lv !== 'low' ? NLFam.MISSIONS[0] : null, 'father'); }
+    if (fx.psN >= 5) {
+      const lv = fx.psMean <= 2.5 ? 'high' : fx.psMean <= 3 || (fx.psSlopeWeek != null && fx.psSlopeWeek <= -0.3) ? 'med' : 'low';
+      add('family', lv, 'رضاك عن نفسك كأب', `متوسط ${fx.psMean}/5 في ${fx.psN} أيام${fx.psSlopeWeek != null ? `، الاتجاه ${fx.psSlopeWeek > 0 ? '+' : ''}${fx.psSlopeWeek}/أسبوع` : ''}.`, null, 'father');
+      const spill = [fx.psStress && ['الضغط', fx.psStress], fx.psShortSleep && ['قلة النوم', fx.psShortSleep], fx.psWork && ['#شغل', fx.psWork]].filter(x => x && x[1].with <= x[1].without - 1);
+      if (spill.length) add('family', 'med', 'انتقال الضغط إلى البيت', spill.map(([n, s]) => `مع ${n}: ${s.with}/5 مقابل ${s.without}/5`).join(' • ') + '.', NLFam.MISSIONS.find(m => m.id === 'transition'), 'father');
+    } else add('family', 'unknown', 'رضاك عن نفسك كأب', `قيّم يومك كأب في «يومي» (${fx.psN} تقييمات).`, null, 'father');
+    if (fa && fa.emergencyMonths != null && fa.emergencyMonths < 3) add('family', 'med', 'حماية الأسرة مالياً', `صندوق الطوارئ يغطي ${nlRound(fa.emergencyMonths)} شهر فقط.`, null, 'father');
+    if (fa && fam.children.length && !fa.educationGoal) add('family', 'med', 'هدف تعليم الأولاد', 'لا يوجد هدف ادخار للتعليم في keepMoney.', { title: 'هدف تعليم', step: 'أنشئ في keepMoney هدفاً باسم «تعليم الأولاد» بقسط شهري صغير ثابت.', timeframe: 'هذا الشهر', reason: 'لا يوجد هدف تعليمي بين أهدافك.' }, 'father');
+    const pr = fam.protections, missing = [['will', 'الوصية'], ['lifeIns', 'تأمين الحياة'], ['healthIns', 'التأمين الصحي']].filter(([k]) => pr[k] !== 'yes');
+    if (missing.some(([k]) => pr[k] === 'no')) add('family', 'med', 'وثائق الحماية', `غير متوفر: ${missing.filter(([k]) => pr[k] === 'no').map(x => x[1]).join('، ')}. اسأل مختصاً قانونياً أو مالياً عما يناسبك.`, null, 'father');
+    else if (missing.some(([k]) => !pr[k])) add('family', 'unknown', 'وثائق الحماية', `لم تحدد بعد: ${missing.map(x => x[1]).join('، ')}.`, null, 'father');
+
+    const domains = Object.keys(R).map(id => {
+      const items = R[id].sort((a, b) => NL_LEVELS[b.level].rank - NL_LEVELS[a.level].rank);
+      const known = items.filter(i => i.level !== 'unknown');
+      const level = known.length ? known[0].level : 'unknown';
+      return { id, ...this.DOMAINS[id], level, items };
+    });
+    const strengths = [];
+    if (st.coverage >= 60) strengths.push(`التزامك بالتسجيل (${st.coverage}% من الأيام)`);
+    if (st.sleep.n >= 5 && st.sleep.mean >= 7) strengths.push(`نومك الجيد (${st.sleep.mean} ساعة)`);
+    if (st.exercises.total >= 4) strengths.push(`${st.exercises.total} تمارين أكملتها هذا الشهر`);
+    if (fa && fa.savingsRate != null && fa.savingsRate >= 0.2) strengths.push(`أنك تحتفظ بـ ${nlPct(fa.savingsRate)} من دخلك`);
+    if (fa && fa.debtRemaining === 0 && fa.last3Count >= 2) strengths.push('أنك بلا ديون مفتوحة');
+    if (fx.famMean != null && fx.famMean >= 30) strengths.push(`وقتك مع أولادك (${fx.famMean} دقيقة يومياً)`);
+    if (fx.exWeekly != null && fx.exWeekly >= 150) strengths.push('نشاطك البدني المنتظم');
+    return { domains, crisis: [...new Set(crisisDates)].sort(), strengths, period: p, fin: fa, family: fx };
+  },
+  summary(r) { return r.domains.map(d => ({ domain: d.label, level: NL_LEVELS[d.level].label, items: d.items.filter(i => i.level !== 'low').slice(0, 4).map(i => ({ title: i.title, level: NL_LEVELS[i.level].label })) })); },
+};
+
+/* ─────────── father voice (local, deterministic) ─────────── */
+function nlCallMe() { const c = nlFamily().callMe.trim(); return c || 'يا بُني'; }
+function nlFatherWord(r) {
+  const call = nlCallMe();
+  const top = r.domains.flatMap(d => d.items.map(i => ({ ...i, d: d.label }))).filter(i => i.level === 'high' || i.level === 'med').sort((a, b) => NL_LEVELS[b.level].rank - NL_LEVELS[a.level].rank);
+  const unknown = r.domains.filter(d => d.level === 'unknown').map(d => d.label);
+  let s = `${call}، `;
+  s += r.strengths.length ? `أول حاجة: أنا شايف ${r.strengths.slice(0, 2).join(' و')}، ودي حاجة تتحسب لك. ` : 'شكراً إنك بتراجع نفسك؛ ده في حد ذاته بداية صح. ';
+  if (top.length) {
+    s += `بس عايزك تاخد بالك من «${top[0].title}» (${top[0].d}): ${top[0].evidence} `;
+    if (top[1]) s += `وبعدها «${top[1].title}». `;
+    s += 'مش مطلوب تصلح كل حاجة مرة واحدة — خطوة واحدة الأسبوع ده كفاية. ';
+  } else if (!unknown.length) s += 'الصورة العامة مطمئنة؛ حافظ على اللي بتعمله. ';
+  if (unknown.length) s += `ولسه مش شايف الصورة كاملة في: ${unknown.join('، ')} — كمّل البيانات دي عشان أقدر أنصحك صح. `;
+  s += 'وافتكر: بيتك وولادك محتاجينك سليم ومرتاح أكتر ما محتاجينك كامل.';
+  return s;
+}
+
+/* ═══════════════════════════ VIEWS ═══════════════════════════ */
+function aiOverviewView() {
+  const r = NLR.compute();
+  aiPending.risk = r;
+  const tile = d => `<button class="nl-tile" onclick="document.getElementById('dom_${d.id}').scrollIntoView({behavior:'smooth'})" style="border-color:${NL_LEVELS[d.level].col}">
+      <span class="nl-tile-ico">${d.ico}</span><span class="nl-tile-lbl">${d.label}</span><span class="nl-tile-lv" style="color:${NL_LEVELS[d.level].col}">${NL_LEVELS[d.level].label}</span></button>`;
+  const item = i => `<div class="nl-risk"><div class="nl-risk-head"><span class="nl-dot" style="background:${NL_LEVELS[i.level].col}"></span><strong>${esc(i.title)}</strong><span class="ai-muted">${NL_LEVELS[i.level].label}</span></div>
+      <div class="rep-text">${esc(i.evidence)}</div>
+      <div class="ai-btns">${i.action ? `<button class="btn btn-ghost btn-sm" onclick='aiAdopt(${esc(JSON.stringify({ ...i.action, source: 'risk' }))})'>＋ ${esc(i.action.title)}</button>` : ''}${i.tab ? `<button class="ai-link" onclick="aiSwitch('${i.tab}')">التفاصيل ←</button>` : ''}</div></div>`;
+  return `${r.crisis.length ? nlSafetyCard('كتبتَ مؤخراً كلمات عن إيذاء النفس') : ''}
+    <div class="nl-father"><div class="nl-father-head">🧔🏻‍♂️ كلمة من القلب <span class="ai-muted">— رد محلي مبني على بياناتك</span></div><div class="rep-text">${esc(nlFatherWord(r))}</div></div>
+    <div class="nl-tiles">${r.domains.map(tile).join('')}</div>
+    ${aiDisclaimer('مؤشرات للانتباه وليست تنبؤات ولا تشخيصاً طبياً أو نفسياً ولا نصيحة مالية أو قانونية. كل رقم محسوب من سجلاتك في آخر 30 يوماً ومن ملف keepMoney المستورد.')}
+    ${r.domains.map(d => `<div class="rep-block" id="dom_${d.id}"><div class="rep-block-head"><div class="rep-block-icon" style="background:rgba(255,255,255,.05)">${d.ico}</div><div style="flex:1"><div class="rep-block-title">${d.label}</div><div class="rep-block-sub">المستوى العام: <strong style="color:${NL_LEVELS[d.level].col}">${NL_LEVELS[d.level].label}</strong></div></div></div>${d.items.map(item).join('') || '<div class="ai-muted">لا توجد مؤشرات.</div>'}</div>`).join('')}
+    ${r.strengths.length ? `<div class="card"><div class="card-title">💪 نقاط قوتك</div>${r.strengths.map(s => `<div class="ai-row"><span>✓ ${esc(s)}</span></div>`).join('')}</div>` : ''}`;
+}
+
+function nlFinBars(months, cur) {
+  if (!months.length) return '';
+  const W = 340, H = 140, pl = 6, pr = 6, pt = 10, pb = 22;
+  const max = Math.max(1, ...months.map(m => Math.max(m.income, m.expense + m.charity)));
+  const gw = (W - pl - pr) / months.length, bw = Math.min(16, gw / 3);
+  const y = v => pt + (1 - v / max) * (H - pt - pb);
+  const bars = months.map((m, i) => { const x = pl + i * gw + gw / 2; return `<rect x="${(x - bw - 1).toFixed(1)}" y="${y(m.income).toFixed(1)}" width="${bw}" height="${(H - pb - y(m.income)).toFixed(1)}" fill="rgba(16,185,129,.75)"><title>${nlMonthLabel(m.month)} دخل ${nlMoney(m.income, cur)}</title></rect><rect x="${(x + 1).toFixed(1)}" y="${y(m.expense + m.charity).toFixed(1)}" width="${bw}" height="${(H - pb - y(m.expense + m.charity)).toFixed(1)}" fill="rgba(244,63,94,.7)"><title>${nlMonthLabel(m.month)} مصروف ${nlMoney(m.expense + m.charity, cur)}</title></rect><text x="${x.toFixed(1)}" y="${H - 6}" font-size="8" text-anchor="middle" fill="rgba(255,255,255,.4)">${nlMonthLabel(m.month)}</text>`; }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" class="ai-svg" role="img" aria-label="الدخل والمصروف الشهري">${bars}</svg><div class="ai-muted" style="font-size:.68rem">🟩 الدخل • 🟥 المصروف + الصدقات — الشهور المكتملة فقط</div>`;
+}
+
+function aiFinanceView() {
+  const fin = NLF.load(), prev = S.get('fin_prev', null);
+  const importBox = `<div class="card"><div class="card-title">📥 البيانات من keepMoney</div>
+      <div class="ai-muted" style="margin-bottom:.6rem">في keepMoney: الإعدادات ← <strong>تصدير البيانات (JSON)</strong>، ثم اختر الملف هنا. يُحفظ على هذا الجهاز فقط، وتُحذف أوصاف الحركات والملاحظات عند الاستيراد. لا يُعدَّل أي شيء في keepMoney.</div>
+      <div class="ai-btns"><label class="btn btn-primary btn-sm">⬆️ ${fin ? 'تحديث البيانات' : 'استيراد ملف keepMoney'}<input type="file" accept="application/json,.json" style="display:none" onchange="nlFinImportFile(this)"></label>
+      ${prev ? '<button class="ai-link" onclick="nlFinUndo()">↩️ الرجوع للاستيراد السابق</button>' : ''}${fin ? '<button class="ai-link" onclick="nlFinDelete()">🗑️ حذف البيانات المالية</button>' : ''}</div>
+      ${fin ? `<div class="ai-muted" style="margin-top:.5rem">آخر استيراد: ${new Date(fin.importedAt).toLocaleString('ar-EG')} • ${fin.tx.length} حركة • نسخة البيانات v${fin.schemaVersion}</div>` : ''}</div>`;
+  if (!fin) return importBox + `<div class="empty-state"><div class="empty-ico">💰</div>استورد ملف keepMoney لرؤية تحليل الدخل والمصروف والديون وصندوق الطوارئ، وعلاقة المال بمزاجك.</div>`;
+  const a = NLF.analyze(fin), c = a.currency, link = NLF.moodLink(fin, NLA.load().logs);
+  const k = (label, val, sub, col) => `<div class="corr-card"><div class="corr-label">${label}</div><div class="corr-value" style="color:${col || 'var(--text)'};font-size:1.05rem">${val}</div><div class="corr-desc">${sub}</div></div>`;
+  return `${importBox}
+    ${a.staleDays != null && a.staleDays > 30 ? `<div class="ai-warn" style="margin-bottom:.8rem">آخر حركة في الملف منذ ${a.staleDays} يوماً — صدّر ملفاً أحدث من keepMoney.</div>` : ''}
+    ${aiDisclaimer('تحليل حسابي لمعلوماتك وليس نصيحة مالية أو استثمارية. المتوسطات من آخر ' + a.last3Count + ' شهور مكتملة.')}
+    <div class="chart-wrap"><div class="chart-title">📊 الدخل والمصروف</div>${nlFinBars(a.months, c)}</div>
+    <div class="corr-grid" style="margin-bottom:.9rem">
+      ${k('متوسط الدخل الشهري', nlMoney(a.avgIncome, c), a.guaranteedIncome != null ? `أقل شهر: ${nlMoney(a.guaranteedIncome, c)}` : '—', 'var(--emerald)')}
+      ${k('متوسط المصروف', nlMoney(a.avgExpense, c), `شخصي ${nlMoney(a.avgPersonal, c)}`, 'var(--rose)')}
+      ${k('ما يتبقى من الدخل', nlPct(a.savingsRate), `ادخار صريح ${nlPct(a.explicitSavingRate)} • عجز في ${a.deficitMonths}/${a.last3Count} شهور`, a.savingsRate == null ? null : a.savingsRate < 0 ? 'var(--rose)' : a.savingsRate < 0.1 ? 'var(--amber)' : 'var(--emerald)')}
+      ${k('صندوق الطوارئ', a.emergencyMonths == null ? '—' : `${nlRound(a.emergencyMonths)} شهر`, `سيولة ${nlMoney(a.liquid, c)}${a.balancesSuspect ? ' ⚠️ أرصدة سالبة' : ''}`, a.emergencyMonths == null ? null : a.emergencyMonths < 1 ? 'var(--rose)' : a.emergencyMonths < 3 ? 'var(--amber)' : 'var(--emerald)')}
+      ${k('الديون المتبقية', nlMoney(a.debtRemaining, c), `${a.debtsOpen} مفتوحة • الأقساط ${nlPct(a.debtService)} من الدخل${a.overdue.length ? ` • ${a.overdue.length} متأخرة` : ''}`, a.debtRemaining > 0 ? 'var(--amber)' : 'var(--emerald)')}
+      ${k('صافي الثروة التقريبي', nlMoney(a.netWorth, c), `استثمارات ${nlMoney(a.investments, c)} • لك عند الغير ${nlMoney(a.owedToMe, c)}`, 'var(--teal)')}
+    </div>
+    ${a.sources.length ? `<div class="chart-wrap"><div class="chart-title">💼 مصادر الدخل (آخر ${a.last3Count} شهور)</div>${a.sources.slice(0, 6).map(s => `<div class="insight-bar"><div class="ibar-label">${esc(s.name)}</div><div class="ibar-track"><div class="ibar-fill" style="width:${Math.round(s.share * 100)}%;background:var(--emerald)"></div></div><div class="ibar-val">${nlPct(s.share)}</div></div>`).join('')}
+      ${a.incomeCV != null ? `<div class="ai-muted" style="margin-top:.4rem">تذبذب الدخل بين الشهور: ${nlPct(a.incomeCV)}${a.incomeCV > 0.35 ? ' — مرتفع؛ ابنِ المصروف الأساسي على أقل شهر.' : ''}</div>` : ''}</div>` : ''}
+    ${a.topCategories.length ? `<div class="chart-wrap"><div class="chart-title">🧾 أكبر بنود الصرف الشخصي (شهرياً)</div>${a.topCategories.map(t => `<div class="ai-row"><span>${esc(t.name)}</span><span>${nlMoney(t.monthly, c)}</span></div>`).join('')}${a.subsMonthly ? `<div class="ai-row"><span>🔔 الاشتراكات النشطة</span><span>${nlMoney(a.subsMonthly, c)}</span></div>` : ''}</div>` : ''}
+    ${a.goals.length ? `<div class="chart-wrap"><div class="chart-title">🎯 أهداف الادخار</div>${a.goals.map(g => `<div class="insight-bar"><div class="ibar-label">${g.education ? '🎓 ' : ''}${esc(g.name)}</div><div class="ibar-track"><div class="ibar-fill" style="width:${Math.round((g.pct || 0) * 100)}%;background:var(--teal)"></div></div><div class="ibar-val">${nlPct(g.pct)}</div></div>`).join('')}</div>` : ''}
+    <div class="chart-wrap"><div class="chart-title">💭 المال والمشاعر</div>
+      ${!link || !link.enough ? `<div class="ai-muted">يحتاج 8 أيام على الأقل فيها تسجيل مزاج وتغطيها بيانات keepMoney (المتاح ${link ? link.n : 0}).</div>` : `
+      <div class="ai-row col"><span>المزاج ↔ الصرف الشخصي اليومي</span><span class="ai-muted">${nlCorrText(link.r, link.n)}</span></div>
+      ${link.lowSpend != null && link.restSpend != null ? `<div class="ai-row"><span>متوسط الصرف في أيام المزاج المنخفض (≤4)</span><span>${nlMoney(link.lowSpend, c)} <span class="ai-muted">مقابل ${nlMoney(link.restSpend, c)} (ن=${link.lowN}/${link.restN})</span></span></div>` : ''}
+      ${link.moneyTagMood != null ? `<div class="ai-row"><span>المزاج في أيام #مال</span><span>${link.moneyTagMood}/10 <span class="ai-muted">مقابل ${link.otherMood}</span></span></div>` : '<div class="ai-muted">استخدم وسم #مال في «يومي» في الأيام التي يشغلك فيها المال.</div>'}
+      ${link.lowSpend != null && link.restSpend != null && link.lowSpend > link.restSpend * 1.4 ? `<div class="sinsight">فرضية: قد يرتفع صرفك في الأيام الصعبة (صرف عاطفي). سؤال: هل تتذكر ما اشتريته في ${link.top.slice(0, 2).map(d => fmtDate(d.date)).join(' و')}؟ وهل كان يستحق؟</div>` : ''}`}
+    </div>`;
+}
+
+function aiFatherView() {
+  const data = NLA.load(), p = aiPeriod(), fx = NLFam.analyze(data, p), fam = nlFamily(), fin = NLF.analyze(NLF.load());
+  const missions = NLFam.missions(fx, fam);
+  const sel = (k, label) => `<div class="ai-row"><span>${label}</span><select class="inp" style="width:auto;padding:5px 30px 5px 10px;font-size:.78rem" onchange="nlProtSet('${k}',this.value)">${[['', '— لم أحدد —'], ['yes', 'متوفر'], ['no', 'غير متوفر']].map(([v, l]) => `<option value="${v}"${fam.protections[k] === v ? ' selected' : ''}>${l}</option>`).join('')}</select></div>`;
+  const cmp = (s, label) => s ? `<div class="ai-row"><span>${label}</span><span>${s.with}/5 <span class="ai-muted">مقابل ${s.without}/5 (ن=${s.nWith}/${s.nWithout})</span></span></div>` : '';
+  return `${aiPeriodBar('renderAI()')}
+    <div class="nl-father"><div class="nl-father-head">🧔🏻‍♂️ الأب الحكيم</div><div class="rep-text">الأبوة الجيدة لا تعني الكمال، بل الحضور والصبر والإصلاح بعد الخطأ، وحماية البيت نفسياً ومادياً. هنا ترى أين أنت، بالأرقام، وما الخطوة التالية.</div></div>
+    <div class="card"><div class="card-title">📊 أرقامك كأب (${nlFmtRange(p.from, p.to)})</div>
+      ${fx.famN || fx.psN || fx.exN ? `
+      <div class="ai-row"><span>الوقت النوعي مع الأسرة</span><span>${fx.famMean != null ? `${fx.famMean} دقيقة/يوم` : '—'} <span class="ai-muted">(${fx.famN} أيام مسجلة)</span></span></div>
+      <div class="ai-row"><span>أيام فيها 15 دقيقة أو أكثر</span><span>${fx.famGoodDays}/${fx.famN}</span></div>
+      <div class="ai-row"><span>رضاك عن نفسك كأب</span><span>${fx.psMean != null ? `${fx.psMean}/5` : '—'} ${fx.psSlopeWeek != null ? `<span class="ai-muted">(${fx.psSlopeWeek > 0 ? '+' : ''}${fx.psSlopeWeek}/أسبوع)</span>` : ''}</span></div>
+      ${cmp(fx.psStress, 'في أيام الضغط العالي (≥7)')}${cmp(fx.psShortSleep, 'بعد نوم أقل من 6 ساعات')}${cmp(fx.psWork, 'في أيام #شغل')}
+      ${fx.famVsMood != null ? `<div class="ai-row col"><span>الوقت مع الأسرة ↔ مزاجك</span><span class="ai-muted">${nlCorrText(fx.famVsMood, fx.famN)}</span></div>` : ''}
+      <div class="ai-row"><span>النشاط البدني</span><span>${fx.exWeekly != null ? `~${fx.exWeekly} دقيقة/أسبوع` : '—'}</span></div>` : `<div class="ai-muted">ابدأ بتسجيل «الأسرة والصحة» في صفحة يومي: دقائق الوقت النوعي مع الأولاد، ورضاك عن يومك كأب، ودقائق النشاط البدني.</div><button class="btn btn-primary btn-sm" style="margin-top:.5rem" onclick="go('daily')">سجّل اليوم</button>`}
+    </div>
+    <div class="card"><div class="card-title">🎯 مهام الأب هذا الأسبوع</div><div class="ai-muted" style="margin-bottom:.5rem">مبنية على ممارسات تربوية مجربة (الانتباه الإيجابي، المدح الوصفي، الاستماع، الإصلاح بعد الخطأ)${fam.children.length ? ' ومناسبة لأعمار أولادك' : ''}.</div>
+      ${missions.map(m => aiActionCard({ ...m, source: 'father' }, 'suggest')).join('')}</div>
+    <div class="card"><div class="card-title">🛡️ حماية الأسرة</div>
+      <div class="ai-row"><span>صندوق الطوارئ</span><span>${fin && fin.emergencyMonths != null ? `${nlRound(fin.emergencyMonths)} شهر ${fin.emergencyMonths >= 3 ? '✓' : '⚠️'}` : '<span class="ai-muted">استورد keepMoney</span>'}</span></div>
+      <div class="ai-row"><span>عبء الديون</span><span>${fin && fin.debtService != null ? `${nlPct(fin.debtService)} من الدخل` : '—'}</span></div>
+      <div class="ai-row"><span>هدف ادخار لتعليم الأولاد</span><span>${fin ? (fin.educationGoal ? '✓ موجود' : 'غير موجود') : '—'}</span></div>
+      ${sel('healthIns', 'التأمين الصحي للأسرة')}${sel('lifeIns', 'تأمين الحياة')}${sel('will', 'الوصية وترتيب الأوراق')}
+      <div class="ai-muted" style="margin-top:.4rem">للتذكير فقط — ليست نصيحة قانونية أو تأمينية؛ استشر مختصاً فيما يناسبك.</div></div>
+    <div class="card"><div class="card-title">👧 أولادي (اختياري — على هذا الجهاز فقط)</div>
+      ${fam.children.map((ch, i) => `<div class="ai-row"><span>${esc(ch.nick || 'ابن/ابنة')} ${ch.age != null && ch.age !== '' ? `<span class="ai-muted">${esc(ch.age)} سنة</span>` : ''}</span><button class="ai-link" onclick="nlChildDel(${i})">حذف</button></div>`).join('')}
+      <div style="display:flex;gap:6px;margin-top:.5rem"><input class="inp" id="nlChNick" maxlength="20" placeholder="اسم مختصر"><input class="inp" id="nlChAge" type="number" min="0" max="30" placeholder="العمر" style="width:80px"><button class="btn btn-ghost btn-sm" onclick="nlChildAdd()">＋</button></div>
+      <div class="field" style="margin-top:.8rem;margin-bottom:0"><label>كيف يناديك المساعد؟</label><input class="inp" id="nlCallMe" maxlength="30" value="${esc(fam.callMe)}" placeholder="يا بُني" onchange="nlFamilySave({callMe:this.value.trim().slice(0,30)});toast('✅ تم')"></div>
+      <div class="ai-muted" style="margin-top:.4rem">الأسماء لا تُرسل لأي خدمة أبداً؛ تُستخدم الأعمار فقط لاختيار المهام المناسبة.</div></div>`;
+}
+function nlProtSet(k, v) { const f = nlFamily(); f.protections[k] = ['yes', 'no'].includes(v) ? v : ''; nlFamilySave({ protections: f.protections }); }
+function nlChildAdd() {
+  const n = document.getElementById('nlChNick').value.trim().slice(0, 20), a = nlNum(document.getElementById('nlChAge').value);
+  if (!n && a == null) { toast('⚠️ أدخل اسماً أو عمراً'); return; }
+  const f = nlFamily(); if (f.children.length >= 10) return; f.children.push({ nick: n, age: a != null ? Math.max(0, Math.min(30, Math.round(a))) : null }); nlFamilySave({ children: f.children }); renderAI();
+}
+function nlChildDel(i) { const f = nlFamily(); f.children.splice(i, 1); nlFamilySave({ children: f.children }); renderAI(); }
+
+/* ─────────── AI context for new scopes (aggregates only) ─────────── */
+function nlFinanceContext() {
+  const a = NLF.analyze(NLF.load()); if (!a) return null;
+  const r = v => v == null ? null : Math.round(v);
+  return {
+    currency: a.currency, completeMonths: a.months.map(m => ({ month: m.month, income: r(m.income), expense: r(m.expense), saving: r(m.saving), charity: r(m.charity) })),
+    avgIncome: r(a.avgIncome), avgExpense: r(a.avgExpense), remainingRatePct: a.savingsRate == null ? null : Math.round(a.savingsRate * 100), deficitMonthsOfLast3: a.deficitMonths,
+    emergencyFundMonths: nlRound(a.emergencyMonths), debtRemaining: r(a.debtRemaining), debtServicePct: a.debtService == null ? null : Math.round(a.debtService * 100), overdueDebts: a.overdue.length,
+    subscriptionsMonthly: r(a.subsMonthly), topCategories: a.topCategories.map(t => ({ category: t.name, monthly: r(t.monthly) })),
+    incomeTopSourceSharePct: a.topShare == null ? null : Math.round(a.topShare * 100), incomeVariationPct: a.incomeCV == null ? null : Math.round(a.incomeCV * 100),
+    goals: a.goals.map(g => ({ progressPct: g.pct == null ? null : Math.round(g.pct * 100), education: g.education })),
+  };
+}
+function nlFamilyContext() {
+  const fx = NLFam.analyze(NLA.load(), NLA.period(30)), fam = nlFamily();
+  return { childrenCount: fam.children.length, childrenAges: fam.children.map(c => c.age).filter(a => a != null), familyMinutesPerDay: fx.famMean, daysLogged: fx.famN, parentSelfRating5: fx.psMean, parentRatingTrendPerWeek: fx.psSlopeWeek, parentRatingStressDays: fx.psStress, parentRatingShortSleep: fx.psShortSleep, exerciseMinutesPerWeek: fx.exWeekly };
+}
+
+/* report extras */
+function nlReportExtras(data, p) {
+  const r = NLR.compute(data, p.to);
+  const fin = NLF.load() ? NLF.analyze(NLF.load(), p.to) : null;
+  const f = NLFam.analyze(data, p);
+  return {
+    risks: NLR.summary(r),
+    finance: fin ? { currency: fin.currency, avgIncome: fin.avgIncome, avgExpense: fin.avgExpense, savingsRate: fin.savingsRate, deficitMonths: fin.deficitMonths, last3Count: fin.last3Count, emergencyMonths: nlRound(fin.emergencyMonths), debtRemaining: fin.debtRemaining, debtService: fin.debtService, overdue: fin.overdue.length, importedAt: fin.importedAt } : null,
+    family: { famMean: f.famMean, famN: f.famN, psMean: f.psMean, psN: f.psN, exWeekly: f.exWeekly },
+  };
+}
+function nlReportExtrasHTML(r) {
+  if (!r.risks) return '';
+  const f = r.finance, fm = r.family;
+  return `<div class="ai-lbl">رادار المخاطر</div>${r.risks.map(d => `<div class="ai-row"><span>${esc(d.domain)}</span><span>${esc(d.level)}${d.items.length ? ` <span class="ai-muted">— ${d.items.map(i => esc(i.title)).join('، ')}</span>` : ''}</span></div>`).join('')}
+    <div class="ai-lbl">المال (من keepMoney)</div>${f ? `<div class="rep-text">متوسط الدخل ${nlMoney(f.avgIncome, f.currency)} والمصروف ${nlMoney(f.avgExpense, f.currency)}؛ يتبقى ${nlPct(f.savingsRate)}؛ عجز في ${f.deficitMonths}/${f.last3Count} شهور؛ صندوق الطوارئ ${f.emergencyMonths ?? '—'} شهر؛ ديون متبقية ${nlMoney(f.debtRemaining, f.currency)}${f.overdue ? ` (${f.overdue} متأخرة)` : ''}.</div>` : '<div class="ai-muted">لم تُستورد بيانات مالية.</div>'}
+    <div class="ai-lbl">الأسرة والأبوة</div><div class="rep-text">${fm.famN ? `وقت نوعي ${fm.famMean} دقيقة/يوم (${fm.famN} أيام)` : 'لا بيانات وقت أسرة'}${fm.psN ? ` • رضاك كأب ${fm.psMean}/5` : ''}${fm.exWeekly != null ? ` • نشاط بدني ~${fm.exWeekly} دقيقة/أسبوع` : ''}.</div>`;
+}
+function nlReportExtrasMD(r) {
+  if (!r.risks) return '';
+  const f = r.finance, fm = r.family;
+  let md = `\n## رادار المخاطر\n${r.risks.map(d => `- ${d.domain}: ${d.level}${d.items.length ? ' — ' + d.items.map(i => i.title).join('، ') : ''}`).join('\n')}\n`;
+  md += `\n## المال\n${f ? `- الدخل ${nlMoney(f.avgIncome, f.currency)} • المصروف ${nlMoney(f.avgExpense, f.currency)} • المتبقي ${nlPct(f.savingsRate)}\n- صندوق الطوارئ ${f.emergencyMonths ?? '—'} شهر • الديون ${nlMoney(f.debtRemaining, f.currency)}` : '- لا بيانات'}\n`;
+  md += `\n## الأسرة والأبوة\n- وقت نوعي: ${fm.famMean ?? '—'} دقيقة/يوم • رضاك كأب: ${fm.psMean ?? '—'}/5 • نشاط بدني: ${fm.exWeekly ?? '—'} دقيقة/أسبوع\n`;
+  return md;
+}
 </script>
 </body>
 </html>
