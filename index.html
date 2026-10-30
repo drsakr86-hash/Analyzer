@@ -307,7 +307,81 @@ canvas.nafsi-chart{width:100%!important;max-height:200px}
 .ex-tab-ico{font-size:1.4rem;line-height:1;}
 .ex-tab-lbl{font-size:.65rem;text-align:center;line-height:1.2;}
 
+
+/* ══════════════════════════════════
+   NafsiLog AI
+══════════════════════════════════ */
+.ai-pill{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 9px;border:1px solid;border-radius:20px;white-space:nowrap}
+.ai-note{font-size:.74rem;color:var(--text2);background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.14);border-radius:10px;padding:.55rem .75rem;margin-bottom:.8rem;line-height:1.6}
+.ai-muted{font-size:.72rem;color:var(--soft);line-height:1.55}
+.ai-link{background:none;border:none;color:var(--teal);font-family:inherit;font-size:.75rem;font-weight:600;cursor:pointer;padding:2px 4px}
+.ai-msgs{display:flex;flex-direction:column;gap:.7rem;margin-bottom:.8rem}
+.ai-welcome{text-align:center;padding:1.2rem .8rem;color:var(--text2);font-size:.86rem;line-height:1.7;display:flex;flex-direction:column;gap:.4rem;align-items:center}
+.ai-welcome strong{color:var(--text);font-size:.95rem}
+.ai-msg{display:flex;flex-direction:column;gap:4px;max-width:92%}
+.ai-msg.user{align-self:flex-end}
+.ai-msg.bot{align-self:flex-start}
+.ai-bubble{padding:.7rem .9rem;border-radius:14px;font-size:.88rem;line-height:1.75;color:var(--text);word-wrap:break-word;overflow-wrap:anywhere}
+.ai-msg.user .ai-bubble{background:linear-gradient(135deg,rgba(13,148,136,.28),rgba(45,212,191,.14));border:1px solid rgba(45,212,191,.25);border-bottom-left-radius:4px}
+.ai-msg.bot .ai-bubble{background:var(--s2);border:1px solid var(--border);border-bottom-right-radius:4px}
+.ai-src{font-size:.64rem;font-weight:700;color:var(--soft);letter-spacing:.2px}
+.ai-src.ai{color:#a5b4fc}.ai-src.err{color:var(--amber)}
+.ai-ctx{font-size:.68rem;color:var(--soft);line-height:1.5;padding:0 .3rem}
+.ai-warn{font-size:.72rem;color:var(--amber);background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:.4rem .6rem;line-height:1.5}
+.ai-fu{margin-top:2px}.ai-fu .chip{font-size:.74rem;padding:5px 11px}
+.ai-btns{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ai-act-sug{background:var(--s3);border:1px dashed rgba(45,212,191,.3);border-radius:10px;padding:.6rem .75rem;font-size:.8rem;color:var(--text2);display:flex;flex-direction:column;gap:4px}
+.ai-act-sug strong{color:var(--text)}
+.ai-composer{position:sticky;bottom:calc(var(--nav-h) + .3rem);z-index:10;background:var(--bg);padding:.5rem 0 .2rem;border-top:1px solid var(--border)}
+.ai-input-row{display:flex;gap:8px;align-items:flex-end}
+.ai-input-row textarea{min-height:46px;max-height:140px;resize:none}
+.ai-input-row .btn{height:46px;min-width:52px;padding:0 14px;font-size:1.05rem}
+.ai-input-row .btn[disabled]{opacity:.5;cursor:wait}
+.ai-scopes{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;margin-bottom:.45rem}
+.ai-scope{font-size:.72rem;color:var(--text2);display:inline-flex;align-items:center;gap:5px;cursor:pointer}
+.ai-scope.block{display:flex;padding:.4rem 0;font-size:.8rem}
+.ai-scope input{accent-color:var(--teal);width:15px;height:15px}
+.ai-conv-tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:.3rem}
+.ai-period{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.4rem}
+.ai-custom{gap:6px;align-items:center;margin-bottom:.5rem;flex-wrap:wrap}
+.ai-custom .inp{flex:1;min-width:120px;padding:6px 8px;font-size:.8rem}
+.ai-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.82rem;color:var(--text2)}
+.ai-row:last-child{border-bottom:none}
+.ai-row.col{flex-direction:column;align-items:flex-start;gap:2px}
+.ai-row>span:first-child{color:var(--text)}
+.corr-value small{font-size:.75rem;color:var(--soft);font-weight:600}
+.ai-svg{width:100%;height:auto;display:block;direction:ltr}
+.ai-explain{margin:.6rem 0}
+.ai-lbl{font-size:.68rem;font-weight:800;color:var(--soft);letter-spacing:.3px;margin:.75rem 0 .25rem}
+.ai-evidence{display:flex;flex-direction:column;gap:4px;font-size:.78rem;color:var(--text2);background:var(--s3);border-radius:9px;padding:.55rem .7rem;line-height:1.55;margin-bottom:5px}
+.ai-date{display:inline-block;font-size:.68rem;font-weight:700;color:var(--teal);min-width:46px}
+.ai-fb{display:flex;flex-wrap:wrap;gap:6px;margin-top:.8rem;padding-top:.7rem;border-top:1px solid var(--border)}
+.ai-fb-state{font-size:.75rem;color:var(--teal);margin-top:.6rem}
+.ai-details{margin:.6rem 0;font-size:.8rem;color:var(--text2)}
+.ai-details summary{cursor:pointer;padding:.5rem 0;color:var(--soft)}
+.ai-act{border:1px solid var(--border);border-radius:11px;padding:.7rem .8rem;margin-bottom:7px;display:flex;flex-direction:column;gap:4px;background:rgba(255,255,255,.015)}
+.ai-act.active{border-color:rgba(45,212,191,.25)}
+.ai-act.done{opacity:.85}.ai-act.dismissed{opacity:.6}
+.ai-act-title{font-size:.86rem;font-weight:700;color:var(--text)}
+.ai-ul{margin:0;padding-right:1.1rem;font-size:.82rem;color:var(--text2);line-height:1.7}
+.ai-safety{background:rgba(244,63,94,.07);border:1px solid rgba(244,63,94,.3);border-radius:14px;padding:.9rem 1rem;font-size:.84rem;color:var(--text);line-height:1.7;align-self:stretch}
+.ai-safety-title{font-weight:800;margin-bottom:.3rem}
+.ai-safety ul{padding-right:1.1rem;margin:.4rem 0}
+.ai-safety a{color:#fda4af;font-weight:800;text-decoration:none;border-bottom:1px dashed}
+.ai-safety-msg{display:flex;flex-direction:column;gap:4px;background:rgba(255,255,255,.04);border-radius:9px;padding:.55rem .7rem;margin-top:.4rem;font-size:.78rem}
+.ai-safety-msg span{color:var(--text2)}
+.ai-modal{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center;padding:0}
+.ai-modal-box{background:var(--s1);border:1px solid var(--border2);border-radius:18px 18px 0 0;width:100%;max-width:680px;max-height:86vh;display:flex;flex-direction:column}
+.ai-modal-head{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1rem;border-bottom:1px solid var(--border);font-size:.92rem}
+.ai-modal-body{padding:1rem;overflow-y:auto}
+.ai-consent p{margin-bottom:.6rem}
+.ai-pre{direction:ltr;text-align:left;font-size:.68rem;background:var(--s3);border-radius:9px;padding:.7rem;max-height:52vh;overflow:auto;white-space:pre-wrap;color:var(--text2)}
+.ai-hist{display:flex;gap:6px;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--border)}
+.ai-hist>div{flex:1;font-size:.82rem}
+.bottom-nav .nav-btn{min-width:0}
+@media(max-width:360px){.nav-btn{font-size:.56rem}.nav-btn .nav-ico{font-size:1.1rem}}
 </style>
+</head>
 <body>
 <div class="atmo"></div>
 <div id="toast"></div>
@@ -340,6 +414,7 @@ canvas.nafsi-chart{width:100%!important;max-height:200px}
   <button class="nav-btn" id="nav2" onclick="go('scales')"><span class="nav-ico">📊</span>مقاييس</button>
   <button class="nav-btn" id="nav3" onclick="go('exercises')"><span class="nav-ico">🧘</span>تمارين</button>
   <button class="nav-btn" id="nav4" onclick="go('report')"><span class="nav-ico">🧠</span>تقريري</button>
+  <button class="nav-btn" id="nav6" onclick="go('ai')" aria-label="NafsiLog AI — المساعد التحليلي الشخصي"><span class="nav-ico">🤖</span>المساعد</button>
   <button class="nav-btn" id="nav5" onclick="go('settings')"><span class="nav-ico">⚙️</span>إعدادات</button>
 </nav>
 
@@ -485,6 +560,18 @@ canvas.nafsi-chart{width:100%!important;max-height:200px}
   <div id="chartsContent" style="display:none"></div>
 </div>
 
+<!-- ════════════════════════════════════════
+     NAFSILOG AI PAGE
+════════════════════════════════════════ -->
+<div class="page" id="page-ai">
+  <div class="pg-head">
+    <div class="pg-icon" style="background:linear-gradient(135deg,rgba(99,102,241,.22),rgba(45,212,191,.12));border:1px solid rgba(99,102,241,.25)">🤖</div>
+    <div style="flex:1;min-width:0"><div class="pg-title">NafsiLog AI — المساعد التحليلي الشخصي</div><div class="pg-sub" id="aiStatus"></div></div>
+  </div>
+  <div class="chart-tabs" id="aiTabs" role="tablist"></div>
+  <div id="aiContent"></div>
+</div>
+
 <!-- SETTINGS -->
 <div class="page" id="page-settings">
   <div class="pg-head">
@@ -521,6 +608,7 @@ canvas.nafsi-chart{width:100%!important;max-height:200px}
     <button class="btn btn-ghost btn-sm" onclick="setRem()">تفعيل التذكير</button>
     <div style="font-size:.73rem;color:var(--soft);margin-top:.5rem">يتطلب السماح بالإشعارات من المتصفح</div>
   </div>
+  <div class="card" id="backupCard"></div>
   <div style="background:rgba(244,63,94,.04);border:1px solid rgba(244,63,94,.15);border-radius:14px;padding:1.1rem;margin-bottom:.9rem">
     <div style="color:var(--rose);font-size:.82rem;font-weight:700;margin-bottom:.6rem">⚠️ منطقة الخطر</div>
     <button class="btn btn-danger btn-sm" onclick="clearAll()">🗑️ مسح كل البيانات نهائياً</button>
@@ -533,7 +621,7 @@ canvas.nafsi-chart{width:100%!important;max-height:200px}
 ═══════════════════════════════ */
 const S={
   get:(k,d=null)=>{try{const v=localStorage.getItem('nl_'+k);return v!=null?JSON.parse(v):d}catch{return d}},
-  set:(k,v)=>{try{localStorage.setItem('nl_'+k,JSON.stringify(v))}catch{}},
+  set:(k,v)=>{try{localStorage.setItem('nl_'+k,JSON.stringify(v));return true}catch(e){console.warn('storage write failed',k);try{toast('⚠️ تعذر الحفظ — مساحة التخزين ممتلئة؟')}catch{}return false}},
   del:(k)=>{try{localStorage.removeItem('nl_'+k)}catch{}}
 };
 
@@ -576,14 +664,15 @@ function go(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p)?.classList.add('active');
-  const map={home:0,daily:1,scales:2,exercises:3,report:4,settings:5};
+  const map={home:0,daily:1,scales:2,exercises:3,report:4,settings:5,ai:6};
   if(map[p]!==undefined) document.getElementById('nav'+map[p])?.classList.add('active');
   if(p==='daily') initDaily();
   if(p==='scales') renderSc(curScTab);
   if(p==='exercises') renderEx(curExTab);
   if(p==='home') renderHome();
   if(p==='report'){ curReportTab=0; document.querySelectorAll('.chart-tab').forEach((b,i)=>b.classList.toggle('active',i===0)); document.getElementById('reportContent').style.display=''; const cc=document.getElementById('chartsContent'); if(cc) cc.style.display='none'; renderReport(); }
-  if(p==='settings') loadProfile();
+  if(p==='settings'){ loadProfile(); renderBackupCard(); }
+  if(p==='ai') renderAI();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -604,7 +693,7 @@ function renderHome(){
   const ll=document.getElementById('logList');
   const rec=logs.slice(-8).reverse();
   if(!rec.length){ll.innerHTML=`<div class="empty-state"><div class="empty-ico">📋</div>لا توجد تسجيلات بعد</div>`;return;}
-  ll.innerHTML=rec.map(l=>`<div class="log-item"><span style="font-size:.75rem;color:var(--text2);min-width:75px">${fmtDate(l.date)}</span><div class="log-mood-badge" style="background:${moodColor(l.mood)}">${l.mood}</div><div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">${(l.tags||[]).map(t=>`<span class="log-tag-sm">${t}</span>`).join('')||'<span style="color:var(--soft);font-size:.72rem">—</span>'}</div></div>`).join('');
+  ll.innerHTML=rec.map(l=>`<div class="log-item"><span style="font-size:.75rem;color:var(--text2);min-width:75px">${fmtDate(l.date)}</span><div class="log-mood-badge" style="background:${moodColor(l.mood)}">${l.mood}</div><div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">${(l.tags||[]).map(t=>`<span class="log-tag-sm">${esc(t)}</span>`).join('')||'<span style="color:var(--soft);font-size:.72rem">—</span>'}</div></div>`).join('');
   
   // Quick exercise shortcuts
   const qe = document.getElementById('homeQuickExercises');
@@ -667,19 +756,21 @@ function renderSc(t){
 function buildScaleUI(type,qs,max,title,interp){
   const rows=qs.map((q,i)=>`<div class="scale-q"><div class="scale-q-text">${i+1}. ${q}</div><div class="scale-opts">${[0,1,2,3].map(o=>`<div class="scale-opt ${scAns[type][i]===o?'sel':''}" onclick="setSc('${type}',${i},${o})">${o}</div>`).join('')}</div></div>`).join('');
   const filled=Object.keys(scAns[type]).length;const score=Object.values(scAns[type]).reduce((a,b)=>a+b,0);
-  return `<div class="card"><div class="card-title">📋 ${title}</div><div style="font-size:.73rem;color:var(--soft);margin-bottom:.9rem">أبداً(0) عدة أيام(1) أكثر من نصف الأيام(2) تقريباً كل يوم(3)</div>${rows}${filled===qs.length?`<div style="text-align:center;padding:1rem;background:var(--s3);border-radius:12px;margin-top:.8rem"><div style="font-family:Cairo,sans-serif;font-size:2.4rem;font-weight:900;color:${scColor(score,max)}">${score}</div><div style="font-size:.75rem;color:var(--text2);margin-top:2px">من ${max} • ${interp}</div></div><div class="divider"></div><button class="btn btn-primary btn-sm" onclick="saveScResult('${type}',${score},${max})">💾 حفظ النتيجة</button>`:''}</div>`;
+  return `<div class="card"><div class="card-title">📋 ${title}</div><div style="font-size:.73rem;color:var(--soft);margin-bottom:.9rem">خلال الأسبوعين الماضيين: أبداً(0) عدة أيام(1) أكثر من نصف الأيام(2) تقريباً كل يوم(3)<br>مقياس فحص أولي وليس تشخيصاً — تفسير النتيجة يحتاج مختصاً.</div>${rows}${filled===qs.length?`<div style="text-align:center;padding:1rem;background:var(--s3);border-radius:12px;margin-top:.8rem"><div style="font-family:Cairo,sans-serif;font-size:2.4rem;font-weight:900;color:${scColor(score,max)}">${score}</div><div style="font-size:.75rem;color:var(--text2);margin-top:2px">من ${max} • ${interp}</div></div><div class="divider"></div><button class="btn btn-primary btn-sm" onclick="saveScResult('${type}',${score},${max})">💾 حفظ النتيجة</button>`:''}</div>`;
 }
 function buildCustomSc(){
   const cs=S.get('customSc',[]);
-  return `<div class="card"><div class="card-title">➕ مقياس مخصص</div><div class="field"><label>اسم المقياس</label><input class="inp" id="csN" placeholder="مثال: الغضب، الثقة بالنفس"></div><div class="field"><label>الدرجة</label><div style="display:flex;align-items:center;gap:10px"><div class="slider-val" id="csV">5</div><input type="range" min="1" max="10" value="5" style="flex:1" oninput="document.getElementById('csV').textContent=this.value" id="csSl"></div></div><div class="field"><label>ملاحظات</label><textarea class="inp" id="csNt" placeholder="..."></textarea></div><button class="btn btn-primary btn-sm" onclick="saveCS()">💾 حفظ</button>${cs.length?`<div class="divider"></div>${cs.slice(-5).reverse().map(c=>`<div style="display:flex;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.82rem"><span>${c.name}</span><span style="color:var(--teal);font-weight:700">${c.score}/10</span><span style="color:var(--soft)">${fmtDate(c.date)}</span></div>`).join('')}`:''}</div>`;
+  return `<div class="card"><div class="card-title">➕ مقياس مخصص</div><div class="field"><label>اسم المقياس</label><input class="inp" id="csN" placeholder="مثال: الغضب، الثقة بالنفس"></div><div class="field"><label>الدرجة</label><div style="display:flex;align-items:center;gap:10px"><div class="slider-val" id="csV">5</div><input type="range" min="1" max="10" value="5" style="flex:1" oninput="document.getElementById('csV').textContent=this.value" id="csSl"></div></div><div class="field"><label>ملاحظات</label><textarea class="inp" id="csNt" placeholder="..."></textarea></div><button class="btn btn-primary btn-sm" onclick="saveCS()">💾 حفظ</button>${cs.length?`<div class="divider"></div>${cs.slice(-5).reverse().map(c=>`<div style="display:flex;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.82rem"><span>${esc(c.name)}</span><span style="color:var(--teal);font-weight:700">${esc(c.score)}/10</span><span style="color:var(--soft)">${fmtDate(c.date)}</span></div>`).join('')}`:''}</div>`;
 }
 function buildScHistory(){
   const h=S.get('scHist',[]);
   if(!h.length)return`<div class="empty-state"><div class="empty-ico">📊</div>لا توجد نتائج بعد</div>`;
-  return`<div class="card"><div class="card-title">📜 سجل المقاييس</div>${h.slice(-20).reverse().map(h=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.84rem"><div><span style="font-weight:700">${h.type.toUpperCase()}</span><span style="color:var(--soft);font-size:.72rem;margin-right:8px">${fmtDate(h.date)}</span></div><span style="color:${scColor(h.score,h.max)};font-weight:800">${h.score}/${h.max}</span></div>`).join('')}</div>`;
+  return`<div class="card"><div class="card-title">📜 سجل المقاييس</div>${h.slice(-20).reverse().map(h=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.84rem"><div><span style="font-weight:700">${esc(String(h.type).toUpperCase())}</span><span style="color:var(--soft);font-size:.72rem;margin-right:8px">${fmtDate(h.date)}</span></div><span style="color:${scColor(h.score,h.max)};font-weight:800">${h.score}/${h.max}</span></div>`).join('')}</div>`;
 }
 function setSc(type,q,v){scAns[type][q]=v;renderSc(curScTab);}
-function saveScResult(type,score,max){const h=S.get('scHist',[]);h.push({type,score,max,date:ds(),ts:Date.now()});S.set('scHist',h);scAns[type]={};toast(`✅ نتيجة ${type.toUpperCase()}: ${score}/${max}`);switchSc(3);}
+function saveScResult(type,score,max){const item9=type==='phq'?scAns.phq[8]:null;const h=S.get('scHist',[]);h.push({type,score,max,date:ds(),ts:Date.now()});S.set('scHist',h);scAns[type]={};toast(`✅ نتيجة ${type.toUpperCase()}: ${score}/${max}`);switchSc(3);
+  // PHQ-9 item 9 (thoughts of self-harm) ≥ 1 → show support resources. Nothing is stored about the item itself.
+  if(item9>=1&&typeof nlSafetyCard==='function'){const el=document.getElementById('scContent');if(el)el.insertAdjacentHTML('afterbegin','<div id="aiSafetyCard" style="margin-bottom:.9rem">'+nlSafetyCard('أجبت بأن أفكار إيذاء النفس مرت بك مؤخراً')+'<div class="ai-muted" style="margin-top:.4rem">هذه الإجابة وحدها لا تعني تشخيصاً، لكنها تستحق أن تتحدث عنها مع مختص أو شخص تثق به قريباً.</div></div>');}}
 function saveCS(){const n=document.getElementById('csN').value.trim();if(!n){toast('⚠️ أدخل اسم المقياس');return;}const cs=S.get('customSc',[]);cs.push({name:n,score:+document.getElementById('csSl').value,notes:document.getElementById('csNt').value.trim(),date:ds(),ts:Date.now()});S.set('customSc',cs);toast('✅ تم الحفظ');switchSc(2);}
 
 /* ═══════════════════════════════
@@ -1115,7 +1206,7 @@ function card(title, body) { return '<div class="card"><div class="card-title">'
 function hint(txt) { return '<div class="shint">' + txt + '</div>'; }
 function recalled(label, val) {
   if (!val) return '';
-  return '<div class="srecall"><span>' + label + '</span><strong>' + val + '</strong></div>';
+  return '<div class="srecall"><span>' + label + '</span><strong>' + esc(val) + '</strong></div>';
 }
 function sliderUI(key, min, max, val, label, leftLbl, rightLbl) {
   var v = SS.ans[key] !== undefined ? SS.ans[key] : val;
@@ -1160,7 +1251,7 @@ function pageCBT() {
     progBar(1,7) + stepLabel(1,7) +
     '<p class="sq">ما الموقف أو الحدث الذي تريد العمل عليه؟</p>' +
     hint('أجب بدقة: متى؟ أين؟ مع من؟ ماذا حدث؟') +
-    '<textarea class="inp" data-key="situation" placeholder="مثال: في اجتماع اليوم قال مديري أن التقرير يحتاج مراجعة أمام الكل...">' + (SS.ans.situation||'') + '</textarea>' +
+    '<textarea class="inp" data-key="situation" placeholder="مثال: في اجتماع اليوم قال مديري أن التقرير يحتاج مراجعة أمام الكل...">' + esc(SS.ans.situation||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1168,7 +1259,7 @@ function pageCBT() {
     progBar(2,7) + stepLabel(2,7) +
     '<p class="sq">ما المشاعر التي شعرت بها؟ اختر وقيّم الشدة</p>' +
     chips('emotions', ['حزن','قلق','غضب','خجل','إحباط','وحدة','خوف','ذنب'], true) +
-    '<textarea class="inp mt8" data-key="emotionsText" placeholder="قيّم شدة كل شعور: حزن 70%، قلق 80%...">' + (SS.ans.emotionsText||'') + '</textarea>' +
+    '<textarea class="inp mt8" data-key="emotionsText" placeholder="قيّم شدة كل شعور: حزن 70%، قلق 80%...">' + esc(SS.ans.emotionsText||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1176,7 +1267,7 @@ function pageCBT() {
     progBar(3,7) + stepLabel(3,7) +
     '<p class="sq">ما الفكرة التلقائية الساخنة؟</p>' +
     hint('الفكرة الأشد تأثيراً في مزاجك — اكتبها كما جاءت بالضبط، لا تصحّحها') +
-    '<textarea class="inp" data-key="hotThought" placeholder="مثال: أنا غير كفء وكل الناس يعرفون ذلك...">' + (SS.ans.hotThought||'') + '</textarea>' +
+    '<textarea class="inp" data-key="hotThought" placeholder="مثال: أنا غير كفء وكل الناس يعرفون ذلك...">' + esc(SS.ans.hotThought||'') + '</textarea>' +
     sliderUI('hotBeliefPre', 0, 100, 50, 'كم تؤمن بهذه الفكرة الآن؟ (0-100%)', '0%', '100%') +
     navBtns('sessPrev()', 'sessNext()')
   );
@@ -1186,7 +1277,7 @@ function pageCBT() {
     '<p class="sq">ما الدليل الموضوعي الذي يدعم هذه الفكرة؟</p>' +
     hint('الدليل = حقائق يمكن لأي شخص ملاحظتها. ليس تفسيرات أو مشاعر.') +
     recalled('الفكرة', SS.ans.hotThought) +
-    '<textarea class="inp" data-key="evidencePro" placeholder="اكتب كل دليل في سطر...">' + (SS.ans.evidencePro||'') + '</textarea>' +
+    '<textarea class="inp" data-key="evidencePro" placeholder="اكتب كل دليل في سطر...">' + esc(SS.ans.evidencePro||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1195,7 +1286,7 @@ function pageCBT() {
     '<p class="sq">ما الدليل الذي يعارض هذه الفكرة؟</p>' +
     hint('أسئلة مساعدة: هل مررت بمواقف مشابهة وكانت النتيجة مختلفة؟ ماذا سيقول صديق يعرفك؟ هل هناك أدلة على كفاءتك في مواقف أخرى؟') +
     recalled('الفكرة', SS.ans.hotThought) +
-    '<textarea class="inp" data-key="evidenceCon" placeholder="اكتب كل دليل معارض في سطر...">' + (SS.ans.evidenceCon||'') + '</textarea>' +
+    '<textarea class="inp" data-key="evidenceCon" placeholder="اكتب كل دليل معارض في سطر...">' + esc(SS.ans.evidenceCon||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1207,7 +1298,7 @@ function pageCBT() {
     '<div class="sev-box bad"><div class="sev-title">دليل مع</div><div class="sev-text">' + (SS.ans.evidencePro||'—') + '</div></div>' +
     '<div class="sev-box good"><div class="sev-title">دليل ضد</div><div class="sev-text">' + (SS.ans.evidenceCon||'—') + '</div></div>' +
     '</div>' +
-    '<textarea class="inp" data-key="alternative" placeholder="مثال: المدير لاحظ نقطة واحدة، لكن هذا لا يعني أنني غير كفء...">' + (SS.ans.alternative||'') + '</textarea>' +
+    '<textarea class="inp" data-key="alternative" placeholder="مثال: المدير لاحظ نقطة واحدة، لكن هذا لا يعني أنني غير كفء...">' + esc(SS.ans.alternative||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1216,7 +1307,7 @@ function pageCBT() {
     '<p class="sq">أعِد تقييم مشاعرك الآن مقارنة بالبداية</p>' +
     sliderUI('hotBeliefPost', 0, 100, SS.ans.hotBeliefPre||50, 'كم تؤمن بالفكرة الأصلية الآن؟', '0%', '100%') +
     diff(SS.ans.hotBeliefPre, SS.ans.hotBeliefPost, '%', true) +
-    '<textarea class="inp mt8" data-key="reflection" placeholder="كيف تشعر الآن مقارنة ببداية الجلسة؟">' + (SS.ans.reflection||'') + '</textarea>' +
+    '<textarea class="inp mt8" data-key="reflection" placeholder="كيف تشعر الآن مقارنة ببداية الجلسة؟">' + esc(SS.ans.reflection||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessGoto(\'done-cbt\')', '💾 أنهِ الجلسة')
   );
 
@@ -1250,7 +1341,7 @@ function pageBA() {
     '<p class="sq">ما الأنشطة التي توقفت عنها مؤخراً؟</p>' +
     hint('الاكتئاب يسرق الأنشطة واحدة تلو الأخرى') +
     chips('stopped', ['التواصل مع الأصدقاء','ممارسة الرياضة','هواية كنت تحبها','الخروج من المنزل','القراءة أو التعلم','الاعتناء بنفسك','تناول الطعام بانتظام'], true) +
-    '<textarea class="inp mt8" data-key="stoppedOther" placeholder="أضف أنشطة أخرى...">' + (SS.ans.stoppedOther||'') + '</textarea>' +
+    '<textarea class="inp mt8" data-key="stoppedOther" placeholder="أضف أنشطة أخرى...">' + esc(SS.ans.stoppedOther||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1262,7 +1353,7 @@ function pageBA() {
     ['المشي 10 دقائق غداً الساعة 6م','الاتصال بصديق 5 دقائق','قراءة صفحة واحدة قبل النوم','تحضير كوب شاي والجلوس بهدوء'].map(function(e){
       return '<div class="sex-item" onclick="document.querySelector(\'[data-key=chosenActivity]\').value=\''+e+'\';SS.ans.chosenActivity=\''+e+'\'">'+e+'</div>';
     }).join('') + '</div>' +
-    '<input class="inp mt8" type="text" data-key="chosenActivity" placeholder="اكتب نشاطك المختار..." value="' + (SS.ans.chosenActivity||'') + '">' +
+    '<input class="inp mt8" type="text" data-key="chosenActivity" placeholder="اكتب نشاطك المختار..." value="' + esc(SS.ans.chosenActivity||'') + '">' +
     sliderUI('expectedPleasure', 0, 10, 5, 'المتعة المتوقعة (0-10)', '0', '10') +
     navBtns('sessPrev()', 'sessNext()')
   );
@@ -1272,7 +1363,7 @@ function pageBA() {
     '<p class="sq">ما العوائق المحتملة وكيف ستتعامل معها؟</p>' +
     hint('التخطيط للعوائق مسبقاً يرفع نسبة الإنجاز بشكل كبير') +
     recalled('النشاط', SS.ans.chosenActivity) +
-    '<textarea class="inp" data-key="obstacles" placeholder="العائق: لن أشعر برغبة&#10;الحل: سأبدأ فور انتهاء هذه الجلسة بدون انتظار&#10;&#10;العائق: قد أنسى&#10;الحل: سأضع تنبيهاً الآن">' + (SS.ans.obstacles||'') + '</textarea>' +
+    '<textarea class="inp" data-key="obstacles" placeholder="العائق: لن أشعر برغبة&#10;الحل: سأبدأ فور انتهاء هذه الجلسة بدون انتظار&#10;&#10;العائق: قد أنسى&#10;الحل: سأضع تنبيهاً الآن">' + esc(SS.ans.obstacles||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1283,7 +1374,7 @@ function pageBA() {
     chips('didActivity', ['نعم أكملته','نعم جزئياً','لا لم أتمكن'], false) +
     sliderUI('actualPleasure', 0, 10, 5, 'المتعة الفعلية (0-10)', '0', '10') +
     diff(SS.ans.expectedPleasure, SS.ans.actualPleasure, 'نقطة', false) +
-    '<textarea class="inp mt8" data-key="activityReflection" placeholder="ماذا لاحظت؟">' + (SS.ans.activityReflection||'') + '</textarea>' +
+    '<textarea class="inp mt8" data-key="activityReflection" placeholder="ماذا لاحظت؟">' + esc(SS.ans.activityReflection||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1319,7 +1410,7 @@ function pageFear() {
     progBar(1,5) + stepLabel(1,5) +
     '<p class="sq">ما المجال الذي تريد بناء سلم الخوف له؟</p>' +
     chips('fearType', ['القلق الاجتماعي','الخوف من الفشل','الخوف من الرفض','قلق الأداء','القلق العام','قلق الصحة'], false) +
-    '<input class="inp mt8" type="text" data-key="fearTypeCustom" placeholder="أو اكتب مجالاً محدداً..." value="' + (SS.ans.fearTypeCustom||'') + '">' +
+    '<input class="inp mt8" type="text" data-key="fearTypeCustom" placeholder="أو اكتب مجالاً محدداً..." value="' + esc(SS.ans.fearTypeCustom||'') + '">' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1327,7 +1418,7 @@ function pageFear() {
     var ladderItems = SS.ans.ladder.map(function(item, i) {
       var col = item.score <= 25 ? 'var(--emerald)' : item.score <= 50 ? 'var(--amber)' : item.score <= 75 ? '#fb923c' : 'var(--rose)';
       return '<div class="sladder-item"><div class="sladder-score" style="background:' + col + '">' + item.score + '</div>' +
-        '<div class="sladder-text">' + item.situation + '</div>' +
+        '<div class="sladder-text">' + esc(item.situation) + '</div>' +
         '<div class="sladder-del" onclick="removeLadder(' + i + ')">✕</div></div>';
     }).join('');
     return card('🪜 الخطوة 2 من 5 — بناء السلم',
@@ -1348,9 +1439,9 @@ function pageFear() {
     var items = sorted.map(function(item) {
       var col = item.score <= 25 ? 'var(--emerald)' : item.score <= 50 ? 'var(--amber)' : item.score <= 75 ? '#fb923c' : 'var(--rose)';
       var ideal = item.score >= 20 && item.score <= 45 ? '<span class="sideal">✓ مثالي للبدء</span>' : '';
-      return '<div class="sladder-item sel-able ' + (SS.ans.firstStep === item.situation ? 'selected' : '') + '" onclick="selectStep(\'' + item.situation.replace(/'/g,"\\'") + '\')">' +
+      return '<div class="sladder-item sel-able ' + (SS.ans.firstStep === item.situation ? 'selected' : '') + '" data-sit="' + esc(item.situation) + '" onclick="selectStep(this.dataset.sit)">' +
         '<div class="sladder-score" style="background:' + col + '">' + item.score + '</div>' +
-        '<div class="sladder-text">' + item.situation + ideal + '</div></div>';
+        '<div class="sladder-text">' + esc(item.situation) + ideal + '</div></div>';
     }).join('');
     return card('🎯 الخطوة 3 من 5 — الخطوة الأولى',
       progBar(3,5) + stepLabel(3,5) +
@@ -1364,8 +1455,8 @@ function pageFear() {
     progBar(4,5) + stepLabel(4,5) +
     '<p class="sq">خطط للتعرض بالتفصيل</p>' +
     recalled('الموقف', SS.ans.firstStep) +
-    '<div class="field"><label>متى بالضبط؟</label><input class="inp" type="text" data-key="expWhen" placeholder="مثال: غداً الساعة 6م" value="' + (SS.ans.expWhen||'') + '"></div>' +
-    '<div class="field"><label>ماذا ستفعل تحديداً؟</label><textarea class="inp" data-key="expWhat" placeholder="صِف الخطوة بدقة...">' + (SS.ans.expWhat||'') + '</textarea></div>' +
+    '<div class="field"><label>متى بالضبط؟</label><input class="inp" type="text" data-key="expWhen" placeholder="مثال: غداً الساعة 6م" value="' + esc(SS.ans.expWhen||'') + '"></div>' +
+    '<div class="field"><label>ماذا ستفعل تحديداً؟</label><textarea class="inp" data-key="expWhat" placeholder="صِف الخطوة بدقة...">' + esc(SS.ans.expWhat||'') + '</textarea></div>' +
     sliderUI('expAnxExpected', 0, 100, 50, 'القلق المتوقع (0-100)', '0', '100') +
     navBtns('sessPrev()', 'sessNext()')
   );
@@ -1377,7 +1468,7 @@ function pageFear() {
     sliderUI('expAnxActual', 0, 100, 50, 'أعلى قلق وصلت إليه (0-100)', '0', '100') +
     sliderUI('expAnxEnd', 0, 100, 20, 'القلق عند المغادرة (0-100)', '0', '100') +
     diff(SS.ans.expAnxExpected, SS.ans.expAnxActual, '', true) +
-    '<textarea class="inp mt8" data-key="expLearning" placeholder="ماذا تعلمت؟">' + (SS.ans.expLearning||'') + '</textarea>' +
+    '<textarea class="inp mt8" data-key="expLearning" placeholder="ماذا تعلمت؟">' + esc(SS.ans.expLearning||'') + '</textarea>' +
     '<div class="sinsight">💡 Barlow: إذا انخفض القلق ولو قليلاً فقد نجح التعرض — الدماغ بدأ يتعلم أن الموقف آمن.</div>' +
     navBtns('sessPrev()', 'sessGoto(\'done-fl\')', '💾 أنهِ الجلسة')
   );
@@ -1432,7 +1523,7 @@ function pageEmotion() {
     progBar(2,5) + stepLabel(2,5) +
     '<p class="sq">كيف تتجنب هذا الشعور عادةً؟ (Barlow UP Table 5.1)</p>' +
     chips('avoidance', ['التشتيت بالهاتف','مشاهدة التلفاز','القراءة المفرطة','طمأنة الذات الزائدة','التفكير في "ماذا لو"','الاجترار والتفكير المتكرر','تجنب المواقف المثيرة','طلب طمأنة الآخرين','التحكم بالتنفس','تجنب القهوة أو المنبهات'], true) +
-    '<textarea class="inp mt8" data-key="avoidanceOther" placeholder="طرق تجنب أخرى...">' + (SS.ans.avoidanceOther||'') + '</textarea>' +
+    '<textarea class="inp mt8" data-key="avoidanceOther" placeholder="طرق تجنب أخرى...">' + esc(SS.ans.avoidanceOther||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1443,8 +1534,8 @@ function pageEmotion() {
     '<div style="text-align:center;padding:1rem 0">' +
     '<div id="eaCirc" class="breath-circle" onclick="startEATimer()" style="margin:0 auto;cursor:pointer"><span id="eaTxt">▶ ابدأ</span></div>' +
     '<div id="eaPhase" style="font-size:.82rem;color:var(--text2);margin-top:.5rem">اضغط لبدء مؤقت 3 دقائق</div></div>' +
-    '<div class="shint mt8"><b>أسئلة للمساعدة:</b><br>• أين تشعر بـ "' + (SS.ans.targetEmotion||'هذا الشعور') + '" في جسمك؟<br>• هل يتغير بمرور الوقت أم ثابت؟<br>• قيّمه الآن: هل يزيد؟ يقل؟</div>' +
-    '<textarea class="inp mt8" data-key="observationNotes" placeholder="سجّل ملاحظاتك أثناء أو بعد التمرين...">' + (SS.ans.observationNotes||'') + '</textarea>' +
+    '<div class="shint mt8"><b>أسئلة للمساعدة:</b><br>• أين تشعر بـ "' + esc(SS.ans.targetEmotion||'هذا الشعور') + '" في جسمك؟<br>• هل يتغير بمرور الوقت أم ثابت؟<br>• قيّمه الآن: هل يزيد؟ يقل؟</div>' +
+    '<textarea class="inp mt8" data-key="observationNotes" placeholder="سجّل ملاحظاتك أثناء أو بعد التمرين...">' + esc(SS.ans.observationNotes||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1456,7 +1547,7 @@ function pageEmotion() {
     [['الانسحاب الاجتماعي','التواصل الفعّال والاقتراب'],['مغادرة المواقف','البقاء حتى ينخفض القلق'],['التأجيل والمماطلة','خطوة صغيرة فورية'],['طلب الطمأنينة المفرط','تقبّل الغموض بوعي'],['فرط اليقظة','التركيز على المهمة الحالية']].map(function(r){
       return '<div class="sedb-row"><div class="sedb-from">😔 '+r[0]+'</div><div class="sedb-arr">→</div><div class="sedb-to">✨ '+r[1]+'</div></div>';
     }).join('') + '</div>' +
-    '<textarea class="inp mt8" data-key="oppositeAction" placeholder="ما السلوك المعاكس الذي ستجربه؟ كن محدداً...">' + (SS.ans.oppositeAction||'') + '</textarea>' +
+    '<textarea class="inp mt8" data-key="oppositeAction" placeholder="ما السلوك المعاكس الذي ستجربه؟ كن محدداً...">' + esc(SS.ans.oppositeAction||'') + '</textarea>' +
     navBtns('sessPrev()', 'sessNext()')
   );
 
@@ -1464,7 +1555,7 @@ function pageEmotion() {
     progBar(5,5) + stepLabel(5,5) +
     sliderUI('intensityPost', 0, 10, 5, 'شدة "' + (SS.ans.targetEmotion||'الشعور') + '" الآن (0-10)', '0', '10') +
     diff(SS.ans.intensityPre, SS.ans.intensityPost, 'نقطة', true) +
-    '<textarea class="inp mt8" data-key="keyLearning" placeholder="ما أهم شيء تعلمته؟">' + (SS.ans.keyLearning||'') + '</textarea>' +
+    '<textarea class="inp mt8" data-key="keyLearning" placeholder="ما أهم شيء تعلمته؟">' + esc(SS.ans.keyLearning||'') + '</textarea>' +
     '<div class="sinsight">💡 الهدف ليس إزالة المشاعر — بل تغيير علاقتك بها.</div>' +
     navBtns('sessPrev()', 'sessGoto(\'done-ea\')', '💾 أنهِ الجلسة')
   );
@@ -1537,7 +1628,7 @@ function buildSummary(type) {
   }
   if (!rows.length) return '';
   return '<div class="ssummary">' + rows.map(function(r) {
-    return '<div class="ssumm-row"><span>' + r[0] + '</span><strong>' + r[1] + '</strong></div>';
+    return '<div class="ssumm-row"><span>' + r[0] + '</span><strong>' + esc(r[1]) + '</strong></div>';
   }).join('') + '</div>';
 }
 
@@ -1569,7 +1660,7 @@ function pageActivity() {
     '<div style="flex:1;min-width:120px"><label style="font-size:.78rem;color:var(--text2);font-weight:600;display:block;margin-bottom:4px">المتعة الفعلية</label><div style="display:flex;align-items:center;gap:8px"><div class="slider-val" id="aAV" style="font-size:.78rem;width:28px;height:28px;min-width:28px">5</div><input type="range" min="1" max="10" value="5" style="flex:1" oninput="document.getElementById(\'aAV\').textContent=this.value" id="aA"></div></div></div>' +
     '<button class="btn btn-primary btn-sm" onclick="saveAct()">💾 حفظ</button>' +
     (e.length ? '<div class="divider"></div>' + e.slice(-8).reverse().map(function(a){
-      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.82rem"><span>'+a.name+'</span><span style="color:var(--text2)">متوقع:<b>'+a.exp+'</b></span><span style="color:var(--teal)">فعلي:<b>'+a.act+'</b></span></div>';
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.82rem"><span>'+esc(a.name)+'</span><span style="color:var(--text2)">متوقع:<b>'+a.exp+'</b></span><span style="color:var(--teal)">فعلي:<b>'+a.act+'</b></span></div>';
     }).join('') : '')
   );
 }
@@ -1589,8 +1680,8 @@ function pageHistory() {
         '<div style="width:10px;height:10px;border-radius:50%;background:' + (typeColors[s.type]||'var(--soft)') + ';flex-shrink:0;margin-top:5px"></div>' +
         '<div style="flex:1"><div style="font-size:.83rem;font-weight:700;color:var(--text)">' + (typeNames[s.type]||s.type) + '</div>' +
         '<div style="font-size:.72rem;color:var(--soft)">' + fmtDate(s.date) + ' • ' + (s.dur||0) + ' دقيقة</div>' +
-        (s.ans.hotThought ? '<div style="font-size:.75rem;color:var(--text2);margin-top:2px">💭 ' + s.ans.hotThought.slice(0,50) + '...</div>' : '') +
-        (s.ans.chosenActivity ? '<div style="font-size:.75rem;color:var(--text2);margin-top:2px">⚡ ' + s.ans.chosenActivity + '</div>' : '') +
+        (s.ans.hotThought ? '<div style="font-size:.75rem;color:var(--text2);margin-top:2px">💭 ' + esc(s.ans.hotThought.slice(0,50)) + '...</div>' : '') +
+        (s.ans.chosenActivity ? '<div style="font-size:.75rem;color:var(--text2);margin-top:2px">⚡ ' + esc(s.ans.chosenActivity) + '</div>' : '') +
         '</div>' +
         '<button class="btn btn-ghost btn-sm" style="font-size:.7rem;flex-shrink:0" onclick="exportSess(' + realIdx + ')">📤</button>' +
         '</div>';
@@ -1916,7 +2007,7 @@ function renderReport(){
     fatigue: avgSt != null && avgSt > 6,
     concentration: logs.filter(l=>l.ev1?.includes('تركيز')||l.intrusive?.includes('تركيز')).length > 0,
     worthlessness: intrusTexts.some(t => /فاشل|غبي|عديم|لا قيمة|لا أستحق/.test(t||'')),
-    death_thoughts: intrusTexts.some(t => /موت|أموت|انتهى|لا فائدة من الحياة/.test(t||''))
+    death_thoughts: intrusTexts.some(t => nlDetectCrisis(t||'') || /لا فائدة من الحياة/.test(t||''))
   };
   const mddSymptomCount = Object.values(mddSymptomMatch).filter(Boolean).length;
 
@@ -1942,19 +2033,19 @@ function renderReport(){
   // ── تحذير عاجل إذا كانت هناك مؤشرات خطورة (DSM-5) ──
   if(urgentFlag){
     insights.unshift({col:'var(--rose)',
-      txt:`<strong>⚠️ مؤشر يستدعي انتباهاً فورياً</strong> — بياناتك تحتوي على أعراض تستوجب التواصل مع متخصص صحة نفسية. هذا التطبيق أداة للتوعية الذاتية فقط وليس بديلاً عن التقييم المتخصص.`
+      txt:`<strong>⚠️ ما سجلته يستحق اهتماماً قريباً</strong> — بعض إجاباتك أو نصوصك تستحق أن تتحدث عنها مع مختص صحة نفسية أو شخص تثق به. هذا التطبيق أداة للتأمل الذاتي فقط وليس بديلاً عن التقييم المتخصص. في حالات الخطر اتصل بالطوارئ (123 في مصر).`
     });
   }
 
   // ── عرض عدد معايير DSM-5 المطابقة إن كانت كافية ──
   if(mddSymptomCount >= 4 && !urgentFlag){
     insights.push({col:'#fb923c',
-      txt:`<strong>مطابقة محتملة مع ${mddSymptomCount} أعراض من معايير الاكتئاب الكبير (DSM-5)</strong> — هذا لا يعني تشخيصاً، لكن يستحق تقييماً متخصصاً. المطلوب 5 أعراض لمدة أسبوعين للتشخيص الرسمي.`
+      txt:`<strong>عدة مؤشرات مزاجية في تسجيلاتك (${mddSymptomCount})</strong> — مثل انخفاض المزاج أو النوم أو قلة النشاط. هذه ملاحظات آلية من بياناتك وليست تشخيصاً ولا مطابقة لمعايير تشخيصية؛ إن استمرت فناقشها مع مختص.`
     });
   }
   if(gadSymptomCount >= 4 && !urgentFlag){
     insights.push({col:'#fb923c',
-      txt:`<strong>مطابقة محتملة مع ${gadSymptomCount} أعراض من معايير القلق العام (DSM-5 GAD)</strong> — المطلوب 3 أعراض لستة أشهر للتشخيص. بياناتك تستحق استشارة متخصص.`
+      txt:`<strong>عدة مؤشرات ضغط وتوتر في تسجيلاتك (${gadSymptomCount})</strong> — هذه ملاحظات آلية من بياناتك وليست تشخيصاً؛ إن كان القلق يعيق يومك فناقشه مع مختص.`
     });
   }
 
@@ -1978,7 +2069,7 @@ function renderReport(){
   }
 
   // تاجات
-  if(topTags.length) insights.push({col:'var(--blue)',txt:`<strong>أبرز المحفزات في بياناتك:</strong> ${topTags.map(([t,n])=>`${t} (${n} مرة)`).join('، ')}. هذا يساعدك على تحديد أين تضع طاقتك أولاً.`});
+  if(topTags.length) insights.push({col:'var(--blue)',txt:`<strong>أبرز المحفزات في بياناتك:</strong> ${topTags.map(([t,n])=>`${esc(t)} (${n} مرة)`).join('، ')}. هذا يساعدك على تحديد أين تضع طاقتك أولاً.`});
 
   // الامتنان (مدعوم من ف.12)
   if(gratRate>=60) insights.push({col:'var(--emerald)',txt:`<strong>ممارسة الامتنان منتظمة</strong> (${gratRate}% من الأيام). الكتاب يؤكد أن الامتنان يُعزز القناعات الجوهرية الإيجابية ويقلل الأفكار التلقائية السلبية.`});
@@ -1997,11 +2088,11 @@ function renderReport(){
   if(resScore>=65) strengths.push('💪 مرونة نفسية جيدة');
 
   if(urgentFlag) warnings.unshift('🚨 يستوجب تواصلاً مع متخصص فوراً');
-  if(depScore>=50||phqClass?.max>=10) warnings.push('⚠️ مؤشرات اكتئابية (DSM-5 MDD) تستحق متابعة');
-  else if(mddSymptomCount>=3) warnings.push('⚠️ ٣+ أعراض من معايير الاكتئاب الكبير مرصودة');
-  if(anxScore>=50||gadClass?.max>=10) warnings.push('⚠️ مستوى قلق مرتفع (DSM-5 GAD)');
-  else if(gadSymptomCount>=3) warnings.push('⚠️ ٣+ أعراض من معايير القلق العام مرصودة');
-  if(mddSymptomMatch.death_thoughts) warnings.unshift('🚨 أفكار حول الموت مرصودة في نصوصك');
+  if(depScore>=50||phqClass?.max>=10) warnings.push('⚠️ مؤشرات مزاج منخفض تستحق متابعة');
+  else if(mddSymptomCount>=3) warnings.push('⚠️ عدة مؤشرات مزاجية في تسجيلاتك');
+  if(anxScore>=50||gadClass?.max>=10) warnings.push('⚠️ مستوى قلق أو ضغط مرتفع في البيانات');
+  else if(gadSymptomCount>=3) warnings.push('⚠️ عدة مؤشرات توتر في تسجيلاتك');
+  if(mddSymptomMatch.death_thoughts) warnings.unshift('🚨 عبارات عن الموت أو إيذاء النفس في نصوصك — تحدّث مع مختص أو شخص تثق به');
   if(avgS&&avgS<6) warnings.push('😴 نوم منخفض باستمرار');
   if(intrusRate>50) warnings.push('💭 أفكار مزعجة متكررة');
   if(stressRate>70) warnings.push('😰 ضغوط يومية مرتفعة جداً');
@@ -2090,11 +2181,12 @@ function renderReport(){
     </div>
 
     <!-- GAUGES -->
+    <div style="font-size:.7rem;color:var(--soft);margin:-.4rem 0 .6rem;text-align:center">المؤشرات المئوية حسابات تقريبية من بياناتك وليست درجات سريرية • <a href="#" onclick="go('ai');aiSwitch(1);return false" style="color:var(--teal)">تحليل مفصل بالأرقام والأدلة ←</a></div>
     <div class="gauge-row">
       ${buildGauge('مؤشر المزاج',Math.round(avgM*10),100,moodColor(avgM),`متوسط ${avgM.toFixed(1)}/10`)}
       ${buildGauge('جودة النوم',Math.round(sleepScore),100,'var(--indigo)',avgS?`متوسط ${avgS.toFixed(1)} ساعة`:'غير كافٍ')}
-      ${buildGauge('مؤشر الاكتئاب',100-depScore,100,depClass.color,depClass.label)}
-      ${buildGauge('مؤشر القلق',100-anxScore,100,anxClass.color,anxClass.label)}
+      ${buildGauge('مؤشر الاكتئاب',100-depScore,100,depClass.color,latPHQ?depClass.label+' (PHQ-9)':'تقدير تقريبي غير سريري')}
+      ${buildGauge('مؤشر القلق',100-anxScore,100,anxClass.color,latGAD?anxClass.label+' (GAD-7)':'تقدير تقريبي غير سريري')}
       ${buildGauge('الرفاهية الكلية',wellbeing,100,'var(--teal)',`${wellbeing}/100`)}
       ${buildGauge('المرونة النفسية',resScore,100,'var(--amber)',`${resScore}/100`)}
     </div>
@@ -2104,7 +2196,7 @@ function renderReport(){
       <div class="rep-block-head">
         <div class="rep-block-icon" style="background:rgba(245,158,11,.15)">📋</div>
         <div><div class="rep-block-title">نتائج المقاييس المعيارية</div>
-        <div class="rep-block-sub">مفسّرة وفق معايير PHQ-9 و GAD-7 السريرية</div></div>
+        <div class="rep-block-sub">أدوات فحص أولي وفق عتبات PHQ-9 و GAD-7 — ليست تشخيصاً وتحتاج تفسيراً من مختص</div></div>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         ${latPHQ?`<div style="flex:1;min-width:130px;background:var(--s3);border-radius:11px;padding:.9rem;text-align:center">
@@ -2363,7 +2455,7 @@ function buildStreakHeatmap(logs){
   const today = new Date();
   for(let i=41;i>=0;i--){
     const d = new Date(today); d.setDate(d.getDate()-i);
-    const ds = d.toISOString().split('T')[0];
+    const ds = isoLocal(d);
     const l = logs.find(x=>x.date===ds);
     last42.push({ds, l});
   }
@@ -2450,7 +2542,7 @@ function buildCorrelationsChart(logs){
     ${tagInsights.map(([tag,v])=>{
       const m=(v.sum/v.n).toFixed(1);
       return `<div class="insight-bar">
-        <div class="ibar-label">${tag}</div>
+        <div class="ibar-label">${esc(tag)}</div>
         <div class="ibar-track"><div class="ibar-fill" style="width:${(m/10)*100}%;background:${moodColor(+m)}"></div></div>
         <div class="ibar-val" style="color:${moodColor(+m)}">${m}</div>
       </div>`;
@@ -2639,12 +2731,15 @@ function setRem(){
   Notification.requestPermission().then(p=>{if(p==='granted'){S.set('remTime',t);schedRem(t);toast(`🔔 تذكير مضبوط على ${t}`);}else toast('⚠️ لم يُسمح بالإشعارات');});
 }
 function schedRem(t){const[h,m]=t.split(':').map(Number);const now=new Date();const tar=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,m,0);if(tar<=now)tar.setDate(tar.getDate()+1);setTimeout(()=>{try{new Notification('NafsiLog 🌿',{body:'سجّلت مزاجك اليوم؟'});}catch{}schedRem(t);},tar-now);}
-function clearAll(){if(!confirm('سيتم مسح جميع البيانات نهائياً. هل أنت متأكد؟'))return;['logs','profile','scHist','cbtE','actL','breathL','customSc','pin','remTime'].forEach(k=>S.del(k));toast('🗑️ تم المسح');renderHome();}
+function clearAll(){if(!confirm('سيتم مسح جميع البيانات نهائياً (اليوميات، المقاييس، الجلسات، بيانات المساعد، النسخة المؤقتة). هل أنت متأكد؟'))return;['logs','profile','scHist','cbtE','actL','breathL','customSc','sessions','pin','remTime','backup_preimport','ai_settings','ai_conv','ai_actions','ai_reports','ai_patternFb'].forEach(k=>S.del(k));if(typeof aiConvMem!=='undefined'){aiConvMem=null;aiPending={};}toast('🗑️ تم المسح');renderHome();}
 
 /* ═══════════════════════════════
    UTILITIES
 ═══════════════════════════════ */
-function ds(){return new Date().toISOString().split('T')[0];}
+// Local calendar date (was UTC via toISOString, which filed late-night entries under the previous day in UTC+2/+3).
+function isoLocal(d){const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
+function ds(){return isoLocal(new Date());}
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function fmtDate(d){try{return new Date(d+'T00:00:00').toLocaleDateString('ar-EG',{month:'short',day:'numeric'});}catch{return d;}}
 function moodEmo(m){return m>=9?'😄':m>=7?'😊':m>=5?'😐':m>=3?'😕':'😞';}
 function moodColor(m){return m>=8?'#10b981':m>=6?'#f59e0b':m>=4?'#6366f1':'#f43f5e';}
@@ -2662,6 +2757,1161 @@ function toast(msg){const el=document.getElementById('toast');el.textContent=msg
 ═══════════════════════════════ */
 initLock();
 const rt=S.get('remTime');if(rt&&typeof Notification!=='undefined'&&Notification.permission==='granted')schedRem(rt);
+</script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   NafsiLog AI — المساعد التحليلي الشخصي
+   Everything numeric is computed here, deterministically, on the device.
+   The optional language model only explains numbers it is given.
+═══════════════════════════════════════════════════════════════════ */
+const AI_CONSENT_VERSION = 1;
+const AI_KEYS = ['ai_settings', 'ai_conv', 'ai_actions', 'ai_reports', 'ai_patternFb'];
+const AI_DEFAULT_SCOPES = { stats: true, journal: false, sessions: false, scales: false, goals: false };
+const AI_SCOPE_LABELS = {
+  stats: '📊 ملخص أرقام آخر 30 يوماً',
+  journal: '📝 نصوص يومياتي (آخر 7 أيام)',
+  sessions: '🧘 آخر جلسات التمارين',
+  scales: '📋 نتائج المقاييس',
+  goals: '🎯 أهدافي',
+};
+
+/* ─────────── date & number helpers ─────────── */
+function nlAddDays(iso, n) { const d = new Date(iso + 'T00:00:00'); d.setDate(d.getDate() + n); return isoLocal(d); }
+function nlDaysBetween(a, b) { return Math.round((new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / 86400000); }
+function nlNum(v) { const n = typeof v === 'string' && v.trim() === '' ? NaN : Number(v); return Number.isFinite(n) ? n : null; }
+function nlRound(v, d = 1) { return v == null || !Number.isFinite(v) ? null : Math.round(v * 10 ** d) / 10 ** d; }
+function nlMean(a) { return a.length ? a.reduce((x, y) => x + y, 0) / a.length : null; }
+function nlMedian(a) { if (!a.length) return null; const s = [...a].sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
+function nlSD(a) { if (a.length < 2) return null; const m = nlMean(a); return Math.sqrt(a.reduce((x, v) => x + (v - m) ** 2, 0) / (a.length - 1)); }
+function nlPearson(xs, ys) {
+  const n = xs.length; if (n < 4) return null;
+  const mx = nlMean(xs), my = nlMean(ys); let num = 0, dx = 0, dy = 0;
+  for (let i = 0; i < n; i++) { num += (xs[i] - mx) * (ys[i] - my); dx += (xs[i] - mx) ** 2; dy += (ys[i] - my) ** 2; }
+  return dx === 0 || dy === 0 ? null : num / Math.sqrt(dx * dy);
+}
+function nlSlope(points) { // least squares, x in days
+  const n = points.length; if (n < 2) return null;
+  const mx = nlMean(points.map(p => p.x)), my = nlMean(points.map(p => p.y));
+  let num = 0, den = 0; points.forEach(p => { num += (p.x - mx) * (p.y - my); den += (p.x - mx) ** 2; });
+  return den === 0 ? null : num / den;
+}
+function nlFmtRange(from, to) {
+  const f = d => new Date(d + 'T00:00:00').toLocaleDateString('ar-EG', { day: 'numeric', month: 'short' });
+  return `${f(from)} – ${f(to)}`;
+}
+function nlNormalizeAr(s) {
+  return String(s || '').replace(/[ً-ْـ]/g, '').replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي')
+    .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+}
+function nlClip(s, n) { s = String(s || '').trim(); return s.length > n ? s.slice(0, n - 1) + '…' : s; }
+
+/* ─────────── evidence sufficiency (plain language, not statistical confidence) ─────────── */
+function nlSufficiency(n) {
+  if (n < 3) return { level: 0, label: 'غير كافٍ', col: 'var(--soft)', text: `مبني على ${n} ${n === 1 ? 'تسجيل' : 'تسجيلات'} فقط — لا يكفي لاستنتاج نمط.` };
+  if (n < 6) return { level: 1, label: 'محدود', col: 'var(--amber)', text: `مبني على ${n} تسجيلات — مؤشر أولي يحتاج مزيداً من البيانات.` };
+  if (n < 12) return { level: 2, label: 'متوسط', col: '#84cc16', text: `مبني على ${n} تسجيلاً — نمط محتمل يستحق الاختبار.` };
+  return { level: 3, label: 'أوضح نسبياً', col: 'var(--emerald)', text: `مبني على ${n} تسجيلاً — نمط متكرر، لكنه يبقى فرضية وليس حقيقة.` };
+}
+function nlCorrText(r, n) {
+  if (r == null) return `غير محسوب (يحتاج 4 أيام على الأقل فيها القيمتان، المتاح ${n}).`;
+  const a = Math.abs(r), dir = r > 0 ? 'طردية' : 'عكسية';
+  const s = a < 0.2 ? 'لا علاقة واضحة' : a < 0.4 ? `علاقة ${dir} ضعيفة` : a < 0.6 ? `علاقة ${dir} متوسطة` : `علاقة ${dir} واضحة`;
+  return `${s} (r = ${nlRound(r, 2)}، ن = ${n}). الارتباط لا يعني أن أحدهما سبب الآخر.`;
+}
+
+/* ─────────── analytics engine ─────────── */
+const NLA = {
+  load() {
+    const arr = k => { const v = S.get(k, []); return Array.isArray(v) ? v : []; };
+    const p = S.get('profile', {});
+    return { logs: arr('logs'), scHist: arr('scHist'), sessions: arr('sessions'), actL: arr('actL'), breathL: arr('breathL'), cbtE: arr('cbtE'), profile: p && typeof p === 'object' ? p : {} };
+  },
+  period(days, to = ds()) { return { from: nlAddDays(to, -(days - 1)), to, days }; },
+  custom(from, to) { if (!/^\d{4}-\d{2}-\d{2}$/.test(from) || !/^\d{4}-\d{2}-\d{2}$/.test(to) || from > to) return null; return { from, to, days: nlDaysBetween(from, to) + 1 }; },
+  prev(p) { return { from: nlAddDays(p.from, -p.days), to: nlAddDays(p.from, -1), days: p.days }; },
+  inP(date, p) { return typeof date === 'string' && date >= p.from && date <= p.to; },
+  goals(profile) { return String(profile.goals || '').split(/[،,;\n]+/).map(s => s.trim()).filter(Boolean).slice(0, 6); },
+
+  stats(data, p) {
+    const logs = data.logs.filter(l => this.inP(l.date, p) && nlNum(l.mood) != null)
+      .sort((a, b) => a.date.localeCompare(b.date));
+    const moods = logs.map(l => +l.mood);
+    const sleepLogs = logs.filter(l => nlNum(l.sleep) != null && +l.sleep > 0);
+    const sleeps = sleepLogs.map(l => +l.sleep);
+    // stressLevel defaults to 5 when nothing is described, so distress is only counted when a stressor was written.
+    const distLogs = logs.filter(l => String(l.stressor || '').trim() && nlNum(l.stressLevel) != null);
+    const moodPts = logs.map(l => ({ x: nlDaysBetween(p.from, l.date), y: +l.mood }));
+    const span = logs.length ? nlDaysBetween(logs[0].date, logs[logs.length - 1].date) : 0;
+    const slope = logs.length >= 5 && span >= 6 ? nlSlope(moodPts) : null;
+
+    const sess = data.sessions.filter(s => this.inP(s.date, p));
+    const cnt = t => sess.filter(s => s.type === t).length;
+    const exercises = {
+      cbt: cnt('done-cbt') + data.cbtE.filter(e => this.inP(e.date, p)).length, ba: cnt('done-ba'), fear: cnt('done-fl'), ea: cnt('done-ea'),
+      breathing: data.breathL.filter(b => this.inP(b.date, p)).length, activities: data.actL.filter(a => this.inP(a.date, p)).length,
+    };
+    exercises.total = Object.values(exercises).reduce((a, b) => a + b, 0);
+
+    const scale = type => {
+      const all = data.scHist.filter(h => h.type === type && nlNum(h.score) != null).sort((a, b) => (a.date + (a.ts || 0)).localeCompare(b.date + (b.ts || 0)));
+      const inP = all.filter(h => this.inP(h.date, p)).map(h => ({ date: h.date, score: +h.score, max: +h.max || (type === 'phq' ? 27 : 21) }));
+      const before = all.filter(h => h.date < p.from).slice(-1)[0];
+      return { items: inP, prior: before ? { date: before.date, score: +before.score } : null };
+    };
+
+    const tagMap = {};
+    logs.forEach(l => (Array.isArray(l.tags) ? l.tags : []).forEach(t => { (tagMap[t] = tagMap[t] || []).push(+l.mood); }));
+    const tags = Object.entries(tagMap).map(([tag, ms]) => {
+      const others = logs.filter(l => !(l.tags || []).includes(tag)).map(l => +l.mood);
+      const w = nlMean(ms), wo = nlMean(others);
+      return { tag, n: ms.length, nWithout: others.length, moodWith: nlRound(w), moodWithout: nlRound(wo), diff: w != null && wo != null ? nlRound(w - wo) : null };
+    }).sort((a, b) => b.n - a.n);
+
+    const weekly = [];
+    for (let s = p.from; s <= p.to; s = nlAddDays(s, 7)) {
+      const e = nlAddDays(s, 6) > p.to ? p.to : nlAddDays(s, 6);
+      const m = logs.filter(l => l.date >= s && l.date <= e).map(l => +l.mood);
+      weekly.push({ from: s, to: e, n: m.length, mean: nlRound(nlMean(m)) });
+    }
+
+    return {
+      period: { ...p },
+      daysLogged: logs.length,
+      coverage: Math.round((logs.length / p.days) * 100),
+      mood: { n: moods.length, mean: nlRound(nlMean(moods)), median: nlRound(nlMedian(moods)), sd: nlRound(nlSD(moods)), min: moods.length ? Math.min(...moods) : null, max: moods.length ? Math.max(...moods) : null, slopePerWeek: slope == null ? null : nlRound(slope * 7, 2) },
+      sleep: { n: sleeps.length, mean: nlRound(nlMean(sleeps)), shortDays: sleeps.filter(s => s < 6).length },
+      distress: { n: distLogs.length, mean: nlRound(nlMean(distLogs.map(l => +l.stressLevel))) },
+      moodSleep: { n: sleepLogs.length, r: nlRound(nlPearson(sleepLogs.map(l => +l.mood), sleeps), 2) },
+      moodDistress: { n: distLogs.length, r: nlRound(nlPearson(distLogs.map(l => +l.mood), distLogs.map(l => +l.stressLevel)), 2) },
+      journaling: { entries: logs.length, withStressor: distLogs.length, withThought: logs.filter(l => String(l.intrusive || '').trim()).length, withGratitude: logs.filter(l => String(l.gratitude || '').trim()).length },
+      exercises,
+      scales: { phq: scale('phq'), gad: scale('gad') },
+      tags,
+      weekly,
+      dailyMood: logs.map(l => ({ date: l.date, mood: +l.mood, sleep: nlNum(l.sleep) })),
+    };
+  },
+
+  compare(cur, prev) {
+    const valid = cur.daysLogged >= 3 && prev.daysLogged >= 3;
+    const row = (label, a, b, unit = '', higherIsBetter = null) => {
+      const ok = valid && a != null && b != null;
+      return { label, cur: a, prev: b, delta: ok ? nlRound(a - b) : null, unit, higherIsBetter, valid: ok };
+    };
+    return {
+      valid,
+      reason: valid ? '' : `المقارنة غير ممكنة: الفترة السابقة فيها ${prev.daysLogged} تسجيلات والحالية ${cur.daysLogged} (المطلوب 3 على الأقل لكل منهما).`,
+      rows: [
+        row('متوسط المزاج', cur.mood.mean, prev.mood.mean, '/10', true),
+        row('متوسط النوم', cur.sleep.n >= 3 ? cur.sleep.mean : null, prev.sleep.n >= 3 ? prev.sleep.mean : null, ' ساعة', null),
+        row('متوسط شدة الانزعاج', cur.distress.n >= 3 ? cur.distress.mean : null, prev.distress.n >= 3 ? prev.distress.mean : null, '/10', false),
+        row('أيام التسجيل', cur.daysLogged, prev.daysLogged, '', true),
+        row('التمارين المكتملة', cur.exercises.total, prev.exercises.total, '', true),
+      ],
+    };
+  },
+
+  /* ── behavioural & cognitive pattern explorer (hypotheses with evidence) ── */
+  THOUGHT_RX: {
+    all_or_nothing: /دائما|ابدا|كل شيء|لا شيء|فاشل تماما|مثالي/,
+    catastrophizing: /كارثه|نهايه|مستحيل|لن استطيع|سيكون سيئا/,
+    mind_reading: /يعتقد|يظن|يري في|يكره|لا يهتم|بيفكر/,
+    fortune_telling: /سيفشل|لن ينجح|سوف يكون|اعرف انه|اكيد هيحصل/,
+    emotional_reason: /اشعر انني|شعوري يقول|قلبي يقول|حاسس اني/,
+    should_must: /يجب|ينبغي|لازم|من المفروض/,
+    labeling: /انا فاشل|انا غبي|انا عاجز|انا ضعيف|انا سيء/,
+    personalization: /بسببي|خطئي|غلطتي|مسؤوليتي|انا السبب/,
+    filtering: /لا شيء جيد|كل شيء سيء|لم يحدث خير|مفيش حاجه حلوه/,
+    overgeneralize: /كل مره|دائما يحدث|ابدا لا يتغير|علي طول/,
+  },
+  STOP: new Set('من في على الى عن مع هذا هذه ذلك تلك التي الذي الذين كان كانت يكون لم لن ما ماذا لا ان او ثم قد كل بعد قبل عند حتى اليوم امس جدا شيء انا هو هي نحن هم انت كنت لكن بس مش ده دي اللي عشان علشان فيه فيها منه منها لي له لها بين كما اي ايه وقت مره شويه كتير اكثر اقل حدث حصل بسبب'.split(' ')),
+
+  patterns(data, p) {
+    const out = [];
+    const logs = data.logs.filter(l => this.inP(l.date, p) && nlNum(l.mood) != null);
+    const fb = S.get('ai_patternFb', {}) || {};
+
+    // 1. Repeated automatic thoughts → possible cognitive distortions
+    const thoughts = [
+      ...logs.filter(l => String(l.intrusive || '').trim()).map(l => ({ date: l.date, text: l.intrusive, src: 'فكرة مزعجة — اليوميات' })),
+      ...data.sessions.filter(s => s.type === 'done-cbt' && this.inP(s.date, p) && s.ans && s.ans.hotThought).map(s => ({ date: s.date, text: s.ans.hotThought, src: 'الفكرة الساخنة — جلسة CBT' })),
+      ...data.cbtE.filter(e => this.inP(e.date, p) && e.auto).map(e => ({ date: e.date, text: e.auto, src: 'سجل أفكار' })),
+    ];
+    KB.thoughtPatterns.forEach(tp => {
+      const rx = this.THOUGHT_RX[tp.id]; if (!rx) return;
+      const ev = thoughts.filter(t => rx.test(nlNormalizeAr(t.text)));
+      if (!ev.length) return;
+      out.push({
+        id: 'thought:' + tp.id, kind: 'thought', icon: '💭', title: `نمط تفكير محتمل: ${tp.name}`,
+        observation: `ظهرت عبارات تشبه «${tp.name}» (${tp.desc}) في ${ev.length} من أفكارك المسجلة خلال الفترة.`,
+        hypothesis: `قد تميل في بعض المواقف إلى ${tp.name}: ${tp.desc}. هذا تخمين مبني على كلمات في النص، وقد يكون المعنى مختلفاً في سياقه.`,
+        evidence: ev.slice(-5).reverse().map(e => ({ date: e.date, text: nlClip(e.text, 90), src: e.src })), n: ev.length,
+        question: 'عند قراءة هذه الأفكار: هل تشعر أنها تصف طريقة تفكيرك فعلاً في تلك المواقف، أم أن الكلمات جاءت عرضاً؟',
+        action: { title: `فحص فكرة من نوع «${tp.name}»`, step: 'عند ملاحظة فكرة من هذا النوع هذا الأسبوع، أكمل سجل الأفكار (7 خطوات) مرة واحدة عليها.', timeframe: 'خلال 7 أيام', reason: `ظهر هذا النمط المحتمل في ${ev.length} تسجيلات.` },
+        thoughtSample: ev[ev.length - 1].text,
+      });
+    });
+
+    // 2. Situations / tags ↔ mood
+    const st = this.stats(data, p);
+    st.tags.filter(t => t.n >= 3 && t.nWithout >= 3 && t.diff != null && Math.abs(t.diff) >= 1).forEach(t => {
+      const neg = t.diff < 0;
+      const ev = logs.filter(l => (l.tags || []).includes(t.tag)).slice(-5).reverse().map(l => ({ date: l.date, text: `مزاج ${l.mood}/10${l.stressor ? ' — ' + nlClip(l.stressor, 60) : ''}`, src: 'التسجيل اليومي' }));
+      out.push({
+        id: 'tag:' + t.tag, kind: 'situation', icon: '🏷️', title: `${t.tag} ${neg ? 'وانخفاض المزاج' : 'وارتفاع المزاج'}`,
+        observation: `في ${t.n} أيام وسمتها بـ ${t.tag} كان متوسط مزاجك ${t.moodWith}/10، مقابل ${t.moodWithout}/10 في ${t.nWithout} أيام أخرى (فرق ${t.diff > 0 ? '+' : ''}${t.diff}).`,
+        hypothesis: neg ? `قد تكون المواقف المرتبطة بـ ${t.tag} من المحفزات المؤثرة على مزاجك، أو قد يكون الوسم يُستخدم في الأيام الصعبة أصلاً.` : `قد تكون الأنشطة أو المواقف المرتبطة بـ ${t.tag} مصدر دعم لمزاجك.`,
+        evidence: ev, n: t.n,
+        question: neg ? `ما الذي يحدث عادة في أيام ${t.tag}؟ هل هناك جزء محدد منها هو الأصعب؟` : `ما الذي في أيام ${t.tag} يساعدك؟ هل يمكن تكراره عمداً؟`,
+        action: neg ? { title: `نشاط موازن في أيام ${t.tag}`, step: `في اليوم القادم الذي يحمل ${t.tag}، خطط مسبقاً لنشاط صغير ممتع أو مريح مدته 10 دقائق بعده.`, timeframe: 'خلال أسبوعين', reason: `المزاج في أيام ${t.tag} أقل بـ ${Math.abs(t.diff)} نقطة في المتوسط.` } : null,
+      });
+    });
+
+    // 3. Short sleep ↔ same-day mood
+    const sl = logs.filter(l => nlNum(l.sleep) != null && +l.sleep > 0);
+    const short = sl.filter(l => +l.sleep < 6), enough = sl.filter(l => +l.sleep >= 6);
+    if (short.length >= 2 && enough.length >= 2) {
+      const a = nlRound(nlMean(short.map(l => +l.mood))), b = nlRound(nlMean(enough.map(l => +l.mood)));
+      if (Math.abs(a - b) >= 0.8) out.push({
+        id: 'sleep:short', kind: 'sleep', icon: '🌙', title: a < b ? 'النوم القصير وانخفاض المزاج' : 'النوم القصير لا يبدو مرتبطاً بانخفاض المزاج',
+        observation: `في ${short.length} أيام نمت فيها أقل من 6 ساعات كان متوسط المزاج ${a}/10، مقابل ${b}/10 في ${enough.length} أيام نمت فيها 6 ساعات أو أكثر.`,
+        hypothesis: a < b ? 'قد يكون للنوم القصير أثر على مزاجك في اليوم التالي، أو قد يكون الضغط نفسه سبباً للاثنين معاً.' : 'قد يكون مزاجك أقل تأثراً بقصر النوم مما تتوقع — أو أن البيانات قليلة.',
+        evidence: short.slice(-5).reverse().map(l => ({ date: l.date, text: `نوم ${l.sleep} ساعة — مزاج ${l.mood}/10`, src: 'التسجيل اليومي' })), n: sl.length,
+        question: 'في الأيام التي نمت فيها قليلاً: ما الذي أخّر نومك عادةً؟',
+        action: a < b ? { title: 'روتين ثابت قبل النوم', step: 'اختر موعد نوم ثابتاً لخمس ليالٍ، وأوقف الشاشات قبله بـ 30 دقيقة، وسجّل ساعات نومك يومياً.', timeframe: '5 ليالٍ', reason: `متوسط مزاجك في أيام النوم القصير ${a} مقابل ${b}.` } : null,
+      });
+    }
+
+    // 4. Recurring user-described stressors (word frequency, counted once per day)
+    const words = {};
+    logs.filter(l => String(l.stressor || '').trim()).forEach(l => {
+      const seen = new Set();
+      nlNormalizeAr(l.stressor).split(/[^ء-يa-zA-Z]+/).forEach(w => {
+        const k = w.replace(/^ال/, ''); if (k.length < 3 || this.STOP.has(w) || this.STOP.has(k) || seen.has(k)) return;
+        seen.add(k); (words[k] = words[k] || { word: w, logs: [] }).logs.push(l);
+      });
+    });
+    const usedSets = [];
+    Object.values(words).filter(w => w.logs.length >= 3).sort((a, b) => b.logs.length - a.logs.length).filter(w => {
+      // words that always co-occur ("اجتماع عمل متأخر") describe one situation — keep only the first
+      const key = w.logs.map(l => l.date).join('|'); if (usedSets.includes(key)) return false; usedSets.push(key); return true;
+    }).slice(0, 3).forEach(w => {
+      const lv = w.logs.map(l => +l.stressLevel).filter(Number.isFinite);
+      out.push({
+        id: 'stressor:' + w.word, kind: 'trigger', icon: '⚡', title: `موقف متكرر: «${w.word}»`,
+        observation: `كلمة «${w.word}» تكررت في وصف الموقف الضاغط في ${w.logs.length} أيام، بمتوسط شدة انزعاج ${nlRound(nlMean(lv))}/10.`,
+        hypothesis: 'قد يكون هذا النوع من المواقف محفزاً متكرراً يستحق خطة تعامل مسبقة.',
+        evidence: w.logs.slice(-5).reverse().map(l => ({ date: l.date, text: nlClip(l.stressor, 80) + ` (شدة ${l.stressLevel})`, src: 'الموقف الضاغط' })), n: w.logs.length,
+        question: 'ما الذي تفعله عادة بعد هذا الموقف مباشرة؟ وهل يخفف ذلك الانزعاج أم يؤجله؟',
+        action: { title: `خطة تعامل مع «${w.word}»`, step: 'اكتب قبل الموقف القادم: ما أصعب جزء فيه؟ وما استجابة صغيرة واحدة مختلفة ستجربها؟', timeframe: 'قبل الموقف القادم', reason: `تكرر في ${w.logs.length} أيام ضاغطة.` },
+      });
+    });
+
+    // 5. Avoidance patterns (emotion-acceptance sessions + withdrawal tags)
+    const eaSess = data.sessions.filter(s => s.type === 'done-ea' && this.inP(s.date, p) && s.ans);
+    const avoid = {}; eaSess.forEach(s => (Array.isArray(s.ans.avoidance) ? s.ans.avoidance : []).forEach(a => { (avoid[a] = avoid[a] || []).push(s.date); }));
+    const withdrawal = logs.filter(l => (l.tags || []).some(t => t === '#عزلة' || t === '#وحدة'));
+    const avEv = [
+      ...Object.entries(avoid).map(([a, dates]) => ({ date: dates[dates.length - 1], text: `${a} (اخترته ${dates.length} ${dates.length > 1 ? 'مرات' : 'مرة'})`, src: 'جلسة قبول المشاعر' })),
+      ...withdrawal.slice(-3).map(l => ({ date: l.date, text: `وسم ${(l.tags || []).filter(t => t === '#عزلة' || t === '#وحدة').join(' ')} — مزاج ${l.mood}/10`, src: 'التسجيل اليومي' })),
+    ];
+    const avN = Object.values(avoid).reduce((a, d) => a + d.length, 0) + withdrawal.length;
+    if (avN >= 2) out.push({
+      id: 'avoid', kind: 'behavior', icon: '🚪', title: 'استجابات تجنب أو انسحاب محتملة',
+      observation: `سجلت ${Object.keys(avoid).length ? 'طرق تجنب مثل: ' + Object.keys(avoid).slice(0, 3).join('، ') : 'لا طرق تجنب في جلسات قبول المشاعر'}${withdrawal.length ? `، ووسمت ${withdrawal.length} أيام بالعزلة أو الوحدة` : ''}.`,
+      hypothesis: 'قد يخفف التجنب الانزعاج على المدى القصير لكنه قد يُبقي الشعور أطول — هذا مبدأ عام في CBT، وانطباقه عليك يحتاج تجربة.',
+      evidence: avEv.slice(0, 5), n: avN,
+      question: 'متى آخر مرة بقيت فيها مع الشعور بدل الابتعاد عنه؟ ماذا حدث؟',
+      action: { title: 'سلوك معاكس صغير', step: 'اختر موقفاً واحداً هذا الأسبوع تميل فيه للانسحاب، وجرّب عكسه لمدة 10 دقائق (مثل رسالة لصديق بدل العزلة).', timeframe: 'خلال 7 أيام', reason: `${avN} مؤشرات تجنب أو انسحاب في الفترة.` },
+    });
+
+    // 6. Behavioural activation: predicted vs actual pleasure
+    const ba = [
+      ...data.sessions.filter(s => s.type === 'done-ba' && this.inP(s.date, p) && s.ans && nlNum(s.ans.expectedPleasure) != null && nlNum(s.ans.actualPleasure) != null)
+        .map(s => ({ date: s.date, name: s.ans.chosenActivity || 'نشاط', exp: +s.ans.expectedPleasure, act: +s.ans.actualPleasure })),
+      ...data.actL.filter(a => this.inP(a.date, p) && nlNum(a.exp) != null && nlNum(a.act) != null).map(a => ({ date: a.date, name: a.name, exp: +a.exp, act: +a.act })),
+    ];
+    if (ba.length >= 2) {
+      const gap = nlRound(nlMean(ba.map(b => b.act - b.exp)));
+      if (Math.abs(gap) >= 1) out.push({
+        id: 'ba:prediction', kind: 'behavior', icon: '⚡', title: gap > 0 ? 'الاستمتاع الفعلي أعلى من المتوقع' : 'الأنشطة أقل متعة مما توقعت',
+        observation: `في ${ba.length} أنشطة سجلتها، كان الفرق بين المتعة الفعلية والمتوقعة ${gap > 0 ? '+' : ''}${gap} نقطة في المتوسط.`,
+        hypothesis: gap > 0 ? 'قد تقلل توقعاتك من متعة الأنشطة قبل القيام بها — وهذا شائع ويجعل البدء أصعب مما يستحق.' : 'قد تحتاج الأنشطة المختارة إلى تعديل لتناسبك أكثر، أو أن أفكاراً سلبية أثناءها تقلل الاستمتاع.',
+        evidence: ba.slice(-5).reverse().map(b => ({ date: b.date, text: `${nlClip(b.name, 40)}: متوقع ${b.exp} ← فعلي ${b.act}`, src: 'تنشيط سلوكي' })), n: ba.length,
+        question: gap > 0 ? 'عندما تتردد في بدء نشاط، هل يمكن أن تتذكر أن توقعاتك كانت أقل من الواقع سابقاً؟' : 'ما الذي كان يدور في ذهنك أثناء الأنشطة الأقل متعة؟',
+        action: gap > 0 ? { title: 'جدولة نشاطين ممتعين', step: 'حدد نشاطين صغيرين في أيام وأوقات محددة هذا الأسبوع، وسجّل المتعة المتوقعة والفعلية لكل منهما.', timeframe: 'هذا الأسبوع', reason: `المتعة الفعلية تجاوزت المتوقعة بـ ${gap} في المتوسط.` } : null,
+      });
+    }
+
+    // 7. Distress ↔ mood
+    if (st.moodDistress.r != null && st.moodDistress.n >= 6 && Math.abs(st.moodDistress.r) >= 0.4) {
+      const dl = logs.filter(l => String(l.stressor || '').trim()).sort((a, b) => (+b.stressLevel) - (+a.stressLevel));
+      out.push({
+        id: 'distress:mood', kind: 'emotion', icon: '🌡️', title: 'شدة الانزعاج والمزاج',
+        observation: nlCorrText(st.moodDistress.r, st.moodDistress.n),
+        hypothesis: st.moodDistress.r < 0 ? 'قد تكون شدة المواقف الضاغطة مؤثرة على مزاج اليوم كله، لا على اللحظة فقط.' : 'العلاقة غير المتوقعة قد تعني أن تقديرات الانزعاج تقيس شيئاً مختلفاً — تستحق التأمل.',
+        evidence: dl.slice(0, 4).map(l => ({ date: l.date, text: `انزعاج ${l.stressLevel}/10 — مزاج ${l.mood}/10`, src: 'التسجيل اليومي' })), n: st.moodDistress.n,
+        question: 'في أيام الانزعاج الشديد، هل تحسن مزاجك لاحقاً في اليوم؟ ما الذي ساعد؟', action: null,
+      });
+    }
+
+    return out.map(x => ({ ...x, suff: nlSufficiency(x.n), feedback: fb[x.id] || null }))
+      .sort((a, b) => b.suff.level - a.suff.level || b.n - a.n);
+  },
+
+  /* ── action suggestions (deterministic; user must approve) ── */
+  suggestions(data, p) {
+    const st = this.stats(data, p);
+    const existing = new Set((S.get('ai_actions', []) || []).map(a => a.title));
+    const out = [];
+    this.patterns(data, p).filter(x => x.action && x.suff.level >= 1 && (!x.feedback || x.feedback.status !== 'rejected'))
+      .forEach(x => out.push({ ...x.action, source: 'pattern', basis: x.id }));
+    if (st.coverage < 50) out.push({ title: 'تسجيل يومي قصير', step: 'سجّل مزاجك ونومك فقط (دقيقة واحدة) كل مساء لمدة 7 أيام، حتى لو بدون تفاصيل.', timeframe: '7 أيام', reason: `سجلت ${st.daysLogged} أيام من ${st.period.days} (${st.coverage}%) — البيانات القليلة تحد من دقة التحليل.`, source: 'data' });
+    if (st.daysLogged >= 5 && st.journaling.withGratitude / st.daysLogged < 0.3) out.push({ title: 'ملاحظة امتنان يومية', step: 'اكتب شيئاً صغيراً واحداً امتننت له في خانة الامتنان كل يوم.', timeframe: '7 أيام', reason: `خانة الامتنان مكتوبة في ${st.journaling.withGratitude} من ${st.daysLogged} أيام.`, source: 'data' });
+    this.goals(data.profile).forEach(g => out.push({ title: `خطوة صغيرة نحو: ${nlClip(g, 30)}`, step: `اكتب خطوة واحدة تستغرق 10 دقائق أو أقل تقربك من «${nlClip(g, 40)}» ونفّذها.`, timeframe: 'خلال 3 أيام', reason: 'هدف سجلته في الإعدادات.', source: 'goal', goal: g }));
+    const seen = new Set();
+    return out.filter(a => !existing.has(a.title) && !seen.has(a.title) && seen.add(a.title)).slice(0, 6);
+  },
+
+  /* ── personal insight report object ── */
+  report(data, p) {
+    const cur = this.stats(data, p), prevP = this.prev(p), prev = this.stats(data, prevP);
+    const cmp = this.compare(cur, prev);
+    const pats = this.patterns(data, p).filter(x => x.suff.level >= 1 && (!x.feedback || x.feedback.status !== 'rejected'));
+    const insufficient = [];
+    if (cur.daysLogged < 3) insufficient.push(`عدد أيام التسجيل (${cur.daysLogged}) لا يكفي لاستخلاص اتجاهات.`);
+    else if (cur.coverage < 40) insufficient.push(`نسبة الأيام المسجلة ${cur.coverage}% فقط — النتائج قد لا تمثل الفترة كاملة.`);
+    if (cur.sleep.n < 4) insufficient.push(`بيانات النوم (${cur.sleep.n} أيام) لا تكفي لتحليل علاقته بالمزاج.`);
+    if (cur.mood.slopePerWeek == null) insufficient.push('الاتجاه العام للمزاج غير محسوب (يحتاج 5 تسجيلات على مدى أسبوع على الأقل).');
+    if (!cur.scales.phq.items.length && !cur.scales.gad.items.length) insufficient.push('لا توجد نتائج PHQ-9 أو GAD-7 في هذه الفترة.');
+    if (!cmp.valid) insufficient.push(cmp.reason);
+    const actions = (S.get('ai_actions', []) || []).filter(a => a.status === 'active').slice(0, 3).map(a => `${a.title}: ${a.step}`);
+    const next = [...actions, ...this.suggestions(data, p).slice(0, Math.max(0, 3 - actions.length)).map(a => `${a.title}: ${a.step}`)];
+    const observations = [];
+    if (cur.mood.slopePerWeek != null) {
+      const s = cur.mood.slopePerWeek;
+      observations.push(Math.abs(s) < 0.2 ? `المزاج مستقر تقريباً خلال الفترة (تغير ${s} نقطة/أسبوع).` : `المزاج يتجه ${s > 0 ? 'للارتفاع' : 'للانخفاض'} بمعدل ${Math.abs(s)} نقطة أسبوعياً في المتوسط (اتجاه خطي تقريبي).`);
+    }
+    if (cur.moodSleep.r != null) observations.push('المزاج والنوم: ' + nlCorrText(cur.moodSleep.r, cur.moodSleep.n));
+    const top = cur.tags.slice(0, 3).map(t => `${t.tag} (${t.n})`); if (top.length) observations.push('أكثر الوسوم تكراراً: ' + top.join('، ') + '.');
+    return {
+      id: 'r' + Date.now().toString(36), createdAt: new Date().toISOString(), from: p.from, to: p.to, days: p.days,
+      stats: cur, prevPeriod: prevP, prevStats: { daysLogged: prev.daysLogged, mood: prev.mood, sleep: prev.sleep, distress: prev.distress, exercises: prev.exercises },
+      comparison: cmp, patterns: pats.map(x => ({ id: x.id, title: x.title, observation: x.observation, hypothesis: x.hypothesis, n: x.n, suff: x.suff.label, dates: x.evidence.map(e => e.date) })),
+      observations, insufficient, nextSteps: next, narrative: null,
+    };
+  },
+};
+
+/* ─────────── crisis / risk language (local, works offline) ─────────── */
+const NL_CRISIS_RX = /(انتحار|انتحر|اقتل نفسي|اموت نفسي|انهي حياتي|انهاء حياتي|اؤذي نفسي|ايذاء نفسي|اجرح نفسي|لا اريد ان اعيش|مش عايز اعيش|مش عايزه اعيش|عايز اموت|عايزه اموت|اريد ان اموت|نفسي اموت|الموت ارحم|اخلص من حياتي|اخلص علي نفسي|kill myself|suicid|end my life|self[- ]?harm|want to die)/i;
+function nlDetectCrisis(text) { return NL_CRISIS_RX.test(nlNormalizeAr(text)); }
+
+function nlSafetyCard(intro) {
+  const msg = 'أمر بوقت صعب جداً وأحتاج أن أتحدث مع أحد الآن. هل يمكنك الاتصال بي أو المجيء؟';
+  return `<div class="ai-safety" role="alert">
+    <div class="ai-safety-title">💛 ${esc(intro || 'سلامتك أهم شيء الآن')}</div>
+    <div class="ai-safety-body">
+      يبدو أنك تمر بلحظة صعبة جداً، ومن الشجاعة أنك كتبت عنها. هذا التطبيق لا يستطيع تقديم مساعدة طارئة، لكن هناك من يستطيع:
+      <ul>
+        <li>إذا كنت في خطر الآن أو تفكر في إيذاء نفسك: اتصل بالإسعاف <a href="tel:123">123</a> (مصر) أو رقم الطوارئ في بلدك، أو اذهب لأقرب قسم طوارئ.</li>
+        <li>خطوط الدعم النفسي في مصر (الأمانة العامة للصحة النفسية): <a href="tel:16328">16328</a> • <a href="tel:08008880700">08008880700</a> • <a href="tel:0220816831">0220816831</a>. إن كنت خارج مصر فابحث عن خط الأزمات في بلدك.</li>
+        <li>لا تبقَ وحدك: تواصل الآن مع شخص تثق به.</li>
+      </ul>
+    </div>
+    <div class="ai-safety-msg"><span>رسالة جاهزة يمكنك إرسالها لشخص تثق به:</span><strong>${esc(msg)}</strong>
+      <button class="btn btn-ghost btn-sm" onclick="aiCopy(${esc(JSON.stringify(msg))})">📋 نسخ الرسالة</button></div>
+  </div>`;
+}
+function aiCopy(t) { try { navigator.clipboard.writeText(t).then(() => toast('✅ تم النسخ'), () => toast('انسخ النص يدوياً')); } catch { toast('انسخ النص يدوياً'); } }
+
+/* ─────────── AI service layer (provider-independent; talks only to our server) ─────────── */
+class AIError extends Error { constructor(code) { super(code); this.code = code; } }
+const AI_ERR_AR = {
+  not_enabled: 'المساعد الذكي غير مفعّل. فعّله من تبويب «الخصوصية والإعداد».',
+  consent_required: 'يلزم الموافقة على شروط مشاركة البيانات أولاً.',
+  not_configured: 'لم يُضبط عنوان الخدمة أو رمز الوصول بعد.',
+  server_not_configured: 'الخادم يعمل لكنه غير مهيأ بعد (مفتاح المزود أو النموذج ناقص).',
+  unauthorized: 'رمز الوصول غير صحيح.',
+  origin_not_allowed: 'هذا العنوان غير مسموح له باستخدام الخدمة.',
+  rate_limited: 'بلغت الحد المسموح من الطلبات مؤقتاً. حاول بعد قليل.',
+  provider_rate_limited: 'مزود الذكاء الاصطناعي مشغول حالياً. حاول بعد قليل.',
+  client_throttled: 'لحظة من فضلك قبل الطلب التالي.',
+  timeout: 'انتهت مهلة الاتصال بالخدمة.', provider_timeout: 'تأخر رد مزود الذكاء الاصطناعي.',
+  offline: 'لا يوجد اتصال بالإنترنت.',
+  invalid_response: 'وصل رد غير صالح من الخدمة ولم يُعرض.', invalid_model_output: 'أعاد النموذج رداً غير صالح ولم يُعرض.',
+  context_too_large: 'البيانات المختارة أكبر من المسموح. قلّل نطاق المشاركة.',
+  forbidden_context_field: 'رفض الخادم حقلاً حساساً في البيانات المرسلة.',
+};
+function aiErrText(code) { return AI_ERR_AR[code] || 'تعذر الوصول للخدمة الآن. التطبيق يعمل كالمعتاد بدون الذكاء الاصطناعي.'; }
+
+const AIService = {
+  _calls: [],
+  settings() {
+    const s = S.get('ai_settings', {}) || {};
+    return { enabled: false, consentVersion: 0, consentAt: null, endpoint: '', anonKey: '', accessCode: '', keepHistory: true, ...s, scopes: { ...AI_DEFAULT_SCOPES, ...(s.scopes || {}) } };
+  },
+  save(patch) { const s = { ...this.settings(), ...patch }; S.set('ai_settings', s); return s; },
+  status() {
+    const s = this.settings();
+    if (!s.enabled) return 'off';
+    if (s.consentVersion !== AI_CONSENT_VERSION) return 'needs_consent';
+    if (!this.validEndpoint(s.endpoint) || !s.accessCode) return 'needs_config';
+    return 'ready';
+  },
+  validEndpoint(u) { try { const x = new URL(u); return x.protocol === 'https:' || (x.protocol === 'http:' && /^(localhost|127\.0\.0\.1)$/.test(x.hostname)); } catch { return false; } },
+  async call(task, { messages = [], context = {}, safety_flag = false } = {}) {
+    const st = this.status();
+    if (st === 'off') throw new AIError('not_enabled');
+    if (st === 'needs_consent') throw new AIError('consent_required');
+    if (st === 'needs_config') throw new AIError('not_configured');
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) throw new AIError('offline');
+    const now = Date.now();
+    this._calls = this._calls.filter(t => now - t < 3600e3);
+    const gap = this._calls.length ? now - this._calls[this._calls.length - 1] : Infinity;
+    if (gap < 1500) await new Promise(r => setTimeout(r, 1500 - gap)); // gentle client-side spacing
+    if (this._calls.length >= 40) throw new AIError('rate_limited');
+    this._calls.push(Date.now());
+    const body = JSON.stringify({ task, messages, context, safety_flag });
+    if (body.length > 30000) throw new AIError('context_too_large');
+    const s = this.settings();
+    const headers = { 'content-type': 'application/json', 'x-nafsilog-access': s.accessCode };
+    if (s.anonKey) { headers.apikey = s.anonKey; headers.authorization = 'Bearer ' + s.anonKey; }
+    let lastErr;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 60000);
+      try {
+        const res = await fetch(s.endpoint, { method: 'POST', headers, body, signal: ctl.signal });
+        let j = null; try { j = await res.json(); } catch { /* handled below */ }
+        if (!res.ok) throw new AIError((j && typeof j.error === 'string' && j.error) || (res.status === 429 ? 'rate_limited' : 'server_error'));
+        if (!j || j.ok !== true || !j.result || typeof j.result !== 'object') throw new AIError('invalid_response');
+        return this.validate(task, j.result);
+      } catch (e) {
+        lastErr = e.name === 'AbortError' ? new AIError('timeout') : e instanceof AIError ? e : new AIError('network');
+        if (lastErr.code !== 'network') break; // retry only transient network failures, once
+      } finally { clearTimeout(timer); }
+      await new Promise(r => setTimeout(r, 800));
+    }
+    throw lastErr;
+  },
+  validate(task, r) {
+    const str = (v, n) => typeof v === 'string' ? v.slice(0, n) : '';
+    const arr = (v, n, len) => Array.isArray(v) ? v.filter(x => typeof x === 'string' && x.trim()).map(x => x.slice(0, len)).slice(0, n) : [];
+    const acts = (v, n) => Array.isArray(v) ? v.filter(a => a && typeof a === 'object' && typeof a.title === 'string' && typeof a.step === 'string')
+      .map(a => ({ title: str(a.title, 60), step: str(a.step, 240), timeframe: str(a.timeframe, 60), reason: str(a.reason, 240) })).slice(0, n) : [];
+    let out;
+    if (task === 'chat') out = { reply: str(r.reply, 4000), follow_up_questions: arr(r.follow_up_questions, 3, 200), suggested_actions: acts(r.suggested_actions, 3), safety_concern: r.safety_concern === true };
+    else if (task === 'explain_stats') out = { explanation: str(r.explanation, 2500), caveats: arr(r.caveats, 4, 280) };
+    else if (task === 'suggest_actions') out = { actions: acts(r.actions, 5) };
+    else if (task === 'balanced_thought') out = { questions: arr(r.questions, 4, 280), balanced_thoughts: arr(r.balanced_thoughts, 3, 280) };
+    else if (task === 'report_narrative') out = { summary: str(r.summary, 1500), observations: arr(r.observations, 5, 280), next_steps: arr(r.next_steps, 4, 280) };
+    else out = r;
+    const main = out.reply ?? out.explanation ?? out.summary ?? (out.actions && out.actions.length) ?? (out.questions && (out.questions.length || out.balanced_thoughts.length));
+    if (task !== 'ping' && !main) throw new AIError('invalid_response');
+    return out;
+  },
+};
+
+/* Data minimisation: build only what the user selected. Never medical history, age, gender, status or PIN. */
+function nlRedact(s) { return String(s || '').replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '[بريد]').replace(/(\+?\d[\d\s-]{7,}\d)/g, '[رقم]'); }
+function aiBuildContext(scopes, data = NLA.load()) {
+  const ctx = {}, meta = [];
+  const p = NLA.period(30);
+  if (scopes.stats) {
+    const st = NLA.stats(data, p);
+    ctx.stats = { period: st.period, daysLogged: st.daysLogged, coveragePct: st.coverage, mood: st.mood, sleep: st.sleep, distress: st.distress, moodSleep: st.moodSleep, moodDistress: st.moodDistress, journaling: st.journaling, exercises: st.exercises, topTags: st.tags.slice(0, 5), weekly: st.weekly };
+    meta.push(`ملخص أرقام ${nlFmtRange(p.from, p.to)} (${st.daysLogged} تسجيلاً)`);
+  }
+  if (scopes.journal) {
+    const from = nlAddDays(ds(), -6);
+    ctx.journal = data.logs.filter(l => l.date >= from).sort((a, b) => a.date.localeCompare(b.date)).slice(-7).map(l => ({
+      date: l.date, mood: nlNum(l.mood), sleep: nlNum(l.sleep), distress: String(l.stressor || '').trim() ? nlNum(l.stressLevel) : null,
+      tags: (l.tags || []).slice(0, 6), situation: nlClip(nlRedact(l.stressor), 200), thought: nlClip(nlRedact(l.intrusive), 200), gratitude: nlClip(nlRedact(l.gratitude), 100),
+    }));
+    meta.push(`نصوص ${ctx.journal.length} أيام`);
+  }
+  if (scopes.sessions) {
+    ctx.sessions = data.sessions.slice(-5).map(s => {
+      const a = s.ans || {};
+      return { type: s.type, date: s.date, thought: nlClip(nlRedact(a.hotThought), 160), alternative: nlClip(nlRedact(a.alternative), 160), activity: nlClip(a.chosenActivity, 80), emotion: a.targetEmotion || '', beliefBefore: nlNum(a.hotBeliefPre), beliefAfter: nlNum(a.hotBeliefPost), expectedPleasure: nlNum(a.expectedPleasure), actualPleasure: nlNum(a.actualPleasure) };
+    });
+    meta.push(`آخر ${ctx.sessions.length} جلسات تمارين`);
+  }
+  if (scopes.scales) {
+    ctx.scales = { note: 'PHQ-9/GAD-7 are screening questionnaires, not diagnoses.', results: data.scHist.slice(-8).map(h => ({ type: h.type, score: nlNum(h.score), max: nlNum(h.max), date: h.date })) };
+    meta.push(`${ctx.scales.results.length} نتائج مقاييس`);
+  }
+  if (scopes.goals) {
+    ctx.goals = NLA.goals(data.profile).map(g => nlClip(g, 100));
+    const acts = (S.get('ai_actions', []) || []).filter(a => a.status !== 'dismissed').slice(-6);
+    ctx.plan = acts.map(a => ({ title: a.title, state: a.status, usefulness: a.reflection ? a.reflection.useful : null }));
+    meta.push('الأهداف والخطة');
+  }
+  return { ctx, meta };
+}
+
+/* Numbers in model text that the app did not compute get flagged (models must not invent statistics). */
+function aiUnverifiedNumbers(text, sources) {
+  const allowed = new Set();
+  JSON.stringify(sources || {}).replace(/-?\d+(?:\.\d+)?/g, m => { const v = Math.abs(+m); allowed.add(String(v)); allowed.add(String(Math.round(v))); allowed.add(String(nlRound(v, 1))); return m; });
+  const found = (nlNormalizeAr(text).replace(/٫/g, '.').match(/\d+(?:\.\d+)?%?/g) || []);
+  return [...new Set(found.filter(n => {
+    const isPct = n.endsWith('%'), v = parseFloat(n);
+    if (!isPct && !n.includes('.') && v <= 10) return false; // small counts ("خطوتين"، "10 دقائق") are advice, not statistics
+    if ([15, 20, 30, 45, 60, 90].includes(v) && !isPct) return false; // common durations in suggestions
+    return !allowed.has(String(v));
+  }))];
+}
+
+/* ─────────── state & storage helpers ─────────── */
+let aiTab = 0, aiPeriodDays = 30, aiCustom = null, aiBusy = false, aiConvMem = null, aiPending = {};
+function aiUid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function aiConvs() { const s = AIService.settings(); if (!s.keepHistory) return aiConvMem || (aiConvMem = []); const c = S.get('ai_conv', []); return Array.isArray(c) ? c : []; }
+function aiSaveConvs(c) { if (AIService.settings().keepHistory) S.set('ai_conv', c.slice(-20)); else aiConvMem = c; }
+function aiCurrentConv() {
+  const c = aiConvs();
+  if (!c.length || c[c.length - 1].archived) { c.push({ id: aiUid(), createdAt: new Date().toISOString(), messages: [], flow: null }); aiSaveConvs(c); }
+  return c[c.length - 1];
+}
+function aiUpdateConv(fn) { const c = aiConvs(); const cur = c[c.length - 1]; fn(cur); aiSaveConvs(c); }
+function aiPeriod() { return aiCustom || NLA.period(aiPeriodDays); }
+function aiStatusPill() {
+  const st = AIService.status();
+  const m = { off: ['وضع محلي — بدون ذكاء اصطناعي', 'var(--slate)'], needs_consent: ['بانتظار الموافقة', 'var(--amber)'], needs_config: ['بانتظار إعداد الخدمة', 'var(--amber)'], ready: ['الذكاء الاصطناعي مفعّل', 'var(--teal)'] }[st];
+  return `<span class="ai-pill" style="color:${m[1]};border-color:${m[1]}">● ${m[0]}</span>`;
+}
+
+/* ─────────── page shell ─────────── */
+const AI_TABS = ['💬 محادثة', '📈 الاتجاهات', '🔎 الأنماط', '✅ الخطة', '📄 التقارير', '🔐 الخصوصية والإعداد'];
+function renderAI() {
+  const el = document.getElementById('aiContent'); if (!el) return;
+  document.getElementById('aiStatus').innerHTML = aiStatusPill();
+  document.getElementById('aiTabs').innerHTML = AI_TABS.map((t, i) => `<button class="chart-tab${i === aiTab ? ' active' : ''}" onclick="aiSwitch(${i})">${t}</button>`).join('');
+  try {
+    el.innerHTML = [aiChatView, aiTrendsView, aiPatternsView, aiPlanView, aiReportsView, aiPrivacyView][aiTab]();
+  } catch (e) {
+    console.error(e);
+    el.innerHTML = `<div class="empty-state"><div class="empty-ico">⚠️</div>تعذر عرض هذا القسم. بياناتك لم تتأثر.</div>`;
+  }
+  if (aiTab === 0) { const m = document.getElementById('aiMsgs'); if (m) m.scrollTop = m.scrollHeight; }
+}
+function aiSwitch(t) { aiTab = t; renderAI(); window.scrollTo({ top: 0 }); }
+function aiPeriodBar(onchange) {
+  const opts = [[7, '7 أيام'], [14, '14 يوماً'], [30, '30 يوماً'], [90, '90 يوماً']];
+  return `<div class="ai-period">${opts.map(([d, l]) => `<button class="chip${!aiCustom && aiPeriodDays === d ? ' sel' : ''}" onclick="aiCustom=null;aiPeriodDays=${d};${onchange}">${l}</button>`).join('')}
+    <button class="chip${aiCustom ? ' sel' : ''}" onclick="document.getElementById('aiCustomRow').style.display='flex'">مخصص</button></div>
+    <div id="aiCustomRow" class="ai-custom" style="display:${aiCustom ? 'flex' : 'none'}">
+      <input type="date" class="inp" id="aiFrom" value="${aiCustom ? aiCustom.from : nlAddDays(ds(), -29)}" max="${ds()}">
+      <input type="date" class="inp" id="aiTo" value="${aiCustom ? aiCustom.to : ds()}" max="${ds()}">
+      <button class="btn btn-ghost btn-sm" onclick="const p=NLA.custom(aiFrom.value,aiTo.value);if(!p){toast('⚠️ نطاق تاريخ غير صالح');return}aiCustom=p;${onchange}">تطبيق</button></div>`;
+}
+function aiDisclaimer(txt) { return `<div class="ai-note">${txt}</div>`; }
+
+/* ─────────── 1. conversation ─────────── */
+function aiChatView() {
+  const conv = aiCurrentConv(), st = AIService.status(), s = AIService.settings();
+  const msgs = conv.messages.length ? conv.messages.map(aiMsgHTML).join('') : `<div class="ai-welcome">
+      <div style="font-size:1.6rem">🌿</div>
+      <strong>مساحة للتأمل في يومك وبياناتك</strong>
+      <p>صِف موقفاً أو شعوراً، أو اسأل عن سجلاتك: «كيف كان مزاجي هذا الشهر؟»، «ما علاقة نومي بمزاجي؟».</p>
+      <p class="ai-muted">${st === 'ready' ? 'الردود من نموذج ذكاء اصطناعي، والأرقام تُحسب في التطبيق.' : 'يعمل الآن محلياً على جهازك: أسئلة منظمة وإجابات محسوبة من سجلاتك، دون إرسال أي شيء.'}</p>
+      <div class="chips" style="justify-content:center">${['كيف كان مزاجي هذا الشهر؟', 'ما علاقة نومي بمزاجي؟', 'أريد أن أفهم موقفاً ضايقني'].map(q => `<div class="chip" onclick="aiAsk(${esc(JSON.stringify(q))})">${esc(q)}</div>`).join('')}</div>
+    </div>`;
+  const scopes = st === 'ready' ? `<div class="ai-scopes"><span class="ai-muted">سيُرسل مع رسالتك:</span>${Object.keys(AI_SCOPE_LABELS).map(k => `<label class="ai-scope"><input type="checkbox" ${s.scopes[k] ? 'checked' : ''} onchange="aiSetScope('${k}',this.checked)"> ${AI_SCOPE_LABELS[k]}</label>`).join('')}
+      <button class="ai-link" onclick="aiPreviewContext()">👁 معاينة ما سيُرسل بالضبط</button></div>` : '';
+  return `${aiDisclaimer('أداة للتأمل الذاتي، ليست تشخيصاً ولا بديلاً عن مختص. في حالات الخطر اتصل بالطوارئ فوراً.')}
+    <div class="ai-msgs" id="aiMsgs">${msgs}</div>
+    <div class="ai-composer">
+      ${scopes}
+      <div class="ai-input-row">
+        <textarea class="inp" id="aiInput" rows="2" maxlength="2000" placeholder="اكتب ما يدور في بالك…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();aiSend()}"></textarea>
+        <button class="btn btn-primary" id="aiSendBtn" onclick="aiSend()" ${aiBusy ? 'disabled' : ''} aria-label="إرسال">${aiBusy ? '…' : '➤'}</button>
+      </div>
+      <div class="ai-conv-tools"><button class="ai-link" onclick="aiNewConv()">＋ محادثة جديدة</button>${aiConvs().filter(c => c.archived).length ? `<button class="ai-link" onclick="aiShowHistory()">🗂 المحادثات السابقة (${aiConvs().filter(c => c.archived).length})</button>` : ''}<span class="ai-muted">${s.keepHistory ? 'تُحفظ على هذا الجهاز فقط' : 'لا تُحفظ بعد إغلاق الصفحة'}</span></div>
+    </div>`;
+}
+function aiMsgHTML(m) {
+  if (m.role === 'safety') return nlSafetyCard(m.text);
+  const isUser = m.role === 'user';
+  const src = isUser ? '' : m.source === 'ai' ? '<span class="ai-src ai">استجابة نموذج ذكاء اصطناعي</span>' : m.source === 'error' ? '<span class="ai-src err">تنبيه</span>' : '<span class="ai-src">رد محلي — بدون ذكاء اصطناعي</span>';
+  const body = esc(m.text).replace(/\n/g, '<br>');
+  const ctx = m.ctx && m.ctx.length ? `<div class="ai-ctx">📎 بيانات من سجلاتك المخزنة أُرسلت: ${m.ctx.map(esc).join(' • ')}</div>` : (m.role === 'assistant' && m.source === 'ai' ? '<div class="ai-ctx">📎 لم تُرسل سجلات مخزنة — الرد مبني على المحادثة فقط.</div>' : '');
+  const data = m.data ? `<div class="ai-ctx">📊 من سجلاتك المخزنة: ${esc(m.data)}</div>` : '';
+  const warn = m.unverified && m.unverified.length ? `<div class="ai-warn">⚠️ يذكر الرد أرقاماً لم يحسبها التطبيق (${m.unverified.map(esc).join('، ')}) — اعتمد على الأرقام في تبويب الاتجاهات.</div>` : '';
+  const fu = (m.followUps || []).length ? `<div class="chips ai-fu">${m.followUps.map(q => `<div class="chip" onclick="aiAsk(${esc(JSON.stringify(q))})">${esc(q)}</div>`).join('')}</div>` : '';
+  const acts = (m.actions || []).map((a, i) => `<div class="ai-act-sug"><strong>${esc(a.title)}</strong><div>${esc(a.step)}</div><div class="ai-muted">⏱ ${esc(a.timeframe || '—')} • لماذا: ${esc(a.reason || '—')}</div>
+      <button class="btn btn-ghost btn-sm" onclick="aiAdoptFromMsg('${m.id}',${i})">＋ أضفها لخطتي</button></div>`).join('');
+  const buttons = (m.buttons || []).map(b => `<button class="btn btn-ghost btn-sm" onclick="${b.fn}">${esc(b.label)}</button>`).join('');
+  return `<div class="ai-msg ${isUser ? 'user' : 'bot'}">${src}<div class="ai-bubble">${body}</div>${data}${ctx}${warn}${fu}${acts}${buttons ? `<div class="ai-btns">${buttons}</div>` : ''}</div>`;
+}
+function aiSetScope(k, v) { const s = AIService.settings(); s.scopes[k] = v; AIService.save({ scopes: s.scopes }); }
+function aiPreviewContext() {
+  const { ctx } = aiBuildContext(AIService.settings().scopes);
+  aiModal('معاينة البيانات المرسلة', `<p class="ai-muted">هذا ما سيُرفق مع رسالتك التالية بالإضافة إلى آخر رسائل هذه المحادثة. لا يُرسل التاريخ الطبي أو العمر أو الجنس أو الحالة الاجتماعية أو الرمز السري أبداً.</p><pre class="ai-pre">${esc(JSON.stringify(ctx, null, 2) || '{}')}</pre>`);
+}
+function aiAsk(q) { const i = document.getElementById('aiInput'); if (i) { i.value = q; aiSend(); } }
+function aiNewConv() { aiUpdateConv(c => { if (c.messages.length) c.archived = true; }); renderAI(); }
+function aiShowHistory() {
+  const list = aiConvs().filter(c => c.archived).reverse();
+  aiModal('المحادثات السابقة', list.map(c => `<div class="ai-hist"><div><strong>${esc(nlClip((c.messages.find(m => m.role === 'user') || {}).text || 'محادثة', 50))}</strong><div class="ai-muted">${new Date(c.createdAt).toLocaleDateString('ar-EG')} • ${c.messages.length} رسالة</div></div>
+    <button class="btn btn-ghost btn-sm" onclick="aiOpenConv('${c.id}')">فتح</button><button class="btn btn-danger btn-sm" onclick="aiDeleteConv('${c.id}')">حذف</button></div>`).join('') || '<p class="ai-muted">لا توجد محادثات.</p>');
+}
+function aiOpenConv(id) { const c = aiConvs(); const i = c.findIndex(x => x.id === id); if (i < 0) return; const [x] = c.splice(i, 1); const cur = c[c.length - 1]; if (cur && !cur.archived && cur.messages.length) cur.archived = true; else if (cur && !cur.archived) c.pop(); x.archived = false; c.push(x); aiSaveConvs(c); aiCloseModal(); renderAI(); }
+function aiDeleteConv(id) { aiSaveConvs(aiConvs().filter(c => c.id !== id)); aiCloseModal(); renderAI(); toast('🗑️ حُذفت المحادثة'); }
+function aiPush(msg) { msg.id = msg.id || aiUid(); msg.ts = Date.now(); aiUpdateConv(c => c.messages.push(msg)); return msg; }
+
+async function aiSend() {
+  const inp = document.getElementById('aiInput'); if (!inp || aiBusy) return;
+  const text = inp.value.trim().slice(0, 2000); if (!text) return;
+  inp.value = '';
+  aiPush({ role: 'user', text });
+  const crisis = nlDetectCrisis(text);
+  if (crisis) aiPush({ role: 'safety', text: 'سلامتك أهم شيء الآن' });
+  if (AIService.status() === 'ready') {
+    aiBusy = true; renderAI();
+    const { ctx, meta } = aiBuildContext(AIService.settings().scopes);
+    const history = aiCurrentConv().messages.filter(m => m.role === 'user' || (m.role === 'assistant' && m.source !== 'error'))
+      .slice(-12).map(m => ({ role: m.role, content: nlClip(m.text, 2000) }));
+    while (history.length && history[0].role !== 'user') history.shift();
+    try {
+      const r = await AIService.call('chat', { messages: history, context: ctx, safety_flag: crisis });
+      aiPush({ role: 'assistant', source: 'ai', text: r.reply, followUps: crisis ? [] : r.follow_up_questions, actions: crisis ? [] : r.suggested_actions, ctx: meta, unverified: aiUnverifiedNumbers(r.reply, { ctx, user: history.map(h => h.content).join(' ') }) });
+      if (r.safety_concern && !crisis) aiPush({ role: 'safety', text: 'لاحظنا ما يستدعي الاطمئنان على سلامتك' });
+    } catch (e) {
+      aiPush({ role: 'assistant', source: 'error', text: aiErrText(e.code) + '\nهذا رد محلي بديل:' });
+      aiPush(aiLocalReply(text, crisis));
+    }
+    aiBusy = false; renderAI();
+  } else {
+    const st = AIService.status();
+    if (st !== 'off' && !aiCurrentConv().messages.some(m => m.source === 'error' && m.code === st)) aiPush({ role: 'assistant', source: 'error', code: st, text: aiErrText(st === 'needs_config' ? 'not_configured' : 'consent_required') + '\nالردود الآن محلية من جهازك:' });
+    aiPush(aiLocalReply(text, crisis)); renderAI();
+  }
+}
+
+/* Local (offline) responder: deterministic answers about records + guided five-part reflection. */
+function aiLocalReply(text, crisis) {
+  if (crisis) return { role: 'assistant', source: 'local', text: 'أنا هنا، وما تشعر به مهم. أرجوك تواصل الآن مع أحد الأرقام أعلاه أو مع شخص قريب منك. إن أردت، اكتب لي ما الذي جعل اليوم ثقيلاً إلى هذا الحد.' };
+  const t = nlNormalizeAr(text).toLowerCase();
+  const data = NLA.load(), p = NLA.period(30), st = NLA.stats(data, p);
+  const range = nlFmtRange(p.from, p.to);
+  const conv = aiCurrentConv();
+  const flow = conv.flow;
+  const isQuestion = /\?|؟|كيف|ما |ماذا|هل |كم |ايه|ازاي/.test(t);
+
+  if (flow && !isQuestion) return aiFlowStep(text);
+  if (/نوم|نمت/.test(t)) {
+    if (!st.sleep.n) return { role: 'assistant', source: 'local', text: `لا توجد ساعات نوم مسجلة في آخر 30 يوماً (${range}). سجّل ساعات نومك في «يومي» لأتمكن من تحليلها.` };
+    return { role: 'assistant', source: 'local', text: `خلال ${range}: متوسط نومك ${st.sleep.mean} ساعة في ${st.sleep.n} أيام مسجلة، منها ${st.sleep.shortDays} أيام أقل من 6 ساعات.\nالمزاج والنوم: ${nlCorrText(st.moodSleep.r, st.moodSleep.n)}\nما الذي تلاحظه أنت في الأيام التي تنام فيها قليلاً؟`, data: `${st.sleep.n} تسجيل نوم`, buttons: [{ label: '📈 عرض الاتجاهات', fn: 'aiSwitch(1)' }] };
+  }
+  if (/مزاج/.test(t) && isQuestion) {
+    if (!st.mood.n) return { role: 'assistant', source: 'local', text: `لا توجد تسجيلات مزاج في آخر 30 يوماً (${range}).` };
+    const trend = st.mood.slopePerWeek == null ? 'الاتجاه غير محسوب لقلة البيانات' : Math.abs(st.mood.slopePerWeek) < 0.2 ? 'مستقر تقريباً' : (st.mood.slopePerWeek > 0 ? 'يميل للارتفاع' : 'يميل للانخفاض') + ` (${st.mood.slopePerWeek} نقطة/أسبوع)`;
+    return { role: 'assistant', source: 'local', text: `خلال ${range} سجلت ${st.mood.n} أيام. متوسط المزاج ${st.mood.mean}/10 (الوسيط ${st.mood.median}، بين ${st.mood.min} و${st.mood.max}). الاتجاه: ${trend}.\nهل هناك يوم بعينه تريد أن نفهم ما حدث فيه؟`, data: `${st.mood.n} تسجيلاً يومياً`, buttons: [{ label: '📈 التفاصيل', fn: 'aiSwitch(1)' }] };
+  }
+  if (/phq|gad|مقياس|مقاييس|اكتئاب|قلق.*(درجه|نتيج)/.test(t)) {
+    const h = data.scHist.slice(-4);
+    if (!h.length) return { role: 'assistant', source: 'local', text: 'لا توجد نتائج مقاييس محفوظة. يمكنك إكمال PHQ-9 أو GAD-7 من قسم «مقاييس».' };
+    return { role: 'assistant', source: 'local', text: `آخر نتائجك: ${h.map(x => `${String(x.type).toUpperCase()} ${x.score}/${x.max} (${fmtDate(x.date)})`).join('، ')}.\nهذه مقاييس فحص أولي وليست تشخيصاً؛ تفسيرها يحتاج مختصاً يأخذ الصورة كاملة.`, data: `${h.length} نتائج` };
+  }
+  if (/تمرين|تمارين|جلس/.test(t) && isQuestion) {
+    const e = st.exercises;
+    return { role: 'assistant', source: 'local', text: `خلال ${range} أكملت ${e.total} تمريناً: CBT ${e.cbt}، تنشيط سلوكي ${e.ba}، سلم الخوف ${e.fear}، قبول المشاعر ${e.ea}، تنفس ${e.breathing}، أنشطة ${e.activities}.`, data: 'سجل التمارين' };
+  }
+  if (/نمط|انماط|متكرر/.test(t)) {
+    const pats = NLA.patterns(data, p).filter(x => x.suff.level >= 1).slice(0, 2);
+    if (!pats.length) return { role: 'assistant', source: 'local', text: 'لم تظهر أنماط بأدلة كافية في آخر 30 يوماً بعد.', buttons: [{ label: '🔎 مستكشف الأنماط', fn: 'aiSwitch(2)' }] };
+    return { role: 'assistant', source: 'local', text: pats.map(x => `• ${x.title}: ${x.observation}`).join('\n') + '\nهذه فرضيات للتأمل وليست استنتاجات نهائية.', buttons: [{ label: '🔎 الأدلة والتفاصيل', fn: 'aiSwitch(2)' }] };
+  }
+  if (/خطه|اقترح|ماذا افعل|اعمل ايه/.test(t)) {
+    const sug = NLA.suggestions(data, p).slice(0, 2);
+    return { role: 'assistant', source: 'local', text: sug.length ? 'اقتراحات مبنية على سجلاتك:\n' + sug.map(a => `• ${a.title}: ${a.step} (${a.timeframe})`).join('\n') : 'لا توجد اقتراحات جديدة الآن.', buttons: [{ label: '✅ فتح الخطة', fn: 'aiSwitch(3)' }] };
+  }
+  // Start guided reflection (five-part CBT model)
+  aiUpdateConv(c => { c.flow = { step: 1, data: { situation: text } }; });
+  return { role: 'assistant', source: 'local', text: 'شكراً لمشاركتك. لنفهم الموقف خطوة بخطوة (النموذج الخماسي في CBT).\nحين حدث ذلك: ما الفكرة التي مرّت ببالك وقتها؟ اكتبها كما جاءت، حتى لو بدت غير منطقية.' };
+}
+function aiFlowStep(text) {
+  const conv = aiCurrentConv(), f = conv.flow, d = f.data;
+  const steps = [null,
+    ['thought', 'وما الشعور الذي صاحب هذه الفكرة؟ وكم كانت شدته من 0 إلى 100؟'],
+    ['emotion', 'هل لاحظت شيئاً في جسدك وقتها؟ (توتر، تسارع نبض، ثقل، لا شيء…)'],
+    ['body', 'وماذا فعلت بعدها؟ أو ما الذي تجنبته أو أجّلته؟'],
+    ['behavior', null]];
+  const [key, next] = steps[f.step];
+  d[key] = text; // conversation objects are re-read from storage, so persist the answer explicitly
+  if (next) { aiUpdateConv(c => { c.flow.data[key] = text; c.flow.step++; }); return { role: 'assistant', source: 'local', text: next }; }
+  aiUpdateConv(c => { c.flow = null; c.lastReflection = d; });
+  return {
+    role: 'assistant', source: 'local',
+    text: `هذه الصورة كما وصفتها في هذه المحادثة (ليست من سجلاتك المخزنة):\n• الموقف: ${nlClip(d.situation, 120)}\n• الفكرة: ${nlClip(d.thought, 120)}\n• الشعور: ${nlClip(d.emotion, 80)}\n• الجسد: ${nlClip(d.body, 80)}\n• السلوك: ${nlClip(d.behavior, 100)}\n\nكل عنصر يؤثر في الآخر. سؤال للتأمل: لو كان صديق مقرب في الموقف نفسه وفكّر الفكرة نفسها، ماذا كنت ستقول له؟`,
+    buttons: [{ label: '🧠 افحص الفكرة في سجل الأفكار', fn: 'aiToThoughtRecord()' }],
+  };
+}
+function aiToThoughtRecord() {
+  const d = aiCurrentConv().lastReflection; if (!d) return;
+  go('exercises'); switchEx(0);
+  SS.ans.situation = d.situation || ''; SS.ans.hotThought = d.thought || ''; SS.ans.emotionsText = d.emotion || ''; SS.step = 1; renderEx(0);
+  toast('تم تعبئة الموقف والفكرة — راجعهما وتابع');
+}
+function aiAdoptFromMsg(mid, i) {
+  const m = aiCurrentConv().messages.find(x => x.id === mid); if (!m || !m.actions || !m.actions[i]) return;
+  aiAdopt({ ...m.actions[i], source: 'ai' });
+}
+
+/* ─────────── 2. trends (deterministic) ─────────── */
+function aiTrendsView() {
+  const data = NLA.load(), p = aiPeriod(), st = NLA.stats(data, p), prev = NLA.stats(data, NLA.prev(p)), cmp = NLA.compare(st, prev);
+  aiPending.stats = st;
+  const card2 = (label, val, sub, col) => `<div class="corr-card"><div class="corr-label">${label}</div><div class="corr-value" style="color:${col || 'var(--text)'}">${val}</div><div class="corr-desc">${sub}</div></div>`;
+  const dash = v => v == null ? '—' : v;
+  const trendTxt = st.mood.slopePerWeek == null ? 'غير محسوب — يحتاج 5 تسجيلات على مدى أسبوع' : Math.abs(st.mood.slopePerWeek) < 0.2 ? `مستقر (${st.mood.slopePerWeek}/أسبوع)` : `${st.mood.slopePerWeek > 0 ? '↑' : '↓'} ${Math.abs(st.mood.slopePerWeek)} نقطة/أسبوع`;
+  const scaleRow = (name, s) => {
+    if (!s.items.length) return `<div class="ai-row"><span>${name}</span><span class="ai-muted">لا نتائج في الفترة${s.prior ? ` (آخر نتيجة قبلها ${s.prior.score} في ${fmtDate(s.prior.date)})` : ''}</span></div>`;
+    const first = s.items[0], last = s.items[s.items.length - 1];
+    const base = s.prior || (s.items.length > 1 ? first : null);
+    return `<div class="ai-row"><span>${name}</span><span>${s.items.map(i => `${i.score}`).join(' ← ')}${base ? ` <span class="ai-muted">(التغير ${last.score - base.score > 0 ? '+' : ''}${last.score - base.score} منذ ${fmtDate(base.date)})</span>` : ''}</span></div>`;
+  };
+  const goals = NLA.goals(data.profile), acts = S.get('ai_actions', []) || [];
+  const goalRows = goals.map(g => { const a = acts.filter(x => x.goal === g && x.status !== 'dismissed'); const d = a.filter(x => x.status === 'done').length; return `<div class="ai-row"><span>🎯 ${esc(g)}</span><span>${a.length ? `${d}/${a.length} خطوات منجزة` : '<span class="ai-muted">لا خطوات مرتبطة بعد</span>'}</span></div>`; }).join('');
+  const done = acts.filter(a => a.status === 'done').length, active = acts.filter(a => a.status === 'active').length;
+
+  return `${aiPeriodBar('renderAI()')}
+    <div class="ai-muted" style="margin:.2rem 0 .8rem">الفترة: ${nlFmtRange(p.from, p.to)} • ${st.daysLogged} من ${p.days} يوماً مسجلاً (${st.coverage}%). كل الأرقام محسوبة على جهازك.</div>
+    ${st.daysLogged === 0 ? `<div class="empty-state"><div class="empty-ico">📭</div>لا توجد تسجيلات في هذه الفترة.<br><button class="btn btn-primary btn-sm" style="margin-top:.6rem" onclick="go('daily')">سجّل يومك</button></div>` : `
+    <div class="chart-wrap"><div class="chart-title"><span>📈 المزاج اليومي والنوم</span><span class="chart-subtitle">${trendTxt}</span></div>${aiSparkSVG(st, p)}</div>
+    <div class="corr-grid" style="margin-bottom:.9rem">
+      ${card2('متوسط المزاج', `${dash(st.mood.mean)}<small>/10</small>`, `الوسيط ${dash(st.mood.median)} • الانحراف ${dash(st.mood.sd)} • ن=${st.mood.n}`, st.mood.mean != null ? moodColor(st.mood.mean) : null)}
+      ${card2('متوسط النوم', `${dash(st.sleep.mean)}<small> س</small>`, `${st.sleep.n} أيام مسجلة • ${st.sleep.shortDays} أقل من 6 ساعات`, 'var(--indigo)')}
+      ${card2('شدة الانزعاج', `${st.distress.n ? st.distress.mean : '—'}<small>/10</small>`, `في ${st.distress.n} أيام وُصف فيها موقف ضاغط`, 'var(--amber)')}
+      ${card2('التمارين المكتملة', st.exercises.total, `CBT ${st.exercises.cbt} • تنشيط ${st.exercises.ba} • خوف ${st.exercises.fear} • قبول ${st.exercises.ea} • تنفس ${st.exercises.breathing} • أنشطة ${st.exercises.activities}`, 'var(--teal)')}
+    </div>
+    <div class="chart-wrap"><div class="chart-title">🔗 العلاقات</div>
+      <div class="ai-row col"><span>المزاج ↔ النوم</span><span class="ai-muted">${nlCorrText(st.moodSleep.r, st.moodSleep.n)}</span></div>
+      <div class="ai-row col"><span>المزاج ↔ شدة الانزعاج</span><span class="ai-muted">${nlCorrText(st.moodDistress.r, st.moodDistress.n)}</span></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-title">📝 انتظام التسجيل</div>
+      <div class="ai-row"><span>أيام مسجلة</span><span>${st.daysLogged}/${p.days}</span></div>
+      <div class="ai-row"><span>وصف موقف ضاغط</span><span>${st.journaling.withStressor}</span></div>
+      <div class="ai-row"><span>تسجيل فكرة مزعجة</span><span>${st.journaling.withThought}</span></div>
+      <div class="ai-row"><span>كتابة امتنان</span><span>${st.journaling.withGratitude}</span></div>
+    </div>
+    ${st.tags.length ? `<div class="chart-wrap"><div class="chart-title">🏷️ المواقف المتكررة (الوسوم)</div>${st.tags.slice(0, 6).map(t => `<div class="ai-row"><span>${esc(t.tag)} <span class="ai-muted">×${t.n}</span></span><span>${t.moodWith}/10 ${t.diff != null && t.nWithout >= 3 ? `<span class="ai-muted">(مقابل ${t.moodWithout} بدونه)</span>` : ''}</span></div>`).join('')}<div class="ai-muted" style="margin-top:.4rem">متوسط المزاج في الأيام التي ظهر فيها الوسم.</div></div>` : ''}`}
+    <div class="chart-wrap"><div class="chart-title">📋 المقاييس</div>${scaleRow('PHQ-9', st.scales.phq)}${scaleRow('GAD-7', st.scales.gad)}
+      <div class="ai-muted" style="margin-top:.4rem">PHQ-9 وGAD-7 أدوات فحص أولي وليست تشخيصاً، وتفسيرها يحتاج مختصاً.</div></div>
+    <div class="chart-wrap"><div class="chart-title">🎯 التقدم نحو أهدافك</div>${goalRows || '<div class="ai-muted">لم تسجل أهدافاً بعد — أضفها في الإعدادات (حقل «أهداف العمل النفسي»).</div>'}
+      <div class="ai-row"><span>خطوات الخطة</span><span>${done} منجزة • ${active} قيد التنفيذ</span></div></div>
+    <div class="chart-wrap"><div class="chart-title">↔️ مقارنة بالفترة السابقة (${nlFmtRange(NLA.prev(p).from, NLA.prev(p).to)})</div>
+      ${cmp.valid ? cmp.rows.map(r => `<div class="ai-row"><span>${r.label}</span><span>${r.valid ? `${r.prev}${r.unit} ← ${r.cur}${r.unit} ${aiDelta(r)}` : '<span class="ai-muted">بيانات غير كافية</span>'}</span></div>`).join('') : `<div class="ai-muted">${esc(cmp.reason)}</div>`}</div>
+    ${st.daysLogged ? `<div class="ai-explain" id="aiExplain">${aiPending.explain && aiPending.explainKey === p.from + p.to ? aiExplainHTML(aiPending.explain) : ''}</div>
+    <button class="btn btn-ghost btn-full" onclick="aiExplainStats()" ${AIService.status() !== 'ready' ? 'disabled title="فعّل المساعد الذكي أولاً"' : ''}>💡 اشرح لي هذه النتائج ${AIService.status() !== 'ready' ? '(يتطلب تفعيل الذكاء الاصطناعي)' : ''}</button>
+    <div class="ai-muted" style="text-align:center;margin-top:.4rem">يُرسل الأرقام المحسوبة أعلاه فقط، دون نصوص يومياتك.</div>` : ''}`;
+}
+function aiDelta(r) {
+  if (r.delta == null || r.delta === 0) return '<span class="ai-muted">(=)</span>';
+  const good = r.higherIsBetter == null ? null : (r.delta > 0) === r.higherIsBetter;
+  return `<span style="color:${good == null ? 'var(--text2)' : good ? 'var(--emerald)' : 'var(--amber)'}">(${r.delta > 0 ? '+' : ''}${r.delta})</span>`;
+}
+function aiSparkSVG(st, p) {
+  const W = 340, H = 130, pl = 22, pr = 6, pt = 8, pb = 20, n = p.days;
+  const x = d => pl + (n <= 1 ? 0 : (nlDaysBetween(p.from, d) / (n - 1)) * (W - pl - pr));
+  const y = v => pt + (1 - (v - 1) / 9) * (H - pt - pb);
+  let path = '', prevIdx = null;
+  st.dailyMood.forEach(m => { const i = nlDaysBetween(p.from, m.date); path += (prevIdx != null && i - prevIdx === 1 ? 'L' : 'M') + x(m.date).toFixed(1) + ' ' + y(m.mood).toFixed(1) + ' '; prevIdx = i; });
+  const bw = Math.max(2, Math.min(8, (W - pl - pr) / n - 1));
+  const bars = st.dailyMood.filter(m => m.sleep != null && m.sleep > 0).map(m => { const h = (Math.min(m.sleep, 12) / 12) * (H - pt - pb); return `<rect x="${(x(m.date) - bw / 2).toFixed(1)}" y="${(H - pb - h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" fill="rgba(99,102,241,.22)"/>`; }).join('');
+  const dots = st.dailyMood.map(m => `<circle cx="${x(m.date).toFixed(1)}" cy="${y(m.mood).toFixed(1)}" r="2.6" fill="${moodColor(m.mood)}"><title>${fmtDate(m.date)}: مزاج ${m.mood}${m.sleep != null ? ' • نوم ' + m.sleep : ''}</title></circle>`).join('');
+  const grid = [2, 4, 6, 8, 10].map(v => `<line x1="${pl}" x2="${W - pr}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(255,255,255,.05)"/><text x="${pl - 4}" y="${y(v) + 3}" text-anchor="end" font-size="8" fill="rgba(255,255,255,.3)">${v}</text>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" class="ai-svg" role="img" aria-label="المزاج اليومي من ${p.from} إلى ${p.to}">${grid}${bars}<path d="${path}" fill="none" stroke="rgba(45,212,191,.55)" stroke-width="1.6"/>${dots}
+    <text x="${pl}" y="${H - 5}" font-size="8" fill="rgba(255,255,255,.35)">${fmtDate(p.from)}</text><text x="${W - pr}" y="${H - 5}" font-size="8" text-anchor="end" fill="rgba(255,255,255,.35)">${fmtDate(p.to)}</text></svg>
+    <div class="ai-muted" style="font-size:.68rem">الخط = المزاج (يتقطع في الأيام غير المسجلة) • الأعمدة = ساعات النوم</div>`;
+}
+function aiExplainHTML(r) {
+  return `<div class="ai-msg bot"><span class="ai-src ai">تفسير من نموذج ذكاء اصطناعي للأرقام أعلاه — الأرقام نفسها من التطبيق</span><div class="ai-bubble">${esc(r.explanation).replace(/\n/g, '<br>')}</div>
+    ${r.caveats.length ? `<div class="ai-ctx">ملاحظات: ${r.caveats.map(esc).join(' • ')}</div>` : ''}${r.unverified && r.unverified.length ? `<div class="ai-warn">⚠️ يذكر التفسير أرقاماً لم يحسبها التطبيق: ${r.unverified.map(esc).join('، ')}</div>` : ''}</div>`;
+}
+async function aiExplainStats() {
+  const st = aiPending.stats; if (!st || aiBusy) return;
+  const el = document.getElementById('aiExplain'); aiBusy = true;
+  if (el) el.innerHTML = '<div class="ai-muted" style="text-align:center;padding:.6rem">جارٍ التفسير…</div>';
+  const payload = { period: st.period, daysLogged: st.daysLogged, coveragePct: st.coverage, mood: st.mood, sleep: st.sleep, distress: st.distress, moodSleep: st.moodSleep, moodDistress: st.moodDistress, journaling: st.journaling, exercises: st.exercises, topTags: st.tags.slice(0, 5), scales: { phq: st.scales.phq.items, gad: st.scales.gad.items } };
+  try {
+    const r = await AIService.call('explain_stats', { context: { computed_stats: payload } });
+    r.unverified = aiUnverifiedNumbers(r.explanation + ' ' + r.caveats.join(' '), payload);
+    aiPending.explain = r; aiPending.explainKey = st.period.from + st.period.to;
+    if (el) el.innerHTML = aiExplainHTML(r);
+  } catch (e) { if (el) el.innerHTML = `<div class="ai-warn">${esc(aiErrText(e.code))}</div>`; }
+  aiBusy = false;
+}
+
+/* ─────────── 3. pattern explorer ─────────── */
+function aiPatternsView() {
+  const data = NLA.load(), p = aiPeriod();
+  const pats = NLA.patterns(data, p);
+  const shown = pats.filter(x => !x.feedback || x.feedback.status !== 'rejected'), rejected = pats.filter(x => x.feedback && x.feedback.status === 'rejected');
+  return `${aiPeriodBar('renderAI()')}
+    ${aiDisclaimer('هذه <strong>فرضيات</strong> مستخرجة آلياً من كلمات وأرقام في سجلاتك، لم يُتحقق منها سريرياً وليست تشخيصاً. أنت الأقدر على تأكيدها أو رفضها.')}
+    ${shown.length ? shown.slice(0, 5).map(aiPatternCard).join('') : `<div class="empty-state"><div class="empty-ico">🔎</div>لا تظهر أنماط في هذه الفترة. جرّب فترة أطول أو استمر في التسجيل.</div>`}
+    ${shown.length > 5 ? `<details class="ai-details"><summary>أنماط أخرى بأدلة أقل (${shown.length - 5})</summary>${shown.slice(5).map(aiPatternCard).join('')}</details>` : ''}
+    ${rejected.length ? `<details class="ai-details"><summary>أنماط رفضتها (${rejected.length})</summary>${rejected.map(aiPatternCard).join('')}</details>` : ''}`;
+}
+function aiPatternCard(x) {
+  const fb = x.feedback, idq = esc(JSON.stringify(x.id));
+  const status = fb ? { confirmed: '✓ أكدتَ أنه يبدو صحيحاً', refine: '✎ قلتَ إنه يحتاج تعديلاً', rejected: '✗ قلتَ إنه لا ينطبق' }[fb.status] : '';
+  return `<div class="rep-block ai-pat">
+    <div class="rep-block-head"><div class="rep-block-icon" style="background:rgba(99,102,241,.13)">${x.icon}</div>
+      <div style="flex:1"><div class="rep-block-title">${esc(x.title)}</div><div class="rep-block-sub">كفاية الأدلة: <strong style="color:${x.suff.col}">${x.suff.label}</strong> — ${esc(x.suff.text)}</div></div></div>
+    <div class="ai-lbl">ما تُظهره السجلات</div><div class="rep-text">${esc(x.observation)}</div>
+    <div class="ai-lbl">الأدلة</div><div class="ai-evidence">${x.evidence.map(e => `<div><span class="ai-date">${fmtDate(e.date)}</span> ${esc(e.text)} <span class="ai-muted">• ${esc(e.src)}</span></div>`).join('')}</div>
+    <div class="ai-lbl">الفرضية (ليست حقيقة)</div><div class="rep-text">${esc(x.hypothesis)}</div>
+    <div class="ai-lbl">سؤال للتحقق</div><div class="rep-text" style="color:var(--text)">❓ ${esc(x.question)}</div>
+    ${x.kind === 'thought' ? `<div class="ai-btns"><button class="btn btn-ghost btn-sm" onclick="aiBalanced(${idq})">⚖️ ساعدني أجد فكرة متوازنة</button></div><div id="bal_${esc(x.id.replace(/\W/g, '_'))}"></div>` : ''}
+    ${status ? `<div class="ai-fb-state">${status}${fb.note ? ` — «${esc(fb.note)}»` : ''}</div>` : ''}
+    <div class="ai-fb">
+      <button class="btn btn-ghost btn-sm" onclick="aiPatFb(${idq},'confirmed')">✓ يبدو صحيحاً</button>
+      <button class="btn btn-ghost btn-sm" onclick="aiPatFb(${idq},'refine')">✎ يحتاج تعديلاً</button>
+      <button class="btn btn-ghost btn-sm" onclick="aiPatFb(${idq},'rejected')">✗ لا ينطبق</button>
+      ${fb ? `<button class="ai-link" onclick="aiPatFb(${idq},null)">إلغاء</button>` : ''}
+      ${x.action ? `<button class="btn btn-primary btn-sm" onclick='aiAdopt(${esc(JSON.stringify({ ...x.action, source: 'pattern', basis: x.id }))})'>＋ خطوة مقترحة</button>` : ''}
+    </div></div>`;
+}
+function aiPatFb(id, status) {
+  const fb = S.get('ai_patternFb', {}) || {};
+  if (!status) delete fb[id];
+  else { let note = ''; if (status === 'refine') { note = (prompt('كيف تعدّل هذه الفرضية لتناسبك أكثر؟ (اختياري)') || '').slice(0, 300); } fb[id] = { status, note, at: new Date().toISOString() }; }
+  S.set('ai_patternFb', fb); renderAI();
+}
+async function aiBalanced(id) {
+  const x = NLA.patterns(NLA.load(), aiPeriod()).find(p => p.id === id); if (!x) return;
+  const el = document.getElementById('bal_' + id.replace(/\W/g, '_')); if (!el) return;
+  const local = `<div class="ai-msg bot"><span class="ai-src">أسئلة سقراطية — محلية</span><div class="ai-bubble">• ما الدليل الواقعي مع هذه الفكرة؟ وما الدليل ضدها؟<br>• هل هناك تفسير آخر ممكن للموقف؟<br>• ماذا ستقول لصديق لو قال الفكرة نفسها؟<br>• ما أسوأ ما قد يحدث، وما أفضله، وما الأرجح؟</div>
+    <button class="btn btn-ghost btn-sm" onclick="go('exercises');switchEx(0);SS.ans.hotThought=${esc(JSON.stringify(x.thoughtSample || ''))};SS.step=3;renderEx(0)">🧠 افتح سجل الأفكار</button></div>`;
+  if (AIService.status() !== 'ready') { el.innerHTML = local; return; }
+  if (!confirm('سيُرسل نص هذه الفكرة فقط إلى خدمة الذكاء الاصطناعي:\n«' + nlClip(x.thoughtSample, 120) + '»\nمتابعة؟')) { el.innerHTML = local; return; }
+  el.innerHTML = '<div class="ai-muted">جارٍ التفكير…</div>';
+  try {
+    const r = await AIService.call('balanced_thought', { messages: [{ role: 'user', content: nlClip(nlRedact(x.thoughtSample), 400) }], context: { pattern_name: x.title } });
+    el.innerHTML = `<div class="ai-msg bot"><span class="ai-src ai">استجابة نموذج ذكاء اصطناعي — اقتراحات للتأمل وليست حقائق</span><div class="ai-bubble">${r.questions.map(q => '• ' + esc(q)).join('<br>')}${r.balanced_thoughts.length ? '<br><br><strong>أفكار بديلة ممكنة:</strong><br>' + r.balanced_thoughts.map(b => '• ' + esc(b)).join('<br>') : ''}</div></div>`;
+  } catch (e) { el.innerHTML = `<div class="ai-warn">${esc(aiErrText(e.code))}</div>` + local; }
+}
+
+/* ─────────── 4. action planner ─────────── */
+function aiPlanView() {
+  const data = NLA.load(), acts = S.get('ai_actions', []) || [];
+  const sug = NLA.suggestions(data, NLA.period(30));
+  const active = acts.filter(a => a.status === 'active'), done = acts.filter(a => a.status === 'done'), dismissed = acts.filter(a => a.status === 'dismissed');
+  const goals = NLA.goals(data.profile);
+  const goalSel = goals.length ? `<select class="inp" id="aiNewGoal"><option value="">— بدون هدف —</option>${goals.map(g => `<option>${esc(g)}</option>`).join('')}</select>` : '';
+  return `${aiDisclaimer('لا يُضاف شيء لخطتك إلا بموافقتك. الاقتراحات لا تغير سجلاتك أو أدويتك أو خطة علاجك؛ ناقش أي تغيير علاجي مع مختصك.')}
+    <div class="card"><div class="card-title">💡 اقتراحات مبنية على آخر 30 يوماً</div>
+      ${sug.length ? sug.map(a => aiActionCard(a, 'suggest')).join('') : '<div class="ai-muted">لا اقتراحات جديدة الآن.</div>'}
+      <button class="btn btn-ghost btn-sm" style="margin-top:.5rem" onclick="aiSuggestAI()" ${AIService.status() !== 'ready' ? 'disabled' : ''}>🤖 اقتراحات إضافية بالذكاء الاصطناعي${AIService.status() !== 'ready' ? ' (غير مفعّل)' : ''}</button>
+      <div id="aiSugAI">${(aiPending.aiSug || []).map(a => aiActionCard(a, 'suggest')).join('')}</div>
+    </div>
+    <div class="card"><div class="card-title">✅ خطتي (${active.length})</div>${active.length ? active.map(a => aiActionCard(a, 'active')).join('') : '<div class="ai-muted">اعتمد اقتراحاً أو أضف خطوة بنفسك.</div>'}</div>
+    <div class="card"><div class="card-title">➕ خطوة من عندي</div>
+      <div class="field"><input class="inp" id="aiNewTitle" maxlength="60" placeholder="العنوان (مثال: مكالمة لصديق)"></div>
+      <div class="field"><input class="inp" id="aiNewStep" maxlength="240" placeholder="الخطوة المحددة"></div>
+      <div class="field" style="display:flex;gap:8px"><input class="inp" id="aiNewTime" maxlength="60" placeholder="المدة (مثال: هذا الأسبوع)">${goalSel}</div>
+      <button class="btn btn-primary btn-sm" onclick="aiAddOwn()">إضافة</button></div>
+    ${done.length ? `<div class="card"><div class="card-title">🏁 منجزة (${done.length})</div>${done.slice().reverse().map(a => aiActionCard(a, 'done')).join('')}</div>` : ''}
+    ${dismissed.length ? `<details class="ai-details"><summary>اقتراحات استبعدتها (${dismissed.length})</summary>${dismissed.map(a => aiActionCard(a, 'dismissed')).join('')}</details>` : ''}`;
+}
+function aiActionCard(a, mode) {
+  const j = esc(JSON.stringify(a));
+  const src = { ai: '🤖 من الذكاء الاصطناعي', pattern: '🔎 من نمط محتمل', goal: '🎯 من أهدافك', data: '📊 من بياناتك', own: '✍️ من عندك' }[a.source] || '';
+  const refl = a.reflection ? `<div class="ai-ctx">تقييمك: ${'★'.repeat(a.reflection.useful)}${'☆'.repeat(5 - a.reflection.useful)}${a.reflection.note ? ' — ' + esc(a.reflection.note) : ''}</div>` : '';
+  let btns = '';
+  if (mode === 'suggest') btns = `<button class="btn btn-primary btn-sm" onclick='aiAdopt(${j})'>اعتمدها</button><button class="btn btn-ghost btn-sm" onclick='aiDismiss(${j})'>ليست مناسبة</button>`;
+  if (mode === 'active') btns = `<button class="btn btn-primary btn-sm" onclick="aiActDone('${a.id}')">✓ أنجزتها</button><button class="btn btn-ghost btn-sm" onclick="aiActSet('${a.id}','dismissed')">إلغاء</button>`;
+  if (mode === 'done' && !a.reflection) btns = `<button class="btn btn-ghost btn-sm" onclick="aiActDone('${a.id}')">📝 قيّم فائدتها</button>`;
+  if (mode === 'dismissed') btns = `<button class="btn btn-ghost btn-sm" onclick="aiActSet('${a.id}','active')">استعادة</button><button class="ai-link" onclick="aiActDel('${a.id}')">حذف</button>`;
+  return `<div class="ai-act ${mode}"><div class="ai-act-title">${esc(a.title)} <span class="ai-muted">${src}</span></div>
+    <div class="rep-text">${esc(a.step)}</div>
+    <div class="ai-muted">⏱ ${esc(a.timeframe || '—')}${a.goal ? ' • 🎯 ' + esc(a.goal) : ''}${a.reason ? ' • لماذا: ' + esc(a.reason) : ''}</div>${refl}
+    <div class="ai-btns">${btns}</div></div>`;
+}
+function aiAdopt(a) {
+  if (!a || !a.title || !a.step) return;
+  const acts = S.get('ai_actions', []) || [];
+  if (acts.some(x => x.title === a.title && x.status === 'active')) { toast('موجودة في خطتك بالفعل'); return; }
+  acts.push({ id: aiUid(), title: nlClip(a.title, 60), step: nlClip(a.step, 240), timeframe: nlClip(a.timeframe, 60), reason: nlClip(a.reason, 240), source: a.source || 'own', goal: a.goal || '', basis: a.basis || '', status: 'active', createdAt: new Date().toISOString() });
+  S.set('ai_actions', acts); aiPending.aiSug = (aiPending.aiSug || []).filter(x => x.title !== a.title);
+  toast('✅ أضيفت لخطتك'); renderAI();
+}
+function aiDismiss(a) { const acts = S.get('ai_actions', []) || []; acts.push({ id: aiUid(), ...a, status: 'dismissed', createdAt: new Date().toISOString() }); S.set('ai_actions', acts); aiPending.aiSug = (aiPending.aiSug || []).filter(x => x.title !== a.title); renderAI(); }
+function aiActSet(id, status) { const acts = S.get('ai_actions', []) || []; const a = acts.find(x => x.id === id); if (a) { a.status = status; S.set('ai_actions', acts); } renderAI(); }
+function aiActDel(id) { S.set('ai_actions', (S.get('ai_actions', []) || []).filter(x => x.id !== id)); renderAI(); }
+function aiActDone(id) {
+  const acts = S.get('ai_actions', []) || [], a = acts.find(x => x.id === id); if (!a) return;
+  aiModal('كيف كانت هذه الخطوة؟', `<p class="rep-text"><strong>${esc(a.title)}</strong></p>
+    <div class="field"><label>مدى فائدتها لك</label><div class="chips" id="aiUseful">${[1, 2, 3, 4, 5].map(n => `<div class="chip${n === 3 ? ' sel' : ''}" data-val="${n}" onclick="this.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));this.classList.add('sel')">${'★'.repeat(n)}</div>`).join('')}</div></div>
+    <div class="field"><label>ماذا لاحظت؟ (اختياري)</label><textarea class="inp" id="aiReflNote" maxlength="300"></textarea></div>
+    <button class="btn btn-primary btn-full" onclick="aiSaveRefl('${id}')">حفظ</button>`);
+}
+function aiSaveRefl(id) {
+  const acts = S.get('ai_actions', []) || [], a = acts.find(x => x.id === id); if (!a) return;
+  const sel = document.querySelector('#aiUseful .chip.sel');
+  a.status = 'done'; a.doneAt = a.doneAt || new Date().toISOString();
+  a.reflection = { useful: sel ? +sel.dataset.val : 3, note: (document.getElementById('aiReflNote').value || '').trim().slice(0, 300), at: new Date().toISOString() };
+  S.set('ai_actions', acts); aiCloseModal(); toast('✅ أحسنت'); renderAI();
+}
+function aiAddOwn() {
+  const t = document.getElementById('aiNewTitle').value.trim(), s = document.getElementById('aiNewStep').value.trim();
+  if (!t || !s) { toast('⚠️ أدخل العنوان والخطوة'); return; }
+  const g = document.getElementById('aiNewGoal');
+  aiAdopt({ title: t, step: s, timeframe: document.getElementById('aiNewTime').value.trim(), reason: 'أضفتها بنفسك', source: 'own', goal: g ? g.value : '' });
+}
+async function aiSuggestAI() {
+  if (aiBusy) return; aiBusy = true;
+  const el = document.getElementById('aiSugAI'); if (el) el.innerHTML = '<div class="ai-muted">جارٍ التحضير…</div>';
+  const data = NLA.load(), st = NLA.stats(data, NLA.period(30));
+  const ctx = { goals: NLA.goals(data.profile), computed_stats: { daysLogged: st.daysLogged, mood: st.mood, sleep: st.sleep, distress: st.distress, exercises: st.exercises, topTags: st.tags.slice(0, 5) },
+    current_plan: (S.get('ai_actions', []) || []).filter(a => a.status !== 'dismissed').slice(-6).map(a => ({ title: a.title, state: a.status })) };
+  try {
+    const r = await AIService.call('suggest_actions', { context: ctx });
+    aiPending.aiSug = r.actions.map(a => ({ ...a, source: 'ai' }));
+  } catch (e) { aiPending.aiSug = []; if (el) el.innerHTML = `<div class="ai-warn">${esc(aiErrText(e.code))}</div>`; aiBusy = false; return; }
+  aiBusy = false; renderAI();
+}
+
+/* ─────────── 5. reports ─────────── */
+function aiReportsView() {
+  const reps = (S.get('ai_reports', []) || []).slice().reverse();
+  return `<div class="card"><div class="card-title">📄 تقرير رؤى شخصي جديد</div>
+      ${aiPeriodBar('renderAI()')}
+      <div class="ai-muted" style="margin:.4rem 0">الفترة المختارة: <span id="aiRepPeriod">${nlFmtRange(aiPeriod().from, aiPeriod().to)}</span> — سيُقارن بالفترة السابقة المساوية لها إن توفرت بيانات كافية.</div>
+      <button class="btn btn-primary btn-full" onclick="aiGenReport()">إنشاء التقرير</button></div>
+    ${reps.length ? reps.map(aiReportHTML).join('') : '<div class="empty-state"><div class="empty-ico">📄</div>لا توجد تقارير محفوظة.</div>'}
+    ${reps.length > 1 ? `<button class="btn btn-danger btn-sm" onclick="aiDelAllReports()">🗑️ حذف كل التقارير</button>` : ''}`;
+}
+function aiGenReport() {
+  const r = NLA.report(NLA.load(), aiPeriod());
+  const reps = S.get('ai_reports', []) || []; reps.push(r); S.set('ai_reports', reps.slice(-30));
+  toast('✅ تم إنشاء التقرير'); renderAI();
+}
+function aiReportHTML(r) {
+  const s = r.stats, c = r.comparison;
+  const list = (arr, empty) => arr.length ? `<ul class="ai-ul">${arr.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : `<div class="ai-muted">${empty}</div>`;
+  return `<div class="rep-block" id="rep_${r.id}">
+    <div class="rep-block-head"><div class="rep-block-icon" style="background:rgba(45,212,191,.13)">📄</div>
+      <div style="flex:1"><div class="rep-block-title">تقرير ${nlFmtRange(r.from, r.to)}</div><div class="rep-block-sub">أُنشئ ${new Date(r.createdAt).toLocaleString('ar-EG')} • ${r.days} يوماً • ${s.daysLogged} مسجلة (${s.coverage}%)</div></div></div>
+    <div class="ai-lbl">المزاج والنوم</div>
+    <div class="rep-text">${s.mood.n ? `متوسط المزاج ${s.mood.mean}/10 (الوسيط ${s.mood.median}، من ${s.mood.min} إلى ${s.mood.max}).` : 'لا تسجيلات مزاج.'} ${s.sleep.n ? `متوسط النوم ${s.sleep.mean} ساعة في ${s.sleep.n} أيام (${s.sleep.shortDays} أقل من 6 ساعات).` : 'لا بيانات نوم.'} ${s.distress.n ? `متوسط شدة الانزعاج ${s.distress.mean}/10 في ${s.distress.n} أيام.` : ''}</div>
+    <div class="ai-lbl">ملاحظات</div>${list(r.observations, 'لا ملاحظات كافية.')}
+    <div class="ai-lbl">التمارين والأنشطة المكتملة</div><div class="rep-text">${s.exercises.total} إجمالاً — CBT ${s.exercises.cbt} • تنشيط ${s.exercises.ba} • سلم الخوف ${s.exercises.fear} • قبول المشاعر ${s.exercises.ea} • تنفس ${s.exercises.breathing} • أنشطة ${s.exercises.activities}</div>
+    <div class="ai-lbl">أنماط محتملة (فرضيات)</div>${r.patterns.length ? r.patterns.map(p => `<div class="ai-evidence"><div><strong>${esc(p.title)}</strong> <span class="ai-muted">— كفاية الأدلة: ${esc(p.suff)}، ن=${p.n}</span></div><div>${esc(p.observation)}</div><div class="ai-muted">${esc(p.hypothesis)}</div><div class="ai-muted">التواريخ: ${p.dates.map(fmtDate).join('، ')}</div></div>`).join('') : '<div class="ai-muted">لا أنماط بأدلة كافية.</div>'}
+    <div class="ai-lbl">مقارنة بالفترة السابقة (${nlFmtRange(r.prevPeriod.from, r.prevPeriod.to)})</div>
+    ${c.valid ? c.rows.map(x => `<div class="ai-row"><span>${x.label}</span><span>${x.valid ? `${x.prev}${x.unit} ← ${x.cur}${x.unit} ${aiDelta(x)}` : '<span class="ai-muted">غير كافٍ</span>'}</span></div>`).join('') : `<div class="ai-muted">${esc(c.reason)}</div>`}
+    <div class="ai-lbl">حيث البيانات غير كافية</div>${list(r.insufficient, 'البيانات كافية للأقسام أعلاه.')}
+    <div class="ai-lbl">خطوات مقترحة</div>${list(r.nextSteps, 'لا توجد.')}
+    ${r.narrative ? `<div class="ai-msg bot" style="margin-top:.6rem"><span class="ai-src ai">ملخص سردي من نموذج ذكاء اصطناعي (${new Date(r.narrative.at).toLocaleDateString('ar-EG')})</span><div class="ai-bubble">${esc(r.narrative.summary)}${r.narrative.observations.length ? '<br><br>' + r.narrative.observations.map(o => '• ' + esc(o)).join('<br>') : ''}${r.narrative.next_steps.length ? '<br><br><strong>خطوات:</strong><br>' + r.narrative.next_steps.map(o => '• ' + esc(o)).join('<br>') : ''}</div>${r.narrative.unverified && r.narrative.unverified.length ? `<div class="ai-warn">⚠️ أرقام غير محسوبة في التطبيق: ${r.narrative.unverified.map(esc).join('، ')}</div>` : ''}</div>` : ''}
+    <div class="ai-muted" style="margin-top:.6rem">تقرير للتأمل الذاتي، ليس تقييماً سريرياً. PHQ-9 وGAD-7 أدوات فحص أولي.</div>
+    <div class="ai-btns" style="margin-top:.6rem">
+      <button class="btn btn-ghost btn-sm" onclick="aiExportReport('${r.id}','md')">⬇️ Markdown</button>
+      <button class="btn btn-ghost btn-sm" onclick="aiExportReport('${r.id}','json')">⬇️ JSON</button>
+      ${AIService.status() === 'ready' && !r.narrative ? `<button class="btn btn-ghost btn-sm" onclick="aiNarrate('${r.id}')">🤖 ملخص سردي</button>` : ''}
+      <button class="btn btn-danger btn-sm" onclick="aiDelReport('${r.id}')">🗑️ حذف</button></div></div>`;
+}
+async function aiNarrate(id) {
+  if (aiBusy) return;
+  const reps = S.get('ai_reports', []) || [], r = reps.find(x => x.id === id); if (!r) return;
+  aiBusy = true; toast('جارٍ إعداد الملخص…');
+  const payload = { period: { from: r.from, to: r.to, days: r.days }, stats: { daysLogged: r.stats.daysLogged, coveragePct: r.stats.coverage, mood: r.stats.mood, sleep: r.stats.sleep, distress: r.stats.distress, moodSleep: r.stats.moodSleep, exercises: r.stats.exercises, topTags: r.stats.tags.slice(0, 5) }, comparison: r.comparison, pattern_titles: r.patterns.map(p => ({ title: p.title, evidence_sufficiency: p.suff, n: p.n })), insufficient: r.insufficient };
+  try {
+    const n = await AIService.call('report_narrative', { context: { report: payload } });
+    n.at = new Date().toISOString(); n.unverified = aiUnverifiedNumbers([n.summary, ...n.observations, ...n.next_steps].join(' '), payload);
+    r.narrative = n; S.set('ai_reports', reps);
+  } catch (e) { toast('⚠️ ' + aiErrText(e.code)); }
+  aiBusy = false; renderAI();
+}
+function aiDelReport(id) { if (!confirm('حذف هذا التقرير؟')) return; S.set('ai_reports', (S.get('ai_reports', []) || []).filter(r => r.id !== id)); renderAI(); }
+function aiDelAllReports() { if (!confirm('حذف كل التقارير المحفوظة؟')) return; S.del('ai_reports'); renderAI(); }
+function aiDownload(name, text, type) {
+  const blob = new Blob([text], { type: type + ';charset=utf-8' }), url = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement('a'), { href: url, download: name }); document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 500);
+}
+function aiExportReport(id, fmt) {
+  const r = (S.get('ai_reports', []) || []).find(x => x.id === id); if (!r) return;
+  if (fmt === 'json') return aiDownload(`nafsilog_insight_${r.from}_${r.to}.json`, JSON.stringify(r, null, 2), 'application/json');
+  const s = r.stats;
+  let md = `# تقرير رؤى شخصي — NafsiLog\n\n> الفترة: ${r.from} إلى ${r.to} (${r.days} يوماً) • أيام مسجلة: ${s.daysLogged} (${s.coverage}%)\n> للتأمل الذاتي فقط — ليس تشخيصاً ولا تقييماً سريرياً.\n\n## المزاج والنوم\n`;
+  md += `- متوسط المزاج: ${s.mood.mean ?? '—'}/10 (الوسيط ${s.mood.median ?? '—'}، ن=${s.mood.n})\n- متوسط النوم: ${s.sleep.mean ?? '—'} ساعة (ن=${s.sleep.n})\n- شدة الانزعاج: ${s.distress.mean ?? '—'}/10 (ن=${s.distress.n})\n\n`;
+  md += `## ملاحظات\n${r.observations.map(o => '- ' + o).join('\n') || '- لا توجد'}\n\n## التمارين\n- الإجمالي ${s.exercises.total}: CBT ${s.exercises.cbt}، تنشيط ${s.exercises.ba}، سلم الخوف ${s.exercises.fear}، قبول ${s.exercises.ea}، تنفس ${s.exercises.breathing}، أنشطة ${s.exercises.activities}\n\n`;
+  md += `## أنماط محتملة (فرضيات)\n${r.patterns.map(p => `- **${p.title}** (كفاية الأدلة: ${p.suff}، ن=${p.n})\n  - ${p.observation}\n  - ${p.hypothesis}`).join('\n') || '- لا توجد'}\n\n`;
+  md += `## المقارنة بالفترة السابقة\n${r.comparison.valid ? r.comparison.rows.map(x => `- ${x.label}: ${x.valid ? `${x.prev} ← ${x.cur} (${x.delta > 0 ? '+' : ''}${x.delta})` : 'غير كافٍ'}`).join('\n') : '- ' + r.comparison.reason}\n\n`;
+  md += `## حيث البيانات غير كافية\n${r.insufficient.map(o => '- ' + o).join('\n') || '- —'}\n\n## خطوات مقترحة\n${r.nextSteps.map(o => '- ' + o).join('\n') || '- —'}\n`;
+  if (r.narrative) md += `\n## ملخص سردي (نموذج ذكاء اصطناعي)\n${r.narrative.summary}\n`;
+  aiDownload(`nafsilog_insight_${r.from}_${r.to}.md`, md, 'text/markdown');
+}
+
+/* ─────────── 6. privacy, consent & configuration ─────────── */
+function aiPrivacyView() {
+  const s = AIService.settings(), st = AIService.status();
+  const size = k => { try { return ((localStorage.getItem('nl_' + k) || '').length / 1024).toFixed(1); } catch { return '?'; } };
+  const count = k => { const v = S.get(k, null); return Array.isArray(v) ? v.length : v && typeof v === 'object' ? Object.keys(v).length : 0; };
+  let host = ''; try { host = s.endpoint ? new URL(s.endpoint).host : ''; } catch { /* invalid */ }
+  return `<div class="card"><div class="card-title">🤖 المساعد الذكي</div>
+      <div class="rep-text" style="margin-bottom:.7rem">كل ميزات التحليل والأنماط والخطة والتقارير تعمل <strong>على جهازك بدون ذكاء اصطناعي</strong>. التفعيل اختياري ويضيف ردوداً لغوية وتفسيرات.</div>
+      <div class="ai-row"><span>الحالة</span><span>${aiStatusPill()}</span></div>
+      ${s.enabled ? `<button class="btn btn-danger btn-sm" onclick="aiDisable()">إيقاف وسحب الموافقة</button>` : `<button class="btn btn-primary btn-sm" onclick="aiConsentDialog()">تفعيل…</button>`}
+    </div>
+    ${s.enabled && st !== 'needs_consent' ? `<div class="card"><div class="card-title">🔌 إعداد الخدمة</div>
+      <div class="ai-muted" style="margin-bottom:.6rem">يتصل التطبيق بخادم وسيط (Supabase Edge Function) يحتفظ بمفتاح مزود الذكاء الاصطناعي. لا تُدخل هنا مفتاح API للمزود أبداً.</div>
+      <div class="field"><label>عنوان الخدمة (https)</label><input class="inp" id="aiEp" dir="ltr" value="${esc(s.endpoint)}" placeholder="https://xxxx.supabase.co/functions/v1/nafsilog-ai"></div>
+      <div class="field"><label>رمز الوصول للتطبيق</label><input class="inp" id="aiCode" type="password" dir="ltr" value="${esc(s.accessCode)}" placeholder="من إعداد APP_ACCESS_CODES في الخادم"></div>
+      <div class="field"><label>مفتاح Supabase العام (اختياري — publishable/anon)</label><input class="inp" id="aiAnon" dir="ltr" value="${esc(s.anonKey)}"></div>
+      <div class="ai-btns"><button class="btn btn-primary btn-sm" onclick="aiSaveConfig()">حفظ</button><button class="btn btn-ghost btn-sm" onclick="aiTestConn()">اختبار الاتصال</button></div>
+      <div id="aiConnRes" class="ai-muted" style="margin-top:.5rem"></div></div>
+    <div class="card"><div class="card-title">📤 ما يُرسل افتراضياً مع المحادثة</div>
+      ${Object.keys(AI_SCOPE_LABELS).map(k => `<label class="ai-scope block"><input type="checkbox" ${s.scopes[k] ? 'checked' : ''} onchange="aiSetScope('${k}',this.checked)"> ${AI_SCOPE_LABELS[k]}</label>`).join('')}
+      <div class="ai-muted" style="margin-top:.5rem">لا يُرسل أبداً: التاريخ الطبي والأدوية، العمر، الجنس، الحالة الاجتماعية، الرمز السري. تُحجب أرقام الهواتف والبريد من النصوص. يمكنك تغيير الاختيار قبل كل رسالة.${host ? `<br>الوجهة الحالية: <span dir="ltr">${esc(host)}</span>` : ''}</div></div>` : ''}
+    <div class="card"><div class="card-title">🗄️ بيانات المساعد على هذا الجهاز</div>
+      <label class="ai-scope block"><input type="checkbox" ${s.keepHistory ? 'checked' : ''} onchange="aiSetKeep(this.checked)"> حفظ المحادثات على هذا الجهاز</label>
+      <div class="ai-row"><span>المحادثات</span><span>${count('ai_conv')} • ${size('ai_conv')} ك.ب <button class="ai-link" onclick="aiWipe('ai_conv')">حذف</button></span></div>
+      <div class="ai-row"><span>التقارير</span><span>${count('ai_reports')} • ${size('ai_reports')} ك.ب <button class="ai-link" onclick="aiWipe('ai_reports')">حذف</button></span></div>
+      <div class="ai-row"><span>خطة العمل</span><span>${count('ai_actions')} <button class="ai-link" onclick="aiWipe('ai_actions')">حذف</button></span></div>
+      <div class="ai-row"><span>تقييماتك للأنماط</span><span>${count('ai_patternFb')} <button class="ai-link" onclick="aiWipe('ai_patternFb')">حذف</button></span></div>
+      <button class="btn btn-danger btn-sm" style="margin-top:.6rem" onclick="aiWipeAll()">🗑️ حذف كل بيانات المساعد</button>
+      <div class="ai-muted" style="margin-top:.5rem">لا تُحذف يومياتك أو مقاييسك أو تمارينك من هنا.</div></div>
+    <div class="card"><div class="card-title">🔒 عن الرمز السري والخصوصية</div><div class="rep-text">
+      الرمز السري ستارة تمنع النظرة العابرة فقط: يُحفظ كما هو في متصفحك، وبياناتك <strong>غير مشفرة</strong>، ويمكن لأي شخص يملك الجهاز وخبرة تقنية قراءتها. كل البيانات محفوظة في هذا المتصفح فقط (localStorage) ولا تُرفع لأي سحابة؛ مسح بيانات المتصفح يحذفها، لذا استخدم «النسخ الاحتياطي» في الإعدادات.</div></div>`;
+}
+function aiConsentDialog() {
+  aiModal('قبل تفعيل المساعد الذكي', `<div class="rep-text ai-consent">
+    <p><strong>ما الذي يُرسل؟</strong> عند كل طلب فقط، ما تختاره من: ملخص أرقام محسوبة، نصوص آخر 7 أيام، آخر جلسات التمارين، نتائج المقاييس، أهدافك — مع رسائل المحادثة الحالية. لا تُرسل يومياتك كاملة. لا يُرسل أبداً التاريخ الطبي أو العمر أو الجنس أو الحالة الاجتماعية أو الرمز السري.</p>
+    <p><strong>إلى أين؟</strong> إلى خادم وسيط تضبط عنوانه أنت (Supabase Edge Function)، والذي يمرر الطلب إلى مزود الذكاء الاصطناعي المهيأ عليه (مثل Anthropic). البيانات تغادر جهازك عبر الإنترنت.</p>
+    <p><strong>ما الذي يُحفظ؟</strong> الخادم الوسيط لا يخزن محتوى رسائلك ولا يسجله (يحفظ فقط عداداً مُشفَّراً لحد الطلبات). مزود الذكاء الاصطناعي قد يحتفظ بالطلبات لفترة محدودة وفق سياسته (مثل مراقبة إساءة الاستخدام) — راجع سياسة المزود. على جهازك: تُحفظ المحادثات والتقارير فقط إن سمحت بذلك، ويمكنك حذفها في أي وقت.</p>
+    <p><strong>حدود المساعد:</strong> ليس طبيباً ولا معالجاً، لا يشخص، وقد يخطئ. في حالات الخطر اتصل بالطوارئ.</p>
+    <p>يمكنك سحب الموافقة في أي وقت، ويبقى التطبيق يعمل كاملاً بدون الذكاء الاصطناعي.</p></div>
+    <label class="ai-scope block"><input type="checkbox" id="aiConsentChk"> فهمت ما سبق وأوافق على إرسال البيانات التي أختارها لهذا الغرض</label>
+    <div class="ai-btns" style="margin-top:.7rem"><button class="btn btn-primary btn-sm" onclick="aiGiveConsent()">موافقة وتفعيل</button><button class="btn btn-ghost btn-sm" onclick="aiCloseModal()">ليس الآن</button></div>`);
+}
+function aiGiveConsent() {
+  if (!document.getElementById('aiConsentChk').checked) { toast('⚠️ ضع علامة الموافقة أولاً'); return; }
+  AIService.save({ enabled: true, consentVersion: AI_CONSENT_VERSION, consentAt: new Date().toISOString() });
+  aiCloseModal(); toast('✅ تم التفعيل — أكمل إعداد الخدمة'); renderAI();
+}
+function aiDisable() { AIService.save({ enabled: false, consentVersion: 0, consentAt: null }); toast('تم الإيقاف وسحب الموافقة'); renderAI(); }
+function aiSaveConfig() {
+  const ep = document.getElementById('aiEp').value.trim();
+  if (ep && !AIService.validEndpoint(ep)) { toast('⚠️ العنوان يجب أن يبدأ بـ https://'); return; }
+  const code = document.getElementById('aiCode').value.trim(), anon = document.getElementById('aiAnon').value.trim();
+  if (/^sk-|sk-ant-|service_role/i.test(code + ' ' + anon)) { toast('⚠️ هذا يبدو مفتاحاً سرياً — لا تضعه في التطبيق'); return; }
+  AIService.save({ endpoint: ep, accessCode: code, anonKey: anon }); toast('✅ تم الحفظ'); renderAI();
+}
+async function aiTestConn() {
+  const el = document.getElementById('aiConnRes'); if (el) el.textContent = 'جارٍ الاختبار…';
+  try { const r = await AIService.call('ping'); if (el) el.textContent = '✅ الاتصال يعمل' + (r && r.reply ? '' : ''); }
+  catch (e) { if (el) el.textContent = '❌ ' + aiErrText(e.code); }
+}
+function aiSetKeep(v) { AIService.save({ keepHistory: v }); if (!v) { aiConvMem = S.get('ai_conv', []) || []; S.del('ai_conv'); } else if (aiConvMem) { S.set('ai_conv', aiConvMem); aiConvMem = null; } renderAI(); }
+function aiWipe(k) { if (!confirm('حذف هذه البيانات نهائياً؟')) return; S.del(k); if (k === 'ai_conv') aiConvMem = null; toast('🗑️ تم الحذف'); renderAI(); }
+function aiWipeAll() { if (!confirm('حذف كل بيانات المساعد (المحادثات، التقارير، الخطة، الإعدادات)؟')) return; AI_KEYS.forEach(k => S.del(k)); aiConvMem = null; aiPending = {}; toast('🗑️ تم الحذف'); renderAI(); }
+
+/* ─────────── modal ─────────── */
+function aiModal(title, html) {
+  aiCloseModal();
+  const m = document.createElement('div'); m.id = 'aiModal'; m.className = 'ai-modal'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true');
+  m.innerHTML = `<div class="ai-modal-box"><div class="ai-modal-head"><strong>${esc(title)}</strong><button class="ai-link" onclick="aiCloseModal()" aria-label="إغلاق">✕</button></div><div class="ai-modal-body">${html}</div></div>`;
+  m.addEventListener('click', e => { if (e.target === m) aiCloseModal(); });
+  document.body.appendChild(m);
+}
+function aiCloseModal() { const m = document.getElementById('aiModal'); if (m) m.remove(); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   BACKUP / IMPORT (validated, de-duplicated, with automatic pre-import snapshot)
+═══════════════════════════════════════════════════════════════════ */
+const NL_BACKUP_KEYS = ['logs', 'scHist', 'customSc', 'sessions', 'cbtE', 'actL', 'breathL', 'profile', 'remTime', ...AI_KEYS];
+function nlSnapshot() { const o = {}; NL_BACKUP_KEYS.forEach(k => { const v = S.get(k, null); if (v != null) o[k] = v; }); return o; }
+function nlExportBackup() {
+  const out = { app: 'NafsiLog', format: 2, exportedAt: new Date().toISOString(), note: 'الرمز السري غير مضمن. هذا الملف يحتوي بيانات شخصية حساسة — احفظه في مكان آمن.', data: nlSnapshot() };
+  aiDownload(`nafsilog_backup_${ds()}.json`, JSON.stringify(out, null, 1), 'application/json'); toast('✅ تم تصدير النسخة الاحتياطية');
+}
+const nlStr = (v, n = 5000) => typeof v === 'string' ? v.slice(0, n) : '';
+const nlDate = v => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(new Date(v + 'T00:00:00')) ? v : null;
+const nlClamp = (v, lo, hi) => { const n = nlNum(v); return n == null ? null : Math.min(hi, Math.max(lo, n)); };
+const nlTs = v => { const n = nlNum(v); return n != null && n >= 0 ? n : 0; };
+const NL_VALIDATORS = {
+  logs: r => { const date = nlDate(r.date), mood = nlClamp(r.mood, 1, 10); if (!date || mood == null) return null; return { date, mood: Math.round(mood), sleep: nlClamp(r.sleep, 0, 24), ev1: nlStr(r.ev1, 300), ev2: nlStr(r.ev2, 300), ev3: nlStr(r.ev3, 300), stressor: nlStr(r.stressor), stressLevel: nlClamp(r.stressLevel, 1, 10) ?? 5, intrusive: nlStr(r.intrusive), gratitude: nlStr(r.gratitude, 1000), tags: Array.isArray(r.tags) ? r.tags.filter(t => typeof t === 'string').map(t => t.slice(0, 40)).slice(0, 20) : [], ts: nlTs(r.ts) }; },
+  scHist: r => { const date = nlDate(r.date); if (!date || !['phq', 'gad'].includes(r.type)) return null; const max = r.type === 'phq' ? 27 : 21; const score = nlClamp(r.score, 0, max); return score == null ? null : { type: r.type, score: Math.round(score), max, date, ts: nlTs(r.ts) }; },
+  customSc: r => { const date = nlDate(r.date), name = nlStr(r.name, 80).trim(); if (!date || !name) return null; return { name, score: nlClamp(r.score, 1, 10) ?? 5, notes: nlStr(r.notes, 2000), date, ts: nlTs(r.ts) }; },
+  sessions: r => { const date = nlDate(r.date); if (!date || !['done-cbt', 'done-ba', 'done-fl', 'done-ea'].includes(r.type) || !r.ans || typeof r.ans !== 'object') return null; const ans = {}; Object.entries(r.ans).slice(0, 60).forEach(([k, v]) => { if (typeof v === 'string') ans[k] = v.slice(0, 5000); else if (typeof v === 'number' && Number.isFinite(v)) ans[k] = v; else if (Array.isArray(v)) ans[k] = v.slice(0, 50).map(x => typeof x === 'string' ? x.slice(0, 500) : x && typeof x === 'object' ? { situation: nlStr(x.situation, 500), score: nlClamp(x.score, 0, 100) ?? 0 } : null).filter(x => x != null); }); return { type: r.type, ans, dur: nlClamp(r.dur, 0, 1440) ?? 0, date, ts: nlTs(r.ts) }; },
+  cbtE: r => { const date = nlDate(r.date); return date ? { sit: nlStr(r.sit), auto: nlStr(r.auto), pro: nlStr(r.pro), con: nlStr(r.con), alt: nlStr(r.alt), date, ts: nlTs(r.ts) } : null; },
+  actL: r => { const date = nlDate(r.date), name = nlStr(r.name, 200).trim(); return date && name ? { name, exp: nlClamp(r.exp, 0, 10) ?? 5, act: nlClamp(r.act, 0, 10) ?? 5, date, ts: nlTs(r.ts) } : null; },
+  breathL: r => { const date = nlDate(r.date); return date ? { date, dur: nlClamp(r.dur, 0, 7200) ?? 0, cycles: nlClamp(r.cycles, 0, 100) ?? 0, ts: nlTs(r.ts) } : null; },
+  ai_actions: r => r && typeof r.title === 'string' && typeof r.step === 'string' ? { id: nlStr(r.id, 40) || aiUid(), title: nlStr(r.title, 60), step: nlStr(r.step, 240), timeframe: nlStr(r.timeframe, 60), reason: nlStr(r.reason, 240), source: nlStr(r.source, 20), goal: nlStr(r.goal, 100), basis: nlStr(r.basis, 80), status: ['active', 'done', 'dismissed'].includes(r.status) ? r.status : 'active', createdAt: nlStr(r.createdAt, 40), doneAt: nlStr(r.doneAt, 40), reflection: r.reflection && typeof r.reflection === 'object' ? { useful: nlClamp(r.reflection.useful, 1, 5) ?? 3, note: nlStr(r.reflection.note, 300), at: nlStr(r.reflection.at, 40) } : undefined } : null,
+};
+function nlValidateBackup(obj) {
+  if (!obj || typeof obj !== 'object') return { error: 'الملف ليس نسخة NafsiLog صالحة.' };
+  const src = obj.app === 'NafsiLog' && obj.data && typeof obj.data === 'object' ? obj.data : null;
+  if (!src) return { error: 'الملف ليس نسخة NafsiLog صالحة.' };
+  const clean = {}, report = {};
+  Object.entries(NL_VALIDATORS).forEach(([k, fn]) => {
+    if (!(k in src)) return;
+    if (!Array.isArray(src[k])) { report[k] = { ok: 0, rejected: 'not-array' }; return; }
+    const ok = []; let rej = 0;
+    src[k].slice(0, 20000).forEach(r => { let v = null; try { v = r && typeof r === 'object' ? fn(r) : null; } catch { v = null; } v ? ok.push(v) : rej++; });
+    clean[k] = ok; report[k] = { ok: ok.length, rejected: rej };
+  });
+  if (src.profile && typeof src.profile === 'object') { const p = src.profile; clean.profile = { age: nlStr(p.age, 5), gender: nlStr(p.gender, 40), status: nlStr(p.status, 40), goals: nlStr(p.goals, 500), medical: nlStr(p.medical, 3000), phqBaseline: nlStr(String(p.phqBaseline ?? ''), 3), gadBaseline: nlStr(String(p.gadBaseline ?? ''), 3) }; }
+  if (src.ai_reports && Array.isArray(src.ai_reports)) clean.ai_reports = src.ai_reports.filter(r => r && typeof r === 'object' && typeof r.id === 'string' && nlDate(r.from) && nlDate(r.to) && r.stats && typeof r.stats === 'object').slice(-30);
+  if (src.ai_patternFb && typeof src.ai_patternFb === 'object' && !Array.isArray(src.ai_patternFb)) { clean.ai_patternFb = {}; Object.entries(src.ai_patternFb).slice(0, 200).forEach(([k, v]) => { if (v && ['confirmed', 'refine', 'rejected'].includes(v.status)) clean.ai_patternFb[k.slice(0, 120)] = { status: v.status, note: nlStr(v.note, 300), at: nlStr(v.at, 40) }; }); }
+  return { clean, report };
+}
+function nlMerge(cur, inc) {
+  const out = { ...cur };
+  const sig = r => JSON.stringify([r.date, r.ts, r.type, r.name, r.score]);
+  ['scHist', 'customSc', 'sessions', 'cbtE', 'actL', 'breathL'].forEach(k => {
+    if (!inc[k]) return; const have = new Set((cur[k] || []).map(sig));
+    out[k] = [...(cur[k] || []), ...inc[k].filter(r => !have.has(sig(r)))].sort((a, b) => (a.ts || 0) - (b.ts || 0));
+  });
+  if (inc.logs) { // one record per date; keep the newer one
+    const byDate = new Map((cur.logs || []).map(l => [l.date, l]));
+    inc.logs.forEach(l => { const e = byDate.get(l.date); if (!e || (l.ts || 0) > (e.ts || 0)) byDate.set(l.date, l); });
+    out.logs = [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date));
+  }
+  if (inc.ai_actions) { const ids = new Set((cur.ai_actions || []).map(a => a.id)); out.ai_actions = [...(cur.ai_actions || []), ...inc.ai_actions.filter(a => !ids.has(a.id))]; }
+  if (inc.ai_reports) { const ids = new Set((cur.ai_reports || []).map(a => a.id)); out.ai_reports = [...(cur.ai_reports || []), ...inc.ai_reports.filter(a => !ids.has(a.id))].slice(-30); }
+  if (inc.ai_patternFb) out.ai_patternFb = { ...inc.ai_patternFb, ...(cur.ai_patternFb || {}) };
+  if (inc.profile && (!cur.profile || !Object.values(cur.profile).some(v => v))) out.profile = inc.profile;
+  return out;
+}
+function nlImportFile(input) {
+  const f = input.files && input.files[0]; input.value = ''; if (!f) return;
+  if (f.size > 4 * 1024 * 1024) { toast('⚠️ الملف أكبر من المسموح'); return; }
+  const rd = new FileReader();
+  rd.onload = () => {
+    let obj; try { obj = JSON.parse(rd.result); } catch { toast('⚠️ ملف JSON غير صالح'); return; }
+    const v = nlValidateBackup(obj); if (v.error) { toast('⚠️ ' + v.error); return; }
+    const names = { logs: 'تسجيلات يومية', scHist: 'نتائج مقاييس', customSc: 'مقاييس مخصصة', sessions: 'جلسات', cbtE: 'سجلات أفكار', actL: 'أنشطة', breathL: 'تمارين تنفس', ai_actions: 'خطوات خطة' };
+    const lines = Object.entries(v.report).map(([k, r]) => `${names[k] || k}: ${r.ok} صالحة${r.rejected ? ` • ${r.rejected} مرفوضة` : ''}`);
+    if (!confirm(`سيتم دمج النسخة مع بياناتك الحالية (دون حذف أي شيء، وبدون تكرار):\n\n${lines.join('\n')}\n\nستُحفظ نسخة من بياناتك الحالية تلقائياً قبل الدمج ويمكن استرجاعها. متابعة؟`)) return;
+    const before = nlSnapshot();
+    if (!S.set('backup_preimport', { at: new Date().toISOString(), data: before })) { toast('⚠️ تعذر حفظ نسخة ما قبل الاستيراد — أُلغي الاستيراد'); return; }
+    const merged = nlMerge(before, v.clean);
+    let ok = true; Object.entries(merged).forEach(([k, val]) => { if (S.set(k, val) === false) ok = false; });
+    if (!ok) { nlRestorePreImport(true); toast('⚠️ فشل الحفظ (المساحة ممتلئة؟) — تمت استعادة بياناتك'); return; }
+    toast('✅ تم الاستيراد'); loadProfile(); renderBackupCard();
+  };
+  rd.readAsText(f);
+}
+function nlRestorePreImport(silent) {
+  const b = S.get('backup_preimport', null); if (!b || !b.data) { toast('لا توجد نسخة سابقة'); return; }
+  if (!silent && !confirm(`استرجاع بياناتك كما كانت قبل الاستيراد (${new Date(b.at).toLocaleString('ar-EG')})؟`)) return;
+  NL_BACKUP_KEYS.forEach(k => { if (k in b.data) S.set(k, b.data[k]); else S.del(k); });
+  if (!silent) { S.del('backup_preimport'); toast('✅ تمت الاستعادة'); loadProfile(); renderBackupCard(); }
+}
+function renderBackupCard() {
+  const el = document.getElementById('backupCard'); if (!el) return;
+  const b = S.get('backup_preimport', null);
+  el.innerHTML = `<div class="card-title">💾 النسخ الاحتياطي</div>
+    <div class="ai-muted" style="margin-bottom:.6rem">بياناتك محفوظة في هذا المتصفح فقط. صدّر نسخة دورياً واحفظها في مكان آمن (تحتوي بيانات حساسة، ولا تتضمن الرمز السري).</div>
+    <div class="ai-btns"><button class="btn btn-ghost btn-sm" onclick="nlExportBackup()">⬇️ تصدير نسخة كاملة (JSON)</button>
+    <label class="btn btn-ghost btn-sm">⬆️ استيراد نسخة<input type="file" accept="application/json,.json" style="display:none" onchange="nlImportFile(this)"></label></div>
+    ${b ? `<div class="ai-row" style="margin-top:.6rem"><span class="ai-muted">نسخة ما قبل آخر استيراد: ${new Date(b.at).toLocaleString('ar-EG')}</span><button class="ai-link" onclick="nlRestorePreImport()">↩️ استرجاع</button></div>` : ''}`;
+}
+
 </script>
 </body>
 </html>
